@@ -42,8 +42,15 @@ class Particle:
             elif self.shape == 'triangle':
                 pygame.draw.polygon(surface, (self.red, self.green, self.blue, self.alpha),
                                     [(self.size, 0), (0, self.size * 2), (self.size * 2, self.size * 2)])
+            elif self.shape == 'deltoid':
+                points = [
+                    (self.size, 0),
+                    (self.size * 1.5, self.size * 1.5),
+                    (self.size, self.size * 2),
+                    (self.size * 0.5, self.size * 1.5)
+                ]
+                pygame.draw.polygon(surface, (self.red, self.green, self.blue, self.alpha), points)
             screen.blit(surface, (self.x - self.size, self.y - self.size))
-
 
 class ParticleSystem:
     def __init__(self, movable=False):

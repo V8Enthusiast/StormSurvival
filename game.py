@@ -18,7 +18,7 @@ class Game:
                 if event.type == pygame.QUIT:
                     return
 
-            self.unityparticlesystem.add_particle(400, 300, random.uniform(-1, 1), -5, 1, 1000, 10, 255, 255, 255, 100, 'square')
+            self.unityparticlesystem.add_particle(400, 300, random.uniform(-1, 1), -5, 1, 1000, 10, 255, 255, 255, 100, 'deltoid')
             self.unityparticlesystem.apply_force_to_all(0, 0.1)
 
             self.unityparticlesystem.update()
