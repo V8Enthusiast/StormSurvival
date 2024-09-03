@@ -1,5 +1,6 @@
 import pygame
 from particleł import ParticleSystem
+from mixer import Mixer
 import random
 
 class Game:
@@ -8,6 +9,9 @@ class Game:
         self.height = height
         self.screen = pygame.display.set_mode((width, height))
         self.clock = pygame.time.Clock()
+        self.mixer = Mixer()
+        self.mixer.load_music('sounds/Jim Yosef - Link [NCS Release].mp3')
+        self.mixer.play_music()
         self.unityparticlesystem = ParticleSystem()
 
     def run(self):
