@@ -10,5 +10,8 @@ class Mixer:
     def play_music(self):
         pygame.mixer.music.play(-1)
 
+    def change_volume(self, volume):
+        pygame.mixer.music.set_volume(volume)
+
     def stop_music(self):
         pygame.mixer.music.stop()
