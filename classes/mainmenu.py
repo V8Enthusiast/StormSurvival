@@ -2,7 +2,7 @@ import random
 import time
 
 import pygame
-from classes import buttons, inputBox, tetris_widget, tetris_structure
+from classes import buttons, inputBox, tetris_structure
 class MainMenu:
     def __init__(self, app):
         self.app = app
