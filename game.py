@@ -28,6 +28,10 @@ class Game:
         settings_values.block_colors = settings['Block colors']
         settings_values.max_fall_speed = settings['Max fall speed']
 
+        settings_values.volume = settings['Volume']
+
+        self.mixer.change_volume(settings_values.volume)
+
         self.clock = pygame.time.Clock()
         self.fps = 60
         self.width = int(resolutions[settings['Resolution']].split('x')[0])
