@@ -18,42 +18,10 @@ class MainMenu:
                                        self.font,
                                        'Your nick')
 
-        # Tetris preview
-        self.score = 0
-        self.level = 1
-        self.lines_cleared = 0
-        self.tile_color = (0, 0, 0)
-        self.tile_outline_color = (40, 40, 40)
-        self.ROWS = 20
-        self.COLUMNS = int(self.app.width // (self.app.height/self.ROWS)) + 1
-        self.blocks = {}
-        self.map = [[0 for _ in range(self.COLUMNS)] for i in range(self.ROWS + 7)]
-        self.tile_size = self.app.height/self.ROWS
-        self.ROWS += 7
-
-        self.border = 1
-        self.x_offset = (self.app.width - self.tile_size * self.COLUMNS) / 2
-        self.y_offset = (self.app.height - self.tile_size * self.ROWS) / 2
-        self.block_spawner_x = self.COLUMNS // 2 - 2
-        self.placed_structures = []
-        self.structure_amount = 4
-        self.clock = time.time()
-        self.direction_clock = time.time()
-        self.move_down_faster = False
-        self.move_left = False
-        self.move_right = False
-        self.moving_speed = 40
-        self.fps = 6
-        self.game_over = False
-        self.debug = False
-        self.delay_between_blocks = 5
-        self.current_delay = 0
-
 
     def render(self):
-        self.app.screen.fill((127, 127, 127))
+        self.app.screen.fill((0, 0, 0))
         # Tetris preview
-        self.draw_tiles()
         # main menu
         for button in self.buttons:
             button.render()
@@ -63,16 +31,7 @@ class MainMenu:
         display_text_rect = display_text.get_rect()
         display_text_rect.center = self.main_text_rect_center
         self.app.screen.blit(display_text, display_text_rect)
-    def draw_tiles(self):
-        self.app.screen.fill((40, 40, 40))
-        for r_idx, r in enumerate(self.map):
-            for c_idx, c in enumerate(r):
-                rect = pygame.Rect(self.x_offset + c_idx * self.tile_size, self.y_offset + r_idx * self.tile_size, self.tile_size, self.tile_size)
-                pygame.draw.rect(self.app.screen, self.tile_color, rect)
-                pygame.draw.rect(self.app.screen, self.tile_outline_color, rect, self.border)
 
-        for structure in self.placed_structures:
-            structure.render()
 
     def events(self):
         pass
