@@ -15,7 +15,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.mixer = Mixer()
         self.mixer.load_music('sounds/Jim Yosef - Link [NCS Release].mp3')
-        #self.mixer.play_music()
+        self.mixer.play_music()
         self.unityparticlesystem = ParticleSystem()
 
         # Save the data passed into the function to variables
