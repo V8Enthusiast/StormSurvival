@@ -2,7 +2,7 @@ import random
 import time
 
 import pygame
-from classes import buttons, inputBox, tetris_structure
+from classes import buttons, inputBox
 class MainMenu:
     def __init__(self, app):
         self.app = app
@@ -46,10 +46,6 @@ class MainMenu:
         self.fps = 6
         self.game_over = False
         self.debug = False
-        self.next_structures = tetris_structure.generate_bag(0, 0, self, random_x_coord=True)
-        self.current_structures = [self.next_structures[0]]
-        self.next_structures.pop(0)
-        self.held_structure = None
         self.delay_between_blocks = 5
         self.current_delay = 0
 
@@ -58,31 +54,6 @@ class MainMenu:
         self.app.screen.fill((127, 127, 127))
         # Tetris preview
         self.draw_tiles()
-        current_time = time.time()
-        moved = False
-        for structure in self.current_structures:
-            if current_time > self.clock + 1 / self.fps:
-                structure.move(1, 0)
-                moved = True
-            if structure.can_move is False:
-                self.current_structures.remove(structure)
-                self.current_structures.append(self.next_structures[0])
-                self.can_swap = True
-                self.next_structures.pop(0)
-                if len(self.next_structures) <= 3:
-                    self.next_structures += tetris_structure.generate_bag(0, 0, self, random_x_coord=True)
-        if moved:
-            self.clock = current_time
-            if self.current_delay >= self.delay_between_blocks:
-                if len(self.current_structures) < self.structure_amount:
-                    self.current_structures.append(self.next_structures[0])
-                    self.next_structures.pop(0)
-                    if len(self.next_structures) <= 3:
-                        self.next_structures += tetris_structure.generate_bag(0, 0, self, random_x_coord=True)
-                self.current_delay = 0
-            else:
-                self.current_delay += 1
-
         # main menu
         for button in self.buttons:
             button.render()
@@ -101,8 +72,6 @@ class MainMenu:
                 pygame.draw.rect(self.app.screen, self.tile_outline_color, rect, self.border)
 
         for structure in self.placed_structures:
-            structure.render()
-        for structure in self.current_structures:
             structure.render()
 
     def events(self):
