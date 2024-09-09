@@ -50,3 +50,26 @@ class Storm(GameObject):
             ddx+=math.sqrt(self.distance()-100)/100
         self.x+=ddx
         print(ddx)
+class Chest(GameObject):
+    def __init__(self, game,x,y,w,h,image_path,visible):
+        super().__init__(game,x,y,w,h,image_path,visible)
+
+        self.Items = []
+        self.CommonDrops = ["Glock 17", "Pump Action Shotgun", "Ammo Box"]
+        self.UncommonDrops = ["M4A1", "Bolt Action Sniper", "Ammo Crate"]
+        self.EpicDrops = ["MAC-10", "M1911 .45"]
+        self.LegendaryDrops = ["Scar-H", "Desert Eagle", ".44 Magnum"]
+
+        self.generateRandomItems()
+
+    def generateRandomItems(self):
+        for i in range(random.randint(1, 5)):
+            rarity = random.randint(0, 100)
+            if rarity > 35:
+                self.Items.append(random.choice(self.UncommonDrops))
+            elif rarity > 75:
+                self.Items.append(random.choice(self.EpicDrops))
+            elif rarity > 90:
+                self.Items.append(random.choice(self.LegendaryDrops))
+            else:
+                self.Items.append(random.choice(self.CommonDrops))
