@@ -39,6 +39,9 @@ class Game:
                 self.dx = -self.speed
             if type(event) == pygame.K_d:
                 self.dx = self.speed
+        for o in self.objects:
+            o.x -= self.dx
+            o.y -= self.dy
 
 
 
