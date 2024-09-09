@@ -16,8 +16,8 @@ class Game:
         self.dx = 0
         self.dy = 0
 
-        self.test_object=GameObject.GameObject(self,0,0,10,10,'Assets/test.png',True)
-        self.player = GameObject.Player(self, 400,400,10,10,'Assets/player.png',True)
+        self.test_object=GameObject.Storm(self,0,0,100,100,'Assets/test.png',True)
+        self.player = GameObject.Player(self, 400,400,100,100,'Assets/player.png',True)
 
 
     def render(self):
@@ -29,6 +29,8 @@ class Game:
             button.render()
         font = pygame.font.Font(self.font, int(72 * self.app.scale))
         for object in self.objects:
+            if type(object)==GameObject.Storm:
+                object.move()
             object.render()
 
 
@@ -40,25 +42,25 @@ class Game:
                 pygame.quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_w:
-                    self.dy = self.speed
-                if event.key == pygame.K_s:
                     self.dy = -self.speed
+                if event.key == pygame.K_s:
+                    self.dy = +self.speed
                 if event.key == pygame.K_a:
-                    self.dx = self.speed
-                if event.key == pygame.K_d:
                     self.dx = -self.speed
+                if event.key == pygame.K_d:
+                    self.dx = self.speed
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_w:
-                    if self.dy==self.speed:
+                    if self.dy==-self.speed:
                         self.dy = 0
                 if event.key == pygame.K_s:
-                    if self.dy == -self.speed:
+                    if self.dy == +self.speed:
                         self.dy = 0
                 if event.key == pygame.K_a:
                     if self.dx == -self.speed:
                         self.dx = 0
                 if event.key == pygame.K_d:
-                    if self.dx==self.speed:
+                    if self.dx==+self.speed:
                         self.dx = 0
 
 
