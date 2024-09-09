@@ -1,5 +1,5 @@
 import random
-from classes import settings, mainmenu
+from classes import settings, mainmenu, game
 import pygame
 
 import pygame
@@ -56,9 +56,7 @@ class Button:
     def click(self):
         if self.function == 'start':
             self.app.last_player = self.app.ui.textBox.text
-            self.app.LogPlayer()
-            self.app.onLevel = True
-            self.app.ui = levelselect.LevelSelect(self.app)
+            self.app.ui = game.Game(self.app)
             #self.app.ui = tetris.TetrisGame(self.app, 20, 10) # Change the displayed ui to the simulation
         elif self.function == 'start_game':
             level = self.app.ui.selected_level
