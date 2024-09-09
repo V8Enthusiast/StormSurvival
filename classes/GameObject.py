@@ -52,7 +52,12 @@ class Storm(GameObject):
         else:
             ddx+=math.sqrt(self.distance()-100)/100
         self.x+=ddx
-        print(ddx)
+
+    def render(self):
+        self.x-=2*self.game.dx
+        self.y-=2*self.game.dy
+        self.rect=pygame.Rect(self.x,self.y,self.w,self.h)
+        self.screen.blit(self.image,self.rect)
 class Chest(GameObject):
     def __init__(self, game,x,y,w,h,image_path,visible):
         super().__init__(game,x,y,w,h,image_path,visible)
