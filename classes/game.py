@@ -10,11 +10,13 @@ class Game:
         self.main_text_rect_center = (self.app.width//2, 150 * self.app.scale)
         self.font = "fonts/main_font.ttf"
         self.font_color = (255, 255, 255)
+        self.screen=self.app.screen
         self.buttons = []
         self.speed = 10
         self.dx = 0
         self.dy = 0
-        self.test_object=GameObject()
+
+        self.test_object=GameObject.GameObject(self,0,0,10,10,'Assets/test.png',True)
 
 
 
@@ -25,6 +27,8 @@ class Game:
         for button in self.buttons:
             button.render()
         font = pygame.font.Font(self.font, int(72 * self.app.scale))
+        for object in self.objects:
+            object.render()
 
 
     def events(self):
