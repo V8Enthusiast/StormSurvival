@@ -1,5 +1,6 @@
 import pygame.image
 import pygame
+import random
 import math
 
 class GameObject():
