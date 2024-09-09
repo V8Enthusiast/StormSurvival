@@ -17,8 +17,17 @@ class Game:
         self.dy = 0
 
         self.test_object=GameObject.Storm(self,-1000,0,500,1080,'Assets/Bez-nazwy (1).jpg',True)
-        self.objects.append(GameObject.Chest(self, 300, 300, 15, 15, "Assets/Chest.jpeg", True))
+        self.objects.append(GameObject.Chest(self, 300, 300, 150, 150, "Assets/Chest.jpeg", True))
         self.player = GameObject.Player(self, 400,400,100,100,'Assets/player.png',True)
+        self.init_tiles()
+
+    def init_tiles(self):
+        tile_image_path = 'Assets/tile.png'  # Path to your tile image
+        for y in range(0, self.app.height, 48):
+            for x in range(0, self.app.width, 48):
+                tile = GameObject.Tile(self, x, y, tile_image_path)
+                self.objects.append(tile)
+
 
 
     def render(self):
@@ -29,10 +38,26 @@ class Game:
         for button in self.buttons:
             button.render()
         font = pygame.font.Font(self.font, int(72 * self.app.scale))
+        # Render tiles first
         for object in self.objects:
-            if type(object)==GameObject.Storm:
+            if isinstance(object, GameObject.Tile):
+                object.render()
+
+        # Render other game objects
+        for object in self.objects:
+            if not isinstance(object, (GameObject.Tile, GameObject.Player, GameObject.Storm)):
+                object.render()
+
+        # Render player
+        for object in self.objects:
+            if isinstance(object, GameObject.Player):
+                object.render()
+
+        # Render storm
+        for object in self.objects:
+            if isinstance(object, GameObject.Storm):
                 object.move()
-            object.render()
+                object.render()
 
 
     def events(self):
