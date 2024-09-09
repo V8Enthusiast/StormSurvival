@@ -27,6 +27,8 @@ class Game:
 
 
     def events(self):
+        self.dx = 0
+        self.dy = 0
         for event in pygame.event.get():
             if type(event) == pygame.K_w:
                 self.dy = self.speed
