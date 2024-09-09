@@ -17,7 +17,7 @@ class Game:
         self.dy = 0
 
         self.test_object=GameObject.GameObject(self,0,0,10,10,'Assets/test.png',True)
-
+        self.player = GameObject.Player(self, 400,400,10,10,'Assets/player.png',True)
 
 
     def render(self):
@@ -44,9 +44,9 @@ class Game:
                 if event.key == pygame.K_s:
                     self.dy = -self.speed
                 if event.key == pygame.K_a:
-                    self.dx = -self.speed
-                if event.key == pygame.K_d:
                     self.dx = self.speed
+                if event.key == pygame.K_d:
+                    self.dx = -self.speed
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_w:
                     self.dy = 0
