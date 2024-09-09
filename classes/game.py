@@ -2,7 +2,7 @@ import random
 import time
 
 import pygame
-from classes import buttons, inputBox
+from classes import buttons, inputBox, GameObject
 class Game:
     def __init__(self, app):
         self.app = app
@@ -11,6 +11,7 @@ class Game:
         self.font = "fonts/main_font.ttf"
         self.font_color = (255, 255, 255)
         self.buttons = []
+        self.test_object=GameObject()
 
 
 
