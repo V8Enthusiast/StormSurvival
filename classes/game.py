@@ -22,8 +22,8 @@ class Game:
         self.objects.append(GameObject.Chest(self, 300, 300, 150, 150, "Assets/Chest.jpeg", True))
 
         self.tiles = {}
-        self.tile_image = pygame.image.load('Assets/tile.png').convert_alpha()  # Load and convert image
-        self.tile_size = 48  # Assuming each tile is 48x48 pixels
+        self.tile_image = pygame.image.load('Assets/tile.png').convert_alpha()
+        self.tile_size = 48
         self.init_tiles()
 
         self.unityparticlesystem = particles.ParticleSystem()
@@ -70,7 +70,7 @@ class Game:
 
 
     def events(self):
-        keys = pygame.key.get_pressed()  # Get the state of all keyboard buttons
+        keys = pygame.key.get_pressed()
 
         if keys[pygame.K_w]:
             self.dy = -self.speed
