@@ -16,6 +16,6 @@ class GameObject():
     def render(self):
         self.x+=self.game.dx
         self.y+=self.game.dy
-        self.rect=pygame.Rect(x,y,w,h)
+        self.rect=pygame.Rect(self.x,self.y,self.w,self.h)
         self.game.screen.blit(self.image,self.rect)
 
