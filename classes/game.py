@@ -2,7 +2,7 @@ import random
 import time
 
 import pygame
-from classes import buttons, inputBox
+from classes import buttons, inputBox, GameObject
 class Game:
     def __init__(self, app):
         self.app = app
@@ -14,6 +14,7 @@ class Game:
         self.speed = 10
         self.dx = 0
         self.dy = 0
+        self.test_object=GameObject()
 
 
 
