@@ -16,7 +16,7 @@ class Game:
         self.dx = 0
         self.dy = 0
 
-        self.test_object=GameObject.GameObject(self,0,0,10,10,'Assets/test.png',True)
+        self.test_object=GameObject.GameObject(self,400,400,10,10,"Assets/player.png",True)
 
 
 
