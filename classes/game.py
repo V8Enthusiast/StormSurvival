@@ -49,13 +49,18 @@ class Game:
                     self.dx = -self.speed
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_w:
-                    self.dy = 0
+                    if self.dy==self.speed:
+                        self.dy = 0
                 if event.key == pygame.K_s:
-                    self.dy = 0
+                    if self.dy == -self.speed:
+                        self.dy = 0
                 if event.key == pygame.K_a:
-                    self.dx = 0
+                    if self.dx == -self.speed:
+                        self.dx = 0
                 if event.key == pygame.K_d:
-                    self.dx = 0
+                    if self.dx==self.speed:
+                        self.dx = 0
+
 
 
 
