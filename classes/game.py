@@ -16,50 +16,44 @@ class Game:
         self.dx = 0
         self.dy = 0
 
-        self.test_object=GameObject.Storm(self,-1000,0,500,1080,'Assets/Bez-nazwy (1).jpg',True)
+        self.player = GameObject.Player(self, self.app.width // 2 - 50, self.app.height // 2 - 50, 100, 100,
+                                        'Assets/player.png', True)
+        self.test_object = GameObject.Storm(self, -1000, 0, 500, 1080, 'Assets/Bez-nazwy (1).jpg', True)
         self.objects.append(GameObject.Chest(self, 300, 300, 150, 150, "Assets/Chest.jpeg", True))
-        self.player = GameObject.Player(self, self.app.width//2 - 50,self.app.height//2 - 50,100,100,'Assets/player.png',True)
+
+        self.tiles = {}
+        self.tile_image = pygame.image.load('Assets/tile.png').convert_alpha()  # Load and convert image
+        self.tile_size = 48  # Assuming each tile is 48x48 pixels
         self.init_tiles()
 
         self.unityparticlesystem = particles.ParticleSystem()
 
     def init_tiles(self):
-        tile_image_path = 'Assets/tile.png'  # Path to your tile image
-        for y in range(0, self.app.height, 48):
-            for x in range(0, self.app.width, 48):
-                tile = GameObject.Tile(self, x, y, tile_image_path)
-                self.objects.append(tile)
+        for y in range(0, self.app.height, self.tile_size):
+            for x in range(0, self.app.width, self.tile_size):
+                self.add_tile(x, y)
 
-
+    def add_tile(self, x, y):
+        self.tiles[(x, y)] = self.tile_image
 
     def render(self):
         print(self.dx)
         self.app.screen.fill((0, 0, 0))
-        # Tetris preview
-        # main menu
-        for button in self.buttons:
-            button.render()
-        font = pygame.font.Font(self.font, int(72 * self.app.scale))
-        # Render tiles first
-        for object in self.objects:
-            if isinstance(object, GameObject.Tile):
-                object.render()
+
+        player_x, player_y = self.player.relative_position
+
+        for (x, y), tile_image in self.tiles.items():
+            self.screen.blit(tile_image, (x - player_x*2, y - player_y*2))
 
         # Render other game objects
-        for object in self.objects:
-            if not isinstance(object, (GameObject.Tile, GameObject.Player, GameObject.Storm)):
-                object.render()
-
-        # Render player
-        for object in self.objects:
-            if isinstance(object, GameObject.Player):
-                object.render()
-
-        # Render storm
-        for object in self.objects:
-            if isinstance(object, GameObject.Storm):
-                object.move()
-                object.render()
+        for obj in self.objects:
+            if not isinstance(obj, (GameObject.Tile, GameObject.Player, GameObject.Storm)):
+                obj.render()
+            elif isinstance(obj, GameObject.Player):
+                obj.render()
+            elif isinstance(obj, GameObject.Storm):
+                obj.move()
+                obj.render()
 
 
         self.unityparticlesystem.update()
@@ -68,38 +62,27 @@ class Game:
 
 
     def events(self):
+        keys = pygame.key.get_pressed()  # Get the state of all keyboard buttons
+
+        if keys[pygame.K_w]:
+            self.dy = -self.speed
+        elif keys[pygame.K_s]:
+            self.dy = self.speed
+        else:
+            self.dy = 0
+
+        if keys[pygame.K_a]:
+            self.dx = -self.speed
+        elif keys[pygame.K_d]:
+            self.dx = self.speed
+        else:
+            self.dx = 0
+
+        # Update player position based on current dx and dy
+        self.player.relative_position[0] += self.dx
+        self.player.relative_position[1] += self.dy
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.app.run = False
                 pygame.quit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_w:
-                    self.dy = -self.speed
-                if event.key == pygame.K_s:
-                    self.dy = +self.speed
-                if event.key == pygame.K_a:
-                    self.dx = -self.speed
-                if event.key == pygame.K_d:
-                    self.dx = self.speed
-            self.player.relative_position[0] += self.dx
-            self.player.relative_position[1] += self.dy
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_w:
-                    if self.dy==-self.speed:
-                        self.dy = 0
-                if event.key == pygame.K_s:
-                    if self.dy == +self.speed:
-                        self.dy = 0
-                if event.key == pygame.K_a:
-                    if self.dx == -self.speed:
-                        self.dx = 0
-                if event.key == pygame.K_d:
-                    if self.dx==+self.speed:
-                        self.dx = 0
-
-
-
-
-
-
