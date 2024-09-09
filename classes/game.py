@@ -16,7 +16,7 @@ class Game:
         self.dx = 0
         self.dy = 0
 
-        self.test_object=GameObject.Storm(self,0,0,100,100,'Assets/test.png',True)
+        self.test_object=GameObject.Storm(self,-1000,0,500,1080,'Assets/Bez-nazwy (1).jpg',True)
         self.objects.append(GameObject.Chest(self, 300, 300, 15, 15, "Assets/Chest.jpeg", True))
         self.player = GameObject.Player(self, 400,400,100,100,'Assets/player.png',True)
 
