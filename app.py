@@ -70,6 +70,8 @@ class App:
             if not self.onLevel and event.type == pygame.KEYDOWN:
                 self.ui.textBox.handle_event(event)
 
+
+
     def run(self):
         while True:
             self.clock.tick(60)
@@ -86,6 +88,6 @@ class App:
             self.ui.render()
 
             pygame.display.flip()
-
             self.ui.events()
+
             self.events()

@@ -21,6 +21,7 @@ class Game:
 
 
     def render(self):
+        print(self.dx)
         self.app.screen.fill((0, 0, 0))
         # Tetris preview
         # main menu
@@ -32,17 +33,31 @@ class Game:
 
 
     def events(self):
-        self.dx = 0
-        self.dy = 0
+
         for event in pygame.event.get():
-            if type(event) == pygame.K_w:
-                self.dy = self.speed
-            if type(event) == pygame.K_s:
-                self.dx = -self.speed
-            if type(event) == pygame.K_a:
-                self.dx = -self.speed
-            if type(event) == pygame.K_d:
-                self.dx = self.speed
+            if event.type == pygame.QUIT:
+                self.app.run = False
+                pygame.quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_w:
+                    self.dy = self.speed
+                if event.key == pygame.K_s:
+                    self.dy = -self.speed
+                if event.key == pygame.K_a:
+                    self.dx = -self.speed
+                if event.key == pygame.K_d:
+                    self.dx = self.speed
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_w:
+                    self.dy = 0
+                if event.key == pygame.K_s:
+                    self.dy = 0
+                if event.key == pygame.K_a:
+                    self.dx = 0
+                if event.key == pygame.K_d:
+                    self.dx = 0
+
+
 
 
 
