@@ -33,8 +33,9 @@ class Game:
             for x in range(0, self.app.width, self.tile_size):
                 self.add_tile(x, y)
 
-    def add_tile(self, x, y):
-        self.tiles[(x, y)] = self.tile_image
+    def add_tile(self, x, y, force=False):
+        if force or (x, y) not in self.tiles:
+            self.tiles[(x, y)] = self.tile_image
 
     def render(self):
         print(self.dx)
@@ -42,8 +43,15 @@ class Game:
 
         player_x, player_y = self.player.relative_position
 
+        max_x = max(x for x, y in self.tiles.keys())
+
+
+        if player_x * 2 + self.app.width > max_x:
+            for y in range(0, self.app.height, self.tile_size):
+                self.add_tile(max_x + self.tile_size, y, force=True)
+
         for (x, y), tile_image in self.tiles.items():
-            self.screen.blit(tile_image, (x - player_x*2, y - player_y*2))
+            self.screen.blit(tile_image, (x - player_x * 2, y - player_y * 2))
 
         # Render other game objects
         for obj in self.objects:
