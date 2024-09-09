@@ -11,6 +11,9 @@ class Game:
         self.font = "fonts/main_font.ttf"
         self.font_color = (255, 255, 255)
         self.buttons = []
+        self.speed = 10
+        self.dx = 0
+        self.dy = 0
 
 
 
@@ -24,4 +27,15 @@ class Game:
 
 
     def events(self):
-        pass
+        for event in pygame.event.get():
+            if type(event) == pygame.K_w:
+                self.dy = self.speed
+            if type(event) == pygame.K_s:
+                self.dx = -self.speed
+            if type(event) == pygame.K_a:
+                self.dx = -self.speed
+            if type(event) == pygame.K_d:
+                self.dx = self.speed
+
+
+
