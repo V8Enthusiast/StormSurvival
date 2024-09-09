@@ -75,6 +75,8 @@ class Game:
                     self.dx = -self.speed
                 if event.key == pygame.K_d:
                     self.dx = self.speed
+            self.player.relative_position[0] += self.dx
+            self.player.relative_position[1] += self.dy
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_w:
                     if self.dy==-self.speed:

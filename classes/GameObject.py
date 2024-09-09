@@ -29,6 +29,8 @@ class Player(GameObject):
         self.health = 100
         self.size = 25
         self.color = (255, 105, 55)
+
+        self.relative_position = [0, 0]
     def render(self):
         self.rect=pygame.Rect(self.x,self.y,self.w,self.h)
         self.screen.blit(self.image,self.rect)
