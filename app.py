@@ -1,10 +1,9 @@
 import json
 
 import pygame
-from particleł import ParticleSystem
+from classes.particles import ParticleSystem
 from mixer import Mixer
 from classes import mainmenu
-import random
 import settings_values
 resolutions = ["1000x800", "1200x900", "1920x1080", "2560x1440"]
 class App:

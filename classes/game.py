@@ -2,7 +2,7 @@ import random
 import time
 
 import pygame
-from classes import buttons, inputBox, GameObject
+from classes import buttons, inputBox, GameObject, particles
 class Game:
     def __init__(self, app):
         self.app = app
@@ -18,8 +18,10 @@ class Game:
 
         self.test_object=GameObject.Storm(self,-1000,0,500,1080,'Assets/Bez-nazwy (1).jpg',True)
         self.objects.append(GameObject.Chest(self, 300, 300, 150, 150, "Assets/Chest.jpeg", True))
-        self.player = GameObject.Player(self, 400,400,100,100,'Assets/player.png',True)
+        self.player = GameObject.Player(self, self.app.width//2 - 50,self.app.height//2 - 50,100,100,'Assets/player.png',True)
         self.init_tiles()
+
+        self.unityparticlesystem = particles.ParticleSystem()
 
     def init_tiles(self):
         tile_image_path = 'Assets/tile.png'  # Path to your tile image
@@ -58,6 +60,11 @@ class Game:
             if isinstance(object, GameObject.Storm):
                 object.move()
                 object.render()
+
+
+        self.unityparticlesystem.update()
+
+        self.unityparticlesystem.draw(self.screen)
 
 
     def events(self):
