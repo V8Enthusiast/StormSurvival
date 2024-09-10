@@ -56,9 +56,9 @@ class PumpActionShotgun(Weapon):
             tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 2.2
 
             for _ in range(100):
-                vx = math.cos(self.player.angle)
-                vy = math.sin(self.player.angle)
-                speed = random.uniform(1, 3)
+                vx = random.uniform(math.cos(self.player.angle - 0.6), math.cos(self.player.angle + 0.6))
+                vy = random.uniform(math.sin(self.player.angle - 0.6), math.sin(self.player.angle + 0.6))
+                speed = random.uniform(7, 13)
                 lifespan = random.randint(20, 500)
                 size = random.randint(2, 5)
                 red, green, blue = 255, 255, 0
@@ -68,8 +68,6 @@ class PumpActionShotgun(Weapon):
                                                                    green, blue, alpha, shape)
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
 
-        for p in self.game.weaponparticlesystem.particles:
-            p.apply_force(random.uniform(-1, 1), random.uniform(-1, 1))
 
 class AmmoBox(Weapon):
     def __init__(self, game, player):
@@ -95,9 +93,9 @@ class M4A1(Weapon):
             for _ in range(1):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
-                speed = random.uniform(1, 3)
+                speed = random.uniform(18, 19)
                 lifespan = random.randint(20, 500)
-                size = random.randint(2, 5)
+                size = random.randint(5, 5)
                 red, green, blue = 255, 255, 0
                 alpha = 255
                 shape = 'circle'
@@ -119,9 +117,9 @@ class BoltActionSniper(Weapon):
             for _ in range(1):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
-                speed = random.uniform(1, 3)
+                speed = random.uniform(20, 20)
                 lifespan = random.randint(20, 500)
-                size = random.randint(2, 5)
+                size = random.randint(5, 5)
                 red, green, blue = 255, 255, 0
                 alpha = 255
                 shape = 'circle'
@@ -154,7 +152,7 @@ class MAC10(Weapon):
             for _ in range(1):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
-                speed = random.uniform(1, 3)
+                speed = random.uniform(14, 17)
                 lifespan = random.randint(20, 500)
                 size = random.randint(2, 5)
                 red, green, blue = 255, 255, 0
@@ -178,7 +176,7 @@ class M1911(Weapon):
             for _ in range(1):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
-                speed = random.uniform(1, 3)
+                speed = random.uniform(14, 18)
                 lifespan = random.randint(20, 500)
                 size = random.randint(2, 5)
                 red, green, blue = 255, 255, 0
@@ -202,7 +200,7 @@ class ScarH(Weapon):
             for _ in range(1):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
-                speed = random.uniform(1, 3)
+                speed = random.uniform(15, 20)
                 lifespan = random.randint(20, 500)
                 size = random.randint(2, 5)
                 red, green, blue = 255, 255, 0
@@ -226,7 +224,7 @@ class DesertEagle(Weapon):
             for _ in range(1):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
-                speed = random.uniform(1, 3)
+                speed = random.uniform(16, 18)
                 lifespan = random.randint(20, 500)
                 size = random.randint(2, 5)
                 red, green, blue = 255, 255, 0
@@ -250,7 +248,7 @@ class Magnum44(Weapon):
             for _ in range(1):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
-                speed = random.uniform(1, 3)
+                speed = random.uniform(14, 17)
                 lifespan = random.randint(20, 500)
                 size = random.randint(2, 5)
                 red, green, blue = 255, 255, 0
