@@ -145,10 +145,30 @@ class Game:
                     self.chest_ui = None
 
         for enemy in self.enemies:
-            if self.player.x - enemy.x > 0:
-                enemy.angle = math.atan((self.player.y - enemy.y)/(self.player.x - enemy.x))
-            if self.player.x - enemy.x < 0:
-                enemy.angle = math.atan((self.player.y - enemy.y)/(self.player.x - enemy.x)) + math.radians(180)
+            # if self.player.x - enemy.x > 0:
+            #     enemy.angle = math.atan((self.player.y - enemy.y)/(self.player.x - enemy.x))
+            # if self.player.x - enemy.x < 0:
+            #     enemy.angle = math.atan((self.player.y - enemy.y)/(self.player.x - enemy.x)) + math.radians(180)
+
+            # Calculate the distance between the player and the enemy
+            distance_x = self.player.x - enemy.x
+            distance_y = self.player.y - enemy.y
+
+            # Calculate the total distance to move (5 blocks in this case)
+            total_distance = 4 # Zombie Speed
+
+            # Calculate the angle towards the player
+            angle = math.atan2(distance_y, distance_x)
+
+            enemy.angle = angle
+
+            # Calculate the movement in x and y directions
+            move_x = min(total_distance, abs(distance_x)) * math.cos(angle)
+            move_y = min(total_distance, abs(distance_y)) * math.sin(angle)
+
+            # Update the enemy's position
+            enemy.x += move_x
+            enemy.y += move_y
 
 
         for p in self.weaponparticlesystem.particles:
