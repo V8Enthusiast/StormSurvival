@@ -2,7 +2,7 @@ import pygame
 import images
 
 class Hotbar:
-    def __init__(self, game, num_slots=5):
+    def __init__(self, game, x, y, num_slots=5):
         self.game = game
         self.num_slots = num_slots
         self.selected_slot = 0
@@ -10,12 +10,14 @@ class Hotbar:
         self.slot_width = 50
         self.slot_height = 50
         self.margin = 10
+        self.x = x
+        self.y = y
         self.font = pygame.font.Font(None, 36)
 
     def render(self):
         for i in range(self.num_slots):
-            x = self.margin + i * (self.slot_width + self.margin)
-            y = self.game.app.height - self.slot_height - self.margin
+            x = self.x + self.margin + i * (self.slot_width + self.margin)
+            y = self.y
             color = (255, 255, 255) if i == self.selected_slot else (100, 100, 100)
             pygame.draw.rect(self.game.screen, color, (x, y, self.slot_width, self.slot_height), 2)
             if self.items[i]:

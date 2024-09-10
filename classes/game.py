@@ -41,7 +41,7 @@ class Game:
         self.current_min_y=0
         self.tile_width=96
 
-        self.hotbar = hotbar.Hotbar(self, 5)
+        self.hotbar = hotbar.Hotbar(self, 10, self.app.height-100, 5)
         self.hotbar.add_item("Gun", 0)
 
 
