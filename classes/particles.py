@@ -64,7 +64,7 @@ class ParticleSystem:
         for particle in self.particles:
             particle.apply_force(fx, fy)
 
-    def update(self):
+    def update(self, game):
         particle_x, particle_y = 0, 0
         if self.movable:
             keys = pygame.key.get_pressed()
@@ -84,6 +84,22 @@ class ParticleSystem:
             particle.update(particle_x, particle_y)
             if particle.lifespan <= 0:
                 self.particles.remove(particle)
+        self.check_collisions(game)
+
+    def check_collisions(self, game):
+        for particle in self.particles:
+            # Check collision with player
+            if game.player.rect.colliderect(particle.x, particle.y, particle.size * 2, particle.size * 2):
+                game.player.health -= 10  # Adjust damage as needed
+                self.particles.remove(particle)
+                continue
+
+            # Check collision with zombies
+            for zombie in game.enemies:
+                if zombie.rect.colliderect(particle.x, particle.y, particle.size * 2, particle.size * 2):
+                    zombie.health -= 10  # Adjust damage as needed
+                    self.particles.remove(particle)
+                    break
 
     def draw(self, screen):
         for particle in self.particles:

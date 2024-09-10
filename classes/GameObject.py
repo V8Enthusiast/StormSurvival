@@ -43,6 +43,14 @@ class Zombie(GameObject):
         self.gun_image = images.gun
         self.speed = 4
 
+    def render_health_bar(self):
+        health_bar_width = 100
+        health_bar_height = 10
+        health_bar_x = self.x + (self.w - health_bar_width) // 2
+        health_bar_y = self.y - 20
+        pygame.draw.rect(self.screen, (100, 100, 100), (health_bar_x, health_bar_y, health_bar_width, health_bar_height))
+        current_health_width = int(health_bar_width * (self.health / 100))
+        pygame.draw.rect(self.screen, (0, 200, 0), (health_bar_x, health_bar_y, current_health_width, health_bar_height))
 
     def render(self):
         if self.health > 0:
@@ -58,6 +66,9 @@ class Zombie(GameObject):
             offset_y = gun_length * math.sin(self.angle) * 1.5
             gun_rect = rotated_gun.get_rect(center=(self.x + self.w // 2 + offset_x, self.y + self.h // 2 + offset_y))
             self.screen.blit(rotated_gun, gun_rect)
+
+            # Render the health bar
+            self.render_health_bar()
 
 class Player(GameObject):
     def __init__(self, game, x, y, w, h, image_path, visible):

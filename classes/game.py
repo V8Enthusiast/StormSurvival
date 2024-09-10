@@ -226,8 +226,7 @@ class Game:
         for p in self.weaponparticlesystem.particles:
             p.apply_force(random.uniform(-1, 1), random.uniform(-1, 1))
 
-        self.weaponparticlesystem.update()
-
+        self.weaponparticlesystem.update(self)
         self.weaponparticlesystem.draw(self.screen)
 
         self.hotbar.render()
