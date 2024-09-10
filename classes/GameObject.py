@@ -3,6 +3,7 @@ import pygame
 import random
 import math
 import images
+from classes import weapon
 
 class GameObject():
     def __init__(self,game,x,y,w,h,image,visible):
@@ -30,29 +31,23 @@ class GameObject():
 
 
 class Player(GameObject):
-    def __init__(self, game,x,y,w,h,image_path,visible):
-        super().__init__(game,x,y,w,h,image_path,visible)
+    def __init__(self, game, x, y, w, h, image_path, visible):
+        super().__init__(game, x, y, w, h, image_path, visible)
 
         self.angle = 0
-
         self.health = 100
         self.size = 25
         self.color = (255, 105, 55)
-
         self.relative_position = [0, 0]
         self.gameObjectPos = [x, y]
-
-        self.gun_image = images.gun
-
         self.canMoveRight = True
         self.canMoveLeft = True
         self.canMoveUp = True
         self.canMoveDown = True
-
         self.isMovingItem = False
 
-        self.ammo = 10
-        self.max_ammo = 10
+        self.weapon = weapon.Weapon(self, images.gun, 10, 10)
+
 
     def render_health_bar(self):
         health_bar_width = 100
@@ -77,13 +72,7 @@ class Player(GameObject):
             rotated_image = pygame.transform.rotate(self.image, -math.degrees(self.angle))
             rotated_rect = rotated_image.get_rect(center=self.rect.center)
             self.screen.blit(rotated_image, rotated_rect.topleft)
-            if self.game.hotbar.items[self.game.hotbar.selected_slot] == "Gun":
-                rotated_gun = pygame.transform.rotate(self.gun_image, -math.degrees(self.angle))
-                gun_length = self.gun_image.get_width() // 2
-                offset_x = gun_length * math.cos(self.angle) * 1.5
-                offset_y = gun_length * math.sin(self.angle) * 1.5
-                gun_rect = rotated_gun.get_rect(center=(self.x + self.w // 2 + offset_x, self.y + self.h // 2 + offset_y))
-                self.screen.blit(rotated_gun, gun_rect)
+            self.weapon.render()
             self.render_health_bar()
 
     def handle_event(self, event):
@@ -129,14 +118,14 @@ class Player(GameObject):
                             self.isMovingItem = False
 
             elif self.game.hotbar.items[self.game.hotbar.selected_slot] == "Gun":
-                self.shoot()
+                self.weapon.shoot()
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_e:
                 self.pick_up_item()
             elif event.key == pygame.K_q:
                 self.drop_item()
             elif event.key == pygame.K_r:
-                self.reload()
+                self.weapon.reload()
 
     def drop_item(self):
         item_name = self.game.hotbar.items[self.game.hotbar.selected_slot]
