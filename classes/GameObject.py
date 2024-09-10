@@ -68,6 +68,26 @@ class Player(GameObject):
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.game.hotbar.items[self.game.hotbar.selected_slot] == "Gun":
             self.shoot()
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_e:
+                self.pick_up_item()
+            elif event.key == pygame.K_q:
+                self.drop_item()
+
+    def drop_item(self):
+        item_name = self.game.hotbar.items[self.game.hotbar.selected_slot]
+        if item_name:
+            DroppedItem(self.game, self.x, self.y, 50, 50, images.gun, True, item_name)
+            self.game.hotbar.items[self.game.hotbar.selected_slot] = None
+
+    def pick_up_item(self):
+        for obj in self.game.objects:
+            if isinstance(obj, DroppedItem) and self.rect.colliderect(obj.rect):
+                self.equip_item(obj.item_name)
+                self.game.objects.remove(obj)
+
+    def equip_item(self, item_name):
+        self.game.hotbar.add_item(item_name, self.game.hotbar.selected_slot)
 
     def shoot(self):
         gun_length = self.gun_image.get_width() // 2
@@ -156,3 +176,16 @@ class Tile(GameObject):
         super().__init__(game, x, y, 48, 48, image_path, True)
 
 
+class DroppedItem(GameObject):
+    def __init__(self, game, x, y, w, h, image_path, visible, item_name):
+        super().__init__(game, x, y, w, h, image_path, visible)
+        self.item_name = item_name
+        self.collision = True
+
+    def render(self):
+        self.x -= self.game.dx
+        self.y -= self.game.dy
+        super().render()
+        font = pygame.font.Font(None, 24)
+        text_surface = font.render(self.item_name, True, (255, 255, 255))
+        self.game.screen.blit(text_surface, (self.x, self.y - 20))
