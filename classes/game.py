@@ -1,5 +1,6 @@
 import math
 import random
+import time
 
 import pygame
 
@@ -54,9 +55,10 @@ class Game:
         self.tile_width=96
 
         self.hotbar = hotbar.Hotbar(self, 10, self.app.height-100, 5)
-        self.hotbar.add_item(weapon.Weapon(self, self.player, images.gun, 10, 10), 0)
+        self.hotbar.add_item(weapon.Weapon(self, self.player, images.gun, 12, 12, 5, 2), 0)
 
         self.sound_mixer = mixer.Mixer()
+        self.time_of_last_shot = time.time_ns()
 
 
     def init_tiles(self):
@@ -239,6 +241,17 @@ class Game:
         display_text_rect.center = self.main_text_rect_center
         self.app.screen.blit(display_text, display_text_rect)
 
+        if self.player.isShooting and isinstance(self.hotbar.items[self.hotbar.selected_slot], weapon.Weapon):
+            if self.hotbar.items[self.hotbar.selected_slot].firemode == 1 and time.time_ns() > self.time_of_last_shot + 1_000_000_000 * 1/self.hotbar.items[self.hotbar.selected_slot].fire_rate: # Full Auto
+                self.hotbar.items[self.hotbar.selected_slot].shoot()
+                self.time_of_last_shot = time.time_ns()
+                #time.sleep(1/self.hotbar.items[self.hotbar.selected_slot].fire_rate)
+            if self.hotbar.items[self.hotbar.selected_slot].firemode == 2: # Burst
+                self.hotbar.items[self.hotbar.selected_slot].shoot()
+                time.sleep(0.1)
+                self.hotbar.items[self.hotbar.selected_slot].shoot()
+                time.sleep(0.1)
+                self.hotbar.items[self.hotbar.selected_slot].shoot()
 
 
     def events(self):

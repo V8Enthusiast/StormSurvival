@@ -1,3 +1,5 @@
+import time
+
 import pygame.image
 import pygame
 import random
@@ -87,6 +89,7 @@ class Player(GameObject):
         self.isMovingItem = False
         self.to_ui = None
         self.from_ui = None
+        self.isShooting = False
 
     def render_health_bar(self):
         health_bar_width = 100
@@ -201,7 +204,14 @@ class Player(GameObject):
             else:
                 selected_item = self.game.hotbar.items[self.game.hotbar.selected_slot]
                 if isinstance(selected_item, weapon.Weapon):
-                    selected_item.shoot()
+                    if self.game.hotbar.items[self.game.hotbar.selected_slot].firemode == 0:
+                        self.game.hotbar.items[self.game.hotbar.selected_slot].shoot()
+                    else:
+                        self.isShooting = True
+
+        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+            self.isShooting = False
+
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_e:
                 self.pick_up_item()
@@ -321,7 +331,7 @@ class Chest(GameObject):
             #     self.Items[i] = random.choice(self.LegendaryDrops)
             # else:
             #     self.Items[i] = random.choice(self.CommonDrops)
-            self.Items[i] = random.choice([weapon.Weapon(self.game, self.game.player, images.gun, 5, 5)])
+            self.Items[i] = random.choice([weapon.Weapon(self.game, self.game.player, images.gun, 12, 12, 1, 0)])
 
 class Tile(GameObject):
     def __init__(self, game, x, y, image_path):

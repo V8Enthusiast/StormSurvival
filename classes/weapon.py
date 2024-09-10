@@ -4,12 +4,15 @@ import math
 from classes import particles
 
 class Weapon:
-    def __init__(self, game, player, image, ammo, max_ammo):
+    def __init__(self, game, player, image, ammo, max_ammo, fire_rate, firemode):
         self.player = player
         self.image = image
         self.ammo = ammo
         self.max_ammo = max_ammo
         self.game = game
+        self.fire_rate = fire_rate # cannot be 0
+        self.firemode = firemode # 0 - Semi Auto, 1 - Full Auto, 2 - Burst
+
 
     def shoot(self):
         if self.ammo > 0:

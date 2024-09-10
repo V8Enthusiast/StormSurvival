@@ -12,3 +12,5 @@ tree2=pygame.image.load("Assets/Tiles/dzewa2.jpg")
 tree3=pygame.image.load("Assets/Tiles/dzewa3.jpg")
 mine = pygame.image.load("Assets/Tiles/kopalnia.jpg")
 sand = pygame.image.load("Assets/Tiles/piasek.jpg")
+
+glock = pygame.image.load("Assets/Weapons/Glock-18.png")
