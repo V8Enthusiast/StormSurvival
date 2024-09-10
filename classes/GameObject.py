@@ -180,12 +180,12 @@ class Storm(GameObject):
         self.speed=1
         self.dmg=20
         self.last_damage_time = pygame.time.get_ticks()
-        self.head_image=pygame.image.load('Assets/burza (1).png')
+        self.head_image=pygame.image.load('Assets/burza (2).png')
         self.head_image = pygame.transform.scale(self.head_image, (self.w, self.h))
-        self.first_image=pygame.image.load('Assets/Bez-nazwy (1).jpg')
+        self.first_image=pygame.image.load('Assets/burza (1).png')
         self.first_image = pygame.transform.scale(self.first_image, (self.w, self.h))
 
-        self.second_image = pygame.image.load('Assets/Bez-nazwy (2).jpg')
+        self.second_image = pygame.image.load('Assets/burza (1).png')
         self.second_image = pygame.transform.scale(self.second_image, (self.w, self.h))
     def distance(self):
         self.right=self.x+self.w
