@@ -4,7 +4,7 @@ import time
 import pygame
 
 import images
-from classes import buttons, inputBox, GameObject, particles, hotbar
+from classes import buttons, inputBox, GameObject, particles, hotbar, weapon
 
 import images
 
@@ -47,7 +47,7 @@ class Game:
         self.tile_width=96
 
         self.hotbar = hotbar.Hotbar(self, 10, self.app.height-100, 5)
-        self.hotbar.add_item("Gun", 0)
+        self.hotbar.add_item(weapon.Weapon(self.player, images.gun, 10, 10), 0)
 
 
 
