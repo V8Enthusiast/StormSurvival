@@ -3,7 +3,7 @@ import pygame
 import random
 import math
 import images
-from classes import weapon
+from classes import weapon, gameover
 
 class GameObject():
     def __init__(self,game,x,y,w,h,image,visible):
@@ -108,6 +108,8 @@ class Player(GameObject):
                 self.screen.blit(rotated_gun, gun_rect)
 
             self.render_health_bar()
+        else:
+            self.game.app.ui = gameover.GameOver(self.game.app)
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             click_pos = pygame.mouse.get_pos()
