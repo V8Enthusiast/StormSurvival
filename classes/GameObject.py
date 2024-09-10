@@ -196,8 +196,8 @@ class Player(GameObject):
                 self.drop_item()
             elif event.key == pygame.K_r:
                 selected_item = self.game.hotbar.items[self.game.hotbar.selected_slot]
-                if selected_item == "Gun":
-                    self.reload()
+                if isinstance(selected_item, weapon.Weapon):
+                    selected_item.reload()
 
     def drop_item(self):
         item_name = self.game.hotbar.items[self.game.hotbar.selected_slot]
