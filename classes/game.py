@@ -156,7 +156,6 @@ class Game:
         max_y = max(y for x, y in self.tiles.keys())
         min_y = min(y for x, y in self.tiles.keys())
 
-        self.storm.damage()
         #right
         if player_x * 2 + self.app.width >= max_x:
             for y in range(min_y, max_y + self.tile_size, self.tile_size):
@@ -268,6 +267,14 @@ class Game:
                     self.hotbar.items[self.hotbar.selected_slot].shoot()
                     self.burst_shots += 1
                     self.time_of_last_shot = time.time_ns()
+
+        if isinstance(self.hotbar.items[self.hotbar.selected_slot], weapon.Weapon):
+            firemode_text = self.hotbar.items[self.hotbar.selected_slot].get_firemode_text()
+            font = pygame.font.Font(self.font, int(24 * self.app.scale))
+            firemode_display = font.render(f"Fire Mode: {firemode_text}", True, self.font_color)
+            firemode_display_rect = firemode_display.get_rect()
+            firemode_display_rect.topright = (self.app.width - 10, 10)
+            self.app.screen.blit(firemode_display, firemode_display_rect)
 
 
     def events(self):

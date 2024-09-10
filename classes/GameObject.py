@@ -261,7 +261,7 @@ class Storm(GameObject):
     def __init__(self, game,x,y,w,h,image,visible):
         super().__init__(game,x,y,w,h,image,visible)
         self.speed=1
-        self.dmg=20
+        self.dmg=10
         self.last_damage_time = pygame.time.get_ticks()
         self.head_image=pygame.image.load('Assets/burza (2).png')
         self.head_image = pygame.transform.scale(self.head_image, (self.w, self.h))
@@ -295,7 +295,7 @@ class Storm(GameObject):
         num_images = 10
 
         total_width = (num_images+1) * self.w
-        self.rect = pygame.Rect(self.x - num_images*self.w, self.y, total_width, self.h)
+        self.rect = pygame.Rect(self.x - (num_images)*self.w, self.y, total_width, self.h)
 
         for i in range(num_images):
             offset_x = self.x - i * self.w
@@ -307,11 +307,15 @@ class Storm(GameObject):
                     self.screen.blit(self.first_image, (offset_x, self.y))
                 else:
                     self.screen.blit(self.second_image, (offset_x, self.y))
+        #draw rect
+        pygame.draw.rect(self.screen,(255,255,255),self.rect,2)
+
+        self.damage()
 
 
     def damage(self):
         current_time = pygame.time.get_ticks()
-        if self.rect.colliderect(self.game.player.rect) and current_time - self.last_damage_time >= 500:
+        if self.rect.colliderect(self.game.player.rect) and current_time - self.last_damage_time >= 250:
             self.game.player.health-=self.dmg
             self.last_damage_time = current_time
             self.game.player.image = pygame.transform.scale(images.damagedplayer, (self.game.player.w, self.game.player.h))
