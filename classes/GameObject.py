@@ -210,7 +210,9 @@ class Player(GameObject):
                         self.isShooting = True
 
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-            self.isShooting = False
+            if self.isShooting:
+                self.isShooting = False
+                self.game.burst_shots = 0
 
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_e:
