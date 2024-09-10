@@ -56,18 +56,6 @@ class Game:
     def add_tile(self, x, y, tile_image, force=False):
         if force or (x, y) not in self.tiles:
             self.tiles[(x, y)] = tile_image
-    def generate_tiles(self):
-        if self.current_max_x*self.tile_width<self.player.relative_position[0]+self.app.width/2:
-            self.current_max_x+=1
-            print(self.current_max_x,'a')
-            for y in range(self.current_min_y,self.current_max_y):
-                GameObject.GameObject(self,self.current_max_x*self.tile_width,y*self.tile_width,self.tile_width,self.tile_width,images.water,True)
-
-        if self.current_min_y*self.tile_width>self.player.relative_position[1]-self.app.height/2:
-            self.current_min_y-=1
-            for x in range(self.current_min_x,self.current_max_x):
-                GameObject.GameObject(self,x*self.tile_width,self.current_min_y*self.tile_width,self.tile_width,self.tile_width,images.water,True)
-            print(self.current_min_y,'b')
 
     def render(self):
 
@@ -77,12 +65,31 @@ class Game:
         player_x, player_y = self.player.relative_position
 
         max_x = max(x for x, y in self.tiles.keys())
+        min_x = min(x for x, y in self.tiles.keys())
+        max_y = max(y for x, y in self.tiles.keys())
+        min_y = min(y for x, y in self.tiles.keys())
 
         self.test_object.damage()
 
         if player_x * 2 + self.app.width > max_x:
             for y in range(0, self.app.height, self.tile_size):
-                self.add_tile(max_x + self.tile_size, y, random.choice([images.grass, images.grass, images.water]), force=True)
+                self.add_tile(max_x + self.tile_size, y, random.choice([images.grass, images.grass, images.water]),
+                              force=True)
+
+        if player_x * 2 < min_x:
+            for y in range(0, self.app.height, self.tile_size):
+                self.add_tile(min_x - self.tile_size, y, random.choice([images.grass, images.grass, images.water]),
+                              force=True)
+
+        if player_y * 2 + self.app.height > max_y:
+            for x in range(0, self.app.width, self.tile_size):
+                self.add_tile(x, max_y + self.tile_size, random.choice([images.grass, images.grass, images.water]),
+                              force=True)
+
+        if player_y * 2 < min_y:
+            for x in range(0, self.app.width, self.tile_size):
+                self.add_tile(x, min_y - self.tile_size, random.choice([images.grass, images.grass, images.water]),
+                              force=True)
 
         for (x, y), tile_image in self.tiles.items():
             self.screen.blit(tile_image, (x - player_x * 2, y - player_y * 2))
