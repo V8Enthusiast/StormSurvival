@@ -4,7 +4,7 @@ import time
 import pygame
 
 import images
-from classes import buttons, inputBox, GameObject, particles
+from classes import buttons, inputBox, GameObject, particles, hotbar
 
 import images
 
@@ -39,6 +39,8 @@ class Game:
         self.current_min_x=0
         self.current_min_y=0
         self.tile_width=96
+
+        self.hotbar = hotbar.Hotbar(self, 5)
 
 
     # def init_tiles(self):
@@ -99,6 +101,9 @@ class Game:
 
         self.weaponparticlesystem.draw(self.screen)
 
+        self.hotbar.render()
+        self.hotbar.add_item("Gun", 0)
+
 
     def events(self):
         keys = pygame.key.get_pressed()
@@ -144,3 +149,15 @@ class Game:
                 self.app.run = False
                 pygame.quit()
             self.player.handle_event(event)
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    self.hotbar.select_slot(0)
+                elif event.key == pygame.K_2:
+                    self.hotbar.select_slot(1)
+                elif event.key == pygame.K_3:
+                    self.hotbar.select_slot(2)
+                elif event.key == pygame.K_4:
+                    self.hotbar.select_slot(3)
+                elif event.key == pygame.K_5:
+                    self.hotbar.select_slot(4)
