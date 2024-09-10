@@ -27,7 +27,6 @@ class Game:
         self.objects.append(GameObject.Chest(self, 300, 300, 150, 150, images.chest, True))
 
         self.tiles = {}
-        self.tile_image = images.tile
         self.tile_size = 96
         self.init_tiles()
 
@@ -36,11 +35,12 @@ class Game:
     def init_tiles(self):
         for y in range(0, self.app.height, self.tile_size):
             for x in range(0, self.app.width, self.tile_size):
-                self.add_tile(x, y)
+                tile_image = random.choice([images.grass, images.grass, images.grass, images.water])
+                self.add_tile(x, y, tile_image)
 
-    def add_tile(self, x, y, force=False):
+    def add_tile(self, x, y, tile_image, force=False):
         if force or (x, y) not in self.tiles:
-            self.tiles[(x, y)] = self.tile_image
+            self.tiles[(x, y)] = tile_image
 
     def render(self):
         print(self.dx)
@@ -53,7 +53,7 @@ class Game:
 
         if player_x * 2 + self.app.width > max_x:
             for y in range(0, self.app.height, self.tile_size):
-                self.add_tile(max_x + self.tile_size, y, force=True)
+                self.add_tile(max_x + self.tile_size, y, random.choice([images.grass, images.grass, images.water]), force=True)
 
         for (x, y), tile_image in self.tiles.items():
             self.screen.blit(tile_image, (x - player_x * 2, y - player_y * 2))
