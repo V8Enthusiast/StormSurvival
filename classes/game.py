@@ -23,7 +23,7 @@ class Game:
 
         self.tiles = {}
         self.tile_image = pygame.image.load('Assets/tile.png').convert_alpha()
-        self.tile_size = 48
+        self.tile_size = 96
         self.init_tiles()
 
         self.unityparticlesystem = particles.ParticleSystem()
