@@ -111,9 +111,12 @@ class Game:
         collidesWithAnything = False
         for obj in self.objects:
             if obj.collision is True:
-                if obj.x - obj.w <= self.player.gameObjectPos[0] + self.player.w <= obj.x + obj.w and obj.y - obj.h <= self.player.gameObjectPos[1] + self.player.h//2 <= obj.y + obj.h:
+                if obj.x - obj.w <= self.player.gameObjectPos[0] + self.player.w <= obj.x + obj.w // 2 and obj.y - obj.h <= self.player.gameObjectPos[1] + self.player.h//2 <= obj.y + obj.h: # Left
                     collidesWithAnything = True
                     self.player.canMoveRight = False
+                elif obj.x - obj.w <= self.player.gameObjectPos[0] <= obj.x + obj.w // 2 and obj.y - obj.h <= self.player.gameObjectPos[1] + self.player.h//2 <= obj.y + obj.h: # Right
+                    collidesWithAnything = True
+                    self.player.canMoveLeft = False
 
 
         if collidesWithAnything is False:
@@ -129,7 +132,7 @@ class Game:
         else:
             self.dy = 0
 
-        if keys[pygame.K_a]:
+        if keys[pygame.K_a] and self.player.canMoveLeft:
             self.dx = -self.speed
         elif keys[pygame.K_d] and self.player.canMoveRight:
             self.dx = self.speed
