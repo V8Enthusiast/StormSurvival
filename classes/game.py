@@ -42,6 +42,7 @@ class Game:
         self.tile_width=96
 
         self.hotbar = hotbar.Hotbar(self, 5)
+        self.hotbar.add_item("Gun", 0)
 
 
     # def init_tiles(self):
@@ -110,7 +111,6 @@ class Game:
         self.weaponparticlesystem.draw(self.screen)
 
         self.hotbar.render()
-        self.hotbar.add_item("Gun", 0)
 
         font = pygame.font.Font(self.font, int(48 * self.app.scale))
         display_text = font.render(self.helpText, True, self.font_color)
