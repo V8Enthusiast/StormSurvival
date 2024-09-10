@@ -42,11 +42,11 @@ class Weapon:
 
 class Glock17(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.glock17, 17, 17)
+        super().__init__(game, player, images.glock17, 17, 17, 3, 0)
 
 class PumpActionShotgun(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.pump_action_shotgun, 5, 5)
+        super().__init__(game, player, images.pump_action_shotgun, 5, 5, 2, 0)
 
     def shoot(self):
         if self.ammo > 0:
@@ -73,7 +73,7 @@ class PumpActionShotgun(Weapon):
 
 class AmmoBox(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.ammo_box, 0, 0)
+        super().__init__(game, player, images.ammo_box, 0, 0, 1, 1)
 
     def shoot(self):
         pass
@@ -83,7 +83,7 @@ class AmmoBox(Weapon):
 
 class M4A1(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.m4a1, 30, 30)
+        super().__init__(game, player, images.m4a1, 30, 30, 6, 1)
 
     def shoot(self):
         if self.ammo > 0:
@@ -107,7 +107,7 @@ class M4A1(Weapon):
 
 class BoltActionSniper(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.bolt_action_sniper, 5, 5)
+        super().__init__(game, player, images.bolt_action_sniper, 5, 5, 1, 0)
 
     def shoot(self):
         if self.ammo > 0:
@@ -132,7 +132,7 @@ class BoltActionSniper(Weapon):
 
 class AmmoCrate(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.ammo_crate, 0, 0)
+        super().__init__(game, player, images.ammo_crate, 0, 0, 1, 1)
 
     def shoot(self):
         pass
@@ -142,7 +142,7 @@ class AmmoCrate(Weapon):
 
 class MAC10(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.mac10, 30, 30)
+        super().__init__(game, player, images.mac10, 30, 30, 14, 1)
 
     def shoot(self):
         if self.ammo > 0:
@@ -166,7 +166,7 @@ class MAC10(Weapon):
 
 class M1911(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.m1911, 7, 7)
+        super().__init__(game, player, images.m1911, 7, 7, 4, 0)
 
     def shoot(self):
         if self.ammo > 0:
@@ -190,7 +190,7 @@ class M1911(Weapon):
 
 class ScarH(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.scarh, 20, 20)
+        super().__init__(game, player, images.scarh, 20, 20, 5, 1)
 
     def shoot(self):
         if self.ammo > 0:
@@ -214,7 +214,7 @@ class ScarH(Weapon):
 
 class DesertEagle(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.desert_eagle, 7, 7)
+        super().__init__(game, player, images.desert_eagle, 7, 7, 3, 0)
 
     def shoot(self):
         if self.ammo > 0:
@@ -238,7 +238,7 @@ class DesertEagle(Weapon):
 
 class Magnum44(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.magnum44, 6, 6)
+        super().__init__(game, player, images.magnum44, 6, 6, 2, 0)
 
     def shoot(self):
         if self.ammo > 0:
