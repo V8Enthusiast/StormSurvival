@@ -35,15 +35,21 @@ class Player(GameObject):
         super().__init__(game, x, y, w, h, image_path, visible)
 
         self.angle = 0
+
         self.health = 100
         self.size = 25
         self.color = (255, 105, 55)
+
         self.relative_position = [0, 0]
         self.gameObjectPos = [x, y]
+
+        self.gun_image = images.gun
+
         self.canMoveRight = True
         self.canMoveLeft = True
         self.canMoveUp = True
         self.canMoveDown = True
+
         self.isMovingItem = False
         self.to_ui = None
         self.from_ui = None
@@ -75,7 +81,13 @@ class Player(GameObject):
             rotated_image = pygame.transform.rotate(self.image, -math.degrees(self.angle))
             rotated_rect = rotated_image.get_rect(center=self.rect.center)
             self.screen.blit(rotated_image, rotated_rect.topleft)
-            self.weapon.render()
+            if self.game.hotbar.items[self.game.hotbar.selected_slot] == "Gun":
+                rotated_gun = pygame.transform.rotate(self.gun_image, -math.degrees(self.angle))
+                gun_length = self.gun_image.get_width() // 2
+                offset_x = gun_length * math.cos(self.angle) * 1.5
+                offset_y = gun_length * math.sin(self.angle) * 1.5
+                gun_rect = rotated_gun.get_rect(center=(self.x + self.w // 2 + offset_x, self.y + self.h // 2 + offset_y))
+                self.screen.blit(rotated_gun, gun_rect)
             self.render_health_bar()
 
     def handle_event(self, event):
@@ -207,12 +219,12 @@ class Storm(GameObject):
         self.speed=1
         self.dmg=20
         self.last_damage_time = pygame.time.get_ticks()
-        self.head_image=pygame.image.load('Assets/burza (1).png')
+        self.head_image=pygame.image.load('Assets/burza (2).png')
         self.head_image = pygame.transform.scale(self.head_image, (self.w, self.h))
-        self.first_image=pygame.image.load('Assets/Bez-nazwy (1).jpg')
+        self.first_image=pygame.image.load('Assets/burza (1).png')
         self.first_image = pygame.transform.scale(self.first_image, (self.w, self.h))
 
-        self.second_image = pygame.image.load('Assets/Bez-nazwy (2).jpg')
+        self.second_image = pygame.image.load('Assets/burza (1).png')
         self.second_image = pygame.transform.scale(self.second_image, (self.w, self.h))
     def distance(self):
         self.right=self.x+self.w
