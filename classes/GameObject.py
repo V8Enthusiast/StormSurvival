@@ -3,6 +3,7 @@ import pygame
 import random
 import math
 import images
+from classes import weapon
 
 class GameObject():
     def __init__(self,game,x,y,w,h,image,visible):
@@ -30,8 +31,8 @@ class GameObject():
 
 
 class Player(GameObject):
-    def __init__(self, game,x,y,w,h,image_path,visible):
-        super().__init__(game,x,y,w,h,image_path,visible)
+    def __init__(self, game, x, y, w, h, image_path, visible):
+        super().__init__(game, x, y, w, h, image_path, visible)
 
         self.angle = 0
 
@@ -54,8 +55,8 @@ class Player(GameObject):
         self.from_ui = None
 
 
-        self.ammo = 10
-        self.max_ammo = 10
+        self.weapon = weapon.Weapon(self, images.gun, 10, 10)
+
 
     def render_health_bar(self):
         health_bar_width = 100
@@ -167,14 +168,14 @@ class Player(GameObject):
                             self.isMovingItem = False
 
             elif self.game.hotbar.items[self.game.hotbar.selected_slot] == "Gun":
-                self.shoot()
+                self.weapon.shoot()
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_e:
                 self.pick_up_item()
             elif event.key == pygame.K_q:
                 self.drop_item()
             elif event.key == pygame.K_r:
-                self.reload()
+                self.weapon.reload()
 
     def drop_item(self):
         item_name = self.game.hotbar.items[self.game.hotbar.selected_slot]
