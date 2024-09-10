@@ -146,6 +146,8 @@ class Storm(GameObject):
         self.speed=1
         self.dmg=20
         self.last_damage_time = pygame.time.get_ticks()
+        self.first_image=pygame.image.load('Assets/burza (1).jpg')
+        self.first_image = pygame.transform.scale(self.first_image, (self.w, self.h))
     def distance(self):
         self.right=self.x+self.w
         return self.game.player.x-self.right
@@ -160,16 +162,26 @@ class Storm(GameObject):
         self.x+=ddx
 
     def render(self):
+
         self.x-=2*self.game.dx
         self.y-=2*self.game.dy
-        num_images = 200
+        if self.y+self.h<0:
+            self.y=self.game.app.height
+        if self.y>self.game.app.height:
+
+            self.y=0 -self.h
+        num_images = 10
 
         total_width = (num_images+1) * self.w
         self.rect = pygame.Rect(self.x - num_images*self.w, self.y, total_width, self.h)
 
         for i in range(num_images):
             offset_x = self.x - i * self.w
-            self.screen.blit(self.image, (offset_x, self.y))
+            if i==0:
+                self.screen.blit(self.first_image, (offset_x, self.y))
+            else:
+
+                self.screen.blit(self.image, (offset_x, self.y))
 
     def damage(self):
         current_time = pygame.time.get_ticks()
