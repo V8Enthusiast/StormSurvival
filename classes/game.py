@@ -150,7 +150,6 @@ class Game:
         max_y = max(y for x, y in self.tiles.keys())
         min_y = min(y for x, y in self.tiles.keys())
 
-        self.storm.damage()
         #right
         if player_x * 2 + self.app.width >= max_x:
             for y in range(min_y, max_y + self.tile_size, self.tile_size):
