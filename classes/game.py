@@ -19,6 +19,8 @@ class Game:
         self.screen = self.app.screen
         self.buttons = []
         self.chests = []
+        self.selected_chest = None
+        self.chest_ui = None
         self.speed = 10
         self.dx = 0
         self.dy = 0
@@ -96,11 +98,13 @@ class Game:
                 obj.move()
                 obj.render()
             if isinstance(obj, GameObject.Chest):
-                print("here")
-                if obj.rect.colliderect(self.player.rect):
+                if obj.rect.colliderect(self.player.rect) and self.chest_ui is None:
                     self.helpText = "Press E to open"
-                elif self.helpText == "Press E to open":
+                    self.selected_chest = obj
+                elif self.helpText == "Press E to open" or (self.chest_ui is not None and obj.rect.colliderect(self.player.rect) is False):
                     self.helpText = ""
+                    self.selected_chest = None
+                    self.chest_ui = None
 
 
         for p in self.weaponparticlesystem.particles:
@@ -111,6 +115,8 @@ class Game:
         self.weaponparticlesystem.draw(self.screen)
 
         self.hotbar.render()
+        if self.chest_ui is not None:
+            self.chest_ui.render()
 
         font = pygame.font.Font(self.font, int(48 * self.app.scale))
         display_text = font.render(self.helpText, True, self.font_color)
@@ -185,3 +191,14 @@ class Game:
                     self.hotbar.select_slot(3)
                 elif event.key == pygame.K_5:
                     self.hotbar.select_slot(4)
+
+                elif event.key == pygame.K_e:
+                    if self.selected_chest is not None:
+                        print(self.selected_chest.Items)
+
+                        if self.chest_ui is not None:
+                            self.chest_ui = None
+                        else:
+                            self.chest_ui = hotbar.Hotbar(self, self.selected_chest.x - 100,
+                                                          self.selected_chest.y - 100, 5)
+                            self.helpText = ""
