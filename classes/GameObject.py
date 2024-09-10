@@ -213,7 +213,7 @@ class Player(GameObject):
                     selected_item.reload()
 
     def drop_item(self):
-        item_name = self.game.hotbar.items[self.game.hotbar.selected_slot]
+        item_name = self.game.hotbar.items[self.game.hotbar.selected_slot].__class__.__name__
         if item_name:
             DroppedItem(self.game, self.x, self.y, 50, 50, images.gun, True, item_name)
             self.game.hotbar.items[self.game.hotbar.selected_slot] = None
