@@ -4,11 +4,12 @@ import math
 from classes import particles
 
 class Weapon:
-    def __init__(self, player, image, ammo, max_ammo):
+    def __init__(self, game, player, image, ammo, max_ammo):
         self.player = player
         self.image = image
         self.ammo = ammo
         self.max_ammo = max_ammo
+        self.game = game
 
     def shoot(self):
         if self.ammo > 0:
@@ -27,6 +28,8 @@ class Weapon:
                 alpha = 255
                 shape = 'circle'
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape)
+
+            self.game.sound_mixer.play_sound('Assets/shoot.wav')
 
     def reload(self):
         self.ammo = self.max_ammo

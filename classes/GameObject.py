@@ -308,7 +308,7 @@ class Chest(GameObject):
             #     self.Items[i] = random.choice(self.LegendaryDrops)
             # else:
             #     self.Items[i] = random.choice(self.CommonDrops)
-            self.Items[i] = random.choice([weapon.Weapon(self.game.player, images.gun, 5, 5)])
+            self.Items[i] = random.choice([weapon.Weapon(self.game, self.game.player, images.gun, 5, 5)])
 
 class Tile(GameObject):
     def __init__(self, game, x, y, image_path):
