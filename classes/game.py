@@ -156,34 +156,37 @@ class Game:
         max_y = max(y for x, y in self.tiles.keys())
         min_y = min(y for x, y in self.tiles.keys())
 
+        player_x2 = player_x * 2
+        player_y2 = player_y * 2
+
         #right
-        if player_x * 2 + self.app.width >= max_x:
+        if player_x2 + self.app.width >= max_x:
             for y in range(min_y, max_y + self.tile_size, self.tile_size):
                 self.choose_tile(max_x + self.tile_size, y)
                 # self.add_tile(max_x + self.tile_size, y, random.choice([images.grass, images.grass, images.water]))
         #left
-        if player_x * 2 <= min_x:
+        if player_x2 <= min_x:
             for y in range(min_y, max_y + self.tile_size, self.tile_size):
                 self.choose_tile(min_x- self.tile_size, y)
                 # self.add_tile(min_x - self.tile_size, y, random.choice([images.grass, images.grass, images.water]))
         #down
-        if player_y * 2 + self.app.height >= max_y:
+        if player_y2 + self.app.height >= max_y:
             for x in range(min_x, max_x + self.tile_size, self.tile_size):
                 self.choose_tile(x, max_y + self.tile_size)
                 # self.add_tile(x, max_y + self.tile_size, random.choice([images.grass, images.grass, images.water]))
         #up
-        if player_y * 2 <= min_y:
+        if player_y2 <= min_y:
             for x in range(min_x, max_x + self.tile_size, self.tile_size):
                 self.choose_tile(x, min_y - self.tile_size)
                 # self.add_tile(x, min_y - self.tile_size, random.choice([images.grass, images.grass, images.water]))
 
-        visible_area = pygame.Rect(player_x * 2 - self.app.width // 2, player_y * 2 - self.app.height // 2,
+        visible_area = pygame.Rect(player_x2 - self.app.width // 2, player_y2 - self.app.height // 2,
                                    self.app.width * 2, self.app.height * 2)
         # print(self.tiles.items())
         for (x, y), tile_image in self.tiles.items():
             if visible_area.collidepoint(x, y):
                 if tile_image!='tree':
-                    self.screen.blit(tile_image, (x - player_x * 2, y - player_y * 2))
+                    self.screen.blit(tile_image, (x - player_x2, y - player_y2))
 
         # Render other game objects
         for obj in self.objects:
