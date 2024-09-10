@@ -15,8 +15,9 @@ class Game:
         self.main_text_rect_center = (self.app.width//2, 150 * self.app.scale)
         self.font = "fonts/main_font.ttf"
         self.font_color = (255, 255, 255)
-        self.screen=self.app.screen
+        self.screen = self.app.screen
         self.buttons = []
+        self.chests = []
         self.speed = 10
         self.dx = 0
         self.dy = 0
@@ -24,7 +25,9 @@ class Game:
         self.player = GameObject.Player(self, self.app.width // 2 - 50, self.app.height // 2 - 50, 100, 100,
                                         images.player, True)
         self.test_object = GameObject.Storm(self, -1000, 0, 500, 1080, images.storm, True)
-        self.objects.append(GameObject.Chest(self, 300, 300, 150, 150, images.chest, True))
+        chest = GameObject.Chest(self, 300, 300, 100, 100, images.chest, True)
+        self.chests.append(chest)
+        self.objects.append(chest)
 
         self.tiles = {}
         self.tile_size = 96
@@ -69,7 +72,6 @@ class Game:
                 obj.move()
                 obj.render()
 
-
         self.unityparticlesystem.update()
 
         self.unityparticlesystem.draw(self.screen)
@@ -77,6 +79,22 @@ class Game:
 
     def events(self):
         keys = pygame.key.get_pressed()
+
+        for obj in self.objects:
+            collidesWithAnything = False
+            if obj.collision is True:
+                if obj.x - obj.w <= self.player.gameObjectPos[0] + self.player.w <= obj.x + obj.w and obj.y - obj.h <= self.player.gameObjectPos[1] + self.player.h//2 <= obj.y + obj.h:
+                    collidesWithAnything = True
+                    self.player.canMoveRight = False
+
+                    print(self.player.relative_position[0] + self.player.w, obj.x - obj.half_w)
+
+
+            if collidesWithAnything is False:
+                self.player.canMoveRight = True
+                self.player.canMoveLeft = True
+                self.player.canMoveUp = True
+                self.player.canMoveDown = True
 
         if keys[pygame.K_w]:
             self.dy = -self.speed
@@ -87,7 +105,7 @@ class Game:
 
         if keys[pygame.K_a]:
             self.dx = -self.speed
-        elif keys[pygame.K_d]:
+        elif keys[pygame.K_d] and self.player.canMoveRight:
             self.dx = self.speed
         else:
             self.dx = 0
@@ -95,6 +113,9 @@ class Game:
         # Update player position based on current dx and dy
         self.player.relative_position[0] += self.dx
         self.player.relative_position[1] += self.dy
+
+        self.player.gameObjectPos[0] += self.dx
+        self.player.gameObjectPos[1] += self.dy
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

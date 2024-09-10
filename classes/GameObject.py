@@ -11,11 +11,13 @@ class GameObject():
         self.x=x
         self.y=y
         self.w=w
-        self.h=h
+        self.h = h
         self.image=image
         self.image= pygame.transform.scale(self.image,(self.w,self.h))
         self.rect=pygame.Rect(x,y,w,h)
         self.game.objects.append(self)
+        self.collision = False
+
     def render(self):
         self.x-=self.game.dx
         self.y-=self.game.dy
@@ -33,8 +35,15 @@ class Player(GameObject):
         self.color = (255, 105, 55)
 
         self.relative_position = [0, 0]
+        self.gameObjectPos = [x, y]
 
         self.gun_image = images.gun
+
+        self.canMoveRight = True
+        self.canMoveLeft = True
+        self.canMoveUp = True
+        self.canMoveDown = True
+
 
 
     def rotate_towards_cursor(self):
@@ -82,7 +91,10 @@ class Chest(GameObject):
         self.EpicDrops = ["MAC-10", "M1911 .45"]
         self.LegendaryDrops = ["Scar-H", "Desert Eagle", ".44 Magnum"]
 
+        self.collision = True
+
         self.generateRandomItems()
+
 
     def generateRandomItems(self):
         for i in range(random.randint(1, 5)):
