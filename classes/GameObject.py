@@ -45,6 +45,9 @@ class Player(GameObject):
         self.canMoveUp = True
         self.canMoveDown = True
         self.isMovingItem = False
+        self.to_ui = None
+        self.from_ui = None
+
 
         self.weapon = weapon.Weapon(self, images.gun, 10, 10)
 
@@ -80,15 +83,30 @@ class Player(GameObject):
             click_pos = pygame.mouse.get_pos()
             if self.game.chest_ui is not None:
                 if self.isMovingItem is False:
+                    selected_ui = False
                     slot_num = 0
-                    print(self.game.chest_ui.slot_rects)
                     for slot_rect in self.game.chest_ui.slot_rects:
                         if slot_rect.collidepoint(click_pos):
                             print("slot ", slot_num, " selected")
+                            selected_ui = True
                             break
                         slot_num += 1
-                    self.game.chest_ui.moved_item = slot_num
+                    if selected_ui is False:
+                        slot_num = 0
+                        for slot_rect in self.game.hotbar.slot_rects:
+                            if slot_rect.collidepoint(click_pos):
+                                print("slot ", slot_num, " selected")
+                                selected_ui = True
+                                break
+                            slot_num += 1
+                        if selected_ui:
+                            self.from_ui = self.game.hotbar
+                    else:
+                        self.from_ui = self.game.chest_ui
+
+                    self.from_ui.moved_item = slot_num
                     self.isMovingItem = True
+
                 else:
                     slot_num = 0
 
@@ -99,22 +117,42 @@ class Player(GameObject):
                             slot_selected = True
                             break
                         slot_num += 1
+
+                    if slot_selected is False:
+                        slot_num = 0
+                        for slot_rect in self.game.chest_ui.slot_rects:
+                            if slot_rect.collidepoint(click_pos):
+                                print("slot ", slot_num, " selected")
+                                slot_selected = True
+                                break
+                            slot_num += 1
+                        if slot_selected:
+                            self.to_ui = self.game.chest_ui
+                    else:
+                        self.to_ui = self.game.hotbar
+
                     if slot_selected:
-                        if self.game.hotbar.items[slot_num] is None:
-                            self.game.hotbar.add_item(self.game.chest_ui.items[self.game.chest_ui.moved_item], slot_num)
-                            print(self.game.chest_ui.items[self.game.chest_ui.moved_item])
-                            self.game.selected_chest.Items.pop(self.game.chest_ui.moved_item)
-                            self.game.chest_ui.remove_item(self.game.chest_ui.moved_item)
-                            self.game.chest_ui.moved_item = None
+                        if self.to_ui.items[slot_num] is None:
+                            self.to_ui.add_item(self.from_ui.items[self.from_ui.moved_item], slot_num)
+                            print(self.from_ui.items[self.from_ui.moved_item])
+                            if self.from_ui == self.game.chest_ui:
+                                self.game.selected_chest.Items[self.from_ui.moved_item] = None
+                            if self.to_ui == self.game.chest_ui:
+                                self.game.selected_chest.Items[self.from_ui.moved_item] = self.from_ui.items[self.from_ui.moved_item]
+                            self.from_ui.remove_item(self.from_ui.moved_item)
+                            self.from_ui.moved_item = None
                             self.isMovingItem = False
                         else:
-                            temp_item = self.game.chest_ui.items[self.game.chest_ui.moved_item]
-                            self.game.chest_ui.remove_item(self.game.chest_ui.moved_item)
-                            self.game.selected_chest.Items[self.game.chest_ui.moved_item] = self.game.hotbar.items[slot_num]
-                            self.game.chest_ui.add_item(self.game.hotbar.items[slot_num], self.game.chest_ui.moved_item)
-                            self.game.chest_ui.moved_item = None
-                            self.game.hotbar.add_item(temp_item, slot_num)
-                            print(self.game.hotbar.items[slot_num])
+                            temp_item = self.from_ui.items[self.from_ui.moved_item]
+                            self.from_ui.remove_item(self.from_ui.moved_item)
+                            if self.from_ui == self.game.chest_ui:
+                                self.game.selected_chest.Items[self.from_ui.moved_item] = self.to_ui.items[slot_num]
+                            if self.to_ui == self.game.chest_ui:
+                                self.game.selected_chest.Items[self.from_ui.moved_item] = self.to_ui.items[slot_num]
+                            self.from_ui.add_item(self.to_ui.items[slot_num], self.from_ui.moved_item)
+                            self.from_ui.moved_item = None
+                            self.to_ui.add_item(temp_item, slot_num)
+                            print(self.to_ui.items[slot_num])
                             self.isMovingItem = False
 
             elif self.game.hotbar.items[self.game.hotbar.selected_slot] == "Gun":
@@ -226,7 +264,7 @@ class Chest(GameObject):
     def __init__(self, game,x,y,w,h,image_path,visible):
         super().__init__(game,x,y,w,h,image_path,visible)
 
-        self.Items = []
+        self.Items = [None]*5
         self.CommonDrops = ["Glock 17", "Pump Action Shotgun", "Ammo Box"]
         self.UncommonDrops = ["M4A1", "Bolt Action Sniper", "Ammo Crate"]
         self.EpicDrops = ["MAC-10", "M1911 .45"]
@@ -241,13 +279,13 @@ class Chest(GameObject):
         for i in range(random.randint(1, 5)):
             rarity = random.randint(0, 100)
             if rarity > 35:
-                self.Items.append(random.choice(self.UncommonDrops))
+                self.Items[i] = random.choice(self.UncommonDrops)
             elif rarity > 75:
-                self.Items.append(random.choice(self.EpicDrops))
+                self.Items[i] = random.choice(self.EpicDrops)
             elif rarity > 90:
-                self.Items.append(random.choice(self.LegendaryDrops))
+                self.Items[i] = random.choice(self.LegendaryDrops)
             else:
-                self.Items.append(random.choice(self.CommonDrops))
+                self.Items[i] = random.choice(self.CommonDrops)
 
 class Tile(GameObject):
     def __init__(self, game, x, y, image_path):
