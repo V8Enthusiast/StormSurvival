@@ -15,6 +15,9 @@ class Weapon:
         self.firemode = firemode # 0 - Semi Auto, 1 - Full Auto, 2 - Burst
         self.damage = damage
 
+    def get_firemode_text(self):
+        firemodes = ["Semi Auto", "Full Auto", "Burst"]
+        return firemodes[self.firemode]
 
     def shoot(self):
         if self.ammo > 0:
