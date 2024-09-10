@@ -69,6 +69,7 @@ class Game:
 
         # max_x = max(x for x, y in self.tiles.keys())
 
+        self.test_object.damage()
 
         # if player_x * 2 + self.app.width > max_x:
         #     for y in range(0, self.app.height, self.tile_size):
