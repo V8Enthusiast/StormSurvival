@@ -94,8 +94,8 @@ class Player(GameObject):
 
     def shoot(self):
         gun_length = self.gun_image.get_width() // 2
-        tip_x = self.x + self.w // 2 + gun_length * math.cos(self.angle)
-        tip_y = self.y + self.h // 2 + gun_length * math.sin(self.angle)
+        tip_x = self.x + self.w // 2 + gun_length * math.cos(self.angle) *2.2
+        tip_y = self.y + self.h // 2 + gun_length * math.sin(self.angle) *2.2
 
         for _ in range(100):
             vx = 5 * math.cos(self.angle)
