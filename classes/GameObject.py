@@ -67,15 +67,18 @@ class Player(GameObject):
             rotated_image = pygame.transform.rotate(self.image, -math.degrees(self.angle))
             rotated_rect = rotated_image.get_rect(center=self.rect.center)
             self.screen.blit(rotated_image, rotated_rect.topleft)
-            if self.game.hotbar.items[self.game.hotbar.selected_slot] == "Gun":
-                rotated_gun = pygame.transform.rotate(self.gun_image, -math.degrees(self.angle))
-                gun_length = self.gun_image.get_width() // 2
+
+            selected_item = self.game.hotbar.items[self.game.hotbar.selected_slot]
+            if isinstance(selected_item, weapon.Weapon):
+                rotated_gun = pygame.transform.rotate(selected_item.image, -math.degrees(self.angle))
+                gun_length = selected_item.image.get_width() // 2
                 offset_x = gun_length * math.cos(self.angle) * 1.5
                 offset_y = gun_length * math.sin(self.angle) * 1.5
-                gun_rect = rotated_gun.get_rect(center=(self.x + self.w // 2 + offset_x, self.y + self.h // 2 + offset_y))
+                gun_rect = rotated_gun.get_rect(
+                    center=(self.x + self.w // 2 + offset_x, self.y + self.h // 2 + offset_y))
                 self.screen.blit(rotated_gun, gun_rect)
-            self.render_health_bar()
 
+            self.render_health_bar()
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             click_pos = pygame.mouse.get_pos()
