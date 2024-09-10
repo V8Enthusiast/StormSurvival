@@ -102,7 +102,7 @@ class Player(GameObject):
 
     def rotate_towards_cursor(self):
         mouse_x, mouse_y = pygame.mouse.get_pos()
-        self.angle = math.atan2(mouse_y - self.y, mouse_x - self.x)
+        self.angle = math.atan2(mouse_y - (self.y + self.h//2), mouse_x - (self.x + self.w//2))
 
     def render(self):
         if self.health > 0:
