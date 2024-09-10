@@ -36,6 +36,7 @@ class Game:
         self.tiles = {}
         self.tile_size = 96
 
+        self.waters=[images.water]
         self.trees = [images.tree1, images.tree2, images.tree3]
         self.init_tiles()
 
@@ -57,27 +58,60 @@ class Game:
             for x in range(0, self.app.width, self.tile_size):
                 self.choose_tile(x,y)
     def choose_tile(self,x,y):
-        tile_image = random.choice([images.grass, images.grass, images.grass, images.water])
-        print(random.randint(-5, 5))
+        tile_image = images.grass
+
+        for n in self.check_neighbours(x,y):
+            print(n)
+            if n in self.trees:
+                if random.randint(0,10)>7:
+                    self.add_tile(x, y, random.choice(self.trees))
+                    return
+            elif n in self.waters:
+                if random.randint(0,10)>7:
+                    self.add_tile(x, y, random.choice(self.waters))
+                    return
+
+
         if random.randint(1, 50) == 1:
             self.add_tile(x, y, random.choice(self.trees))
-            self.make_forest(x, y)
+
+        if random.randint(1, 50) == 1:
+            self.add_tile(x, y, random.choice(self.waters))
+
 
         else:
             self.add_tile(x, y, tile_image)
-    def make_forest(self,x,y):
-        for dx in range(-3,3):
-            for dy in range(-3,3):
-                # if random.randint(1,int((abs(dx)+abs(dy))/3)+1):
-                self.tiles[(x+dx, y+dy)] = random.choice(self.trees)
-                # self.add_tile(x+dx,y+dy,images.tree1)
 
+
+    def check_neighbours(self,x,y):
+        neighs=[]
+        for dx in range(-1,2):
+            for dy in range(-1,2):
+                if abs(x)!=abs(y):
+                    try:
+                        print(self.tiles[(x + dx * self.tile_size, y + dy * self.tile_size)], self.trees)
+
+                        if self.tiles[(x + dx * self.tile_size, y + dy * self.tile_size)] in self.trees or self.tiles[
+                            (x + dx * self.tile_size, y + dy * self.tile_size)] in self.waters:
+                            neighs.append(self.tiles[(x + dx * self.tile_size, y + dy * self.tile_size)])
+
+
+
+
+                    except:
+
+        if len(neighs)!=0:
+
+            pass
+        return neighs
 
     def add_tile(self, x, y, tile_image, force=False):
         if force or (x, y) not in self.tiles:
             self.tiles[(x, y)] = tile_image
 
     def render(self):
+        # if self.trees[0]==self.trees[1]:
+        #     print('a')
 
         # print(self.dx)
         self.app.screen.fill((0, 0, 0))
@@ -113,10 +147,11 @@ class Game:
 
         visible_area = pygame.Rect(player_x * 2 - self.app.width // 2, player_y * 2 - self.app.height // 2,
                                    self.app.width * 2, self.app.height * 2)
-        print(self.tiles.items())
+        # print(self.tiles.items())
         for (x, y), tile_image in self.tiles.items():
             if visible_area.collidepoint(x, y):
-                self.screen.blit(tile_image, (x - player_x * 2, y - player_y * 2))
+                if tile_image!='tree':
+                    self.screen.blit(tile_image, (x - player_x * 2, y - player_y * 2))
 
         # Render other game objects
         for obj in self.objects:
