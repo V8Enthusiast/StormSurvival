@@ -49,6 +49,9 @@ class Player(GameObject):
         self.canMoveUp = True
         self.canMoveDown = True
 
+        self.ammo = 10
+        self.max_ammo = 10
+
 
 
     def rotate_towards_cursor(self):
@@ -76,6 +79,8 @@ class Player(GameObject):
                 self.pick_up_item()
             elif event.key == pygame.K_q:
                 self.drop_item()
+            elif event.key == pygame.K_r:
+                self.reload()
 
     def drop_item(self):
         item_name = self.game.hotbar.items[self.game.hotbar.selected_slot]
@@ -93,21 +98,25 @@ class Player(GameObject):
         self.game.hotbar.add_item(item_name, self.game.hotbar.selected_slot)
 
     def shoot(self):
-        gun_length = self.gun_image.get_width() // 2
-        tip_x = self.x + self.w // 2 + gun_length * math.cos(self.angle) *2.2
-        tip_y = self.y + self.h // 2 + gun_length * math.sin(self.angle) *2.2
+        if self.ammo > 0:
+            self.ammo -= 1
+            gun_length = self.gun_image.get_width() // 2
+            tip_x = self.x + self.w // 2 + gun_length * math.cos(self.angle) *2.2
+            tip_y = self.y + self.h // 2 + gun_length * math.sin(self.angle) *2.2
 
-        for _ in range(100):
-            vx = 5 * math.cos(self.angle)
-            vy = 5 * math.sin(self.angle)
-            speed = random.uniform(1, 3)
-            lifespan = random.randint(20, 50)
-            size = random.randint(2, 5)
-            red, green, blue = 255, 255, 0
-            alpha = 255
-            shape = 'circle'
-            self.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape)
+            for _ in range(100):
+                vx = 5 * math.cos(self.angle)
+                vy = 5 * math.sin(self.angle)
+                speed = random.uniform(1, 3)
+                lifespan = random.randint(20, 50)
+                size = random.randint(2, 5)
+                red, green, blue = 255, 255, 0
+                alpha = 255
+                shape = 'circle'
+                self.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape)
 
+    def reload(self):
+        self.ammo = self.max_ammo
 
 class Storm(GameObject):
     def __init__(self, game,x,y,w,h,image_path,visible):
