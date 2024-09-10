@@ -201,4 +201,6 @@ class Game:
                         else:
                             self.chest_ui = hotbar.Hotbar(self, self.selected_chest.x - 100,
                                                           self.selected_chest.y - 100, 5)
+                            for i in range(len(self.selected_chest.Items)):
+                                self.chest_ui.add_item(self.selected_chest.Items[i], i)
                             self.helpText = ""

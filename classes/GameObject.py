@@ -83,8 +83,19 @@ class Player(GameObject):
             self.render_health_bar()
 
     def handle_event(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.game.hotbar.items[self.game.hotbar.selected_slot] == "Gun":
-            self.shoot()
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            click_pos = pygame.mouse.get_pos()
+            if self.game.chest_ui is not None:
+                slot_num = 0
+                print(self.game.chest_ui.slot_rects)
+                for slot_rect in self.game.chest_ui.slot_rects:
+                    if slot_rect.collidepoint(click_pos):
+                        print("slot " , slot_num , " selected")
+                        break
+                    slot_num += 1
+                self.game.chest_ui.moved_item = slot_num
+            if self.game.hotbar.items[self.game.hotbar.selected_slot] == "Gun":
+                self.shoot()
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_e:
                 self.pick_up_item()
