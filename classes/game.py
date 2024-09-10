@@ -70,7 +70,7 @@ class Game:
             print(self.current_min_y,'b')
 
     def render(self):
-        self.generate_tiles()
+
         # print(self.dx)
         self.app.screen.fill((0, 0, 0))
 
