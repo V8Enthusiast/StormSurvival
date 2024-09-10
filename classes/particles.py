@@ -33,6 +33,16 @@ class Particle:
     def draw(self, screen):
         screen_width, screen_height = screen.get_size()
         if 0 <= self.x <= screen_width and 0 <= self.y <= screen_height:
+            #aura, memory laggy, fine for now
+
+            aura_surface = pygame.Surface((self.size * 4, self.size * 4), pygame.SRCALPHA)
+
+            for i in range(self.size * 2, 0, -1):
+                aura_alpha = max(self.alpha // 2 * (i / (self.size * 2)), 0)
+                pygame.draw.circle(aura_surface, (self.red, self.green, self.blue, int(aura_alpha)),
+                                   (self.size * 2, self.size * 2), i)
+            screen.blit(aura_surface, (self.x - self.size * 2, self.y - self.size * 2))
+
             surface = pygame.Surface((self.size * 2, self.size * 2), pygame.SRCALPHA)
             if self.shape == 'circle':
                 pygame.draw.circle(surface, (self.red, self.green, self.blue, self.alpha), (self.size, self.size),
