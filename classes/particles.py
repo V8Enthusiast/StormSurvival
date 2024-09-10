@@ -2,7 +2,7 @@ import pygame
 
 
 class Particle:
-    def __init__(self, x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape):
+    def __init__(self, x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage):
         self.x = x
         self.y = y
         self.vx = vx
@@ -15,6 +15,7 @@ class Particle:
         self.blue = blue
         self.alpha = alpha
         self.shape = shape
+        self.damage = damage
 
     def apply_force(self, fx, fy):
         self.vx += fx
@@ -57,8 +58,8 @@ class ParticleSystem:
         self.particles = []
         self.movable = movable
 
-    def add_particle(self, x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape):
-        self.particles.append(Particle(x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape))
+    def add_particle(self, x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage):
+        self.particles.append(Particle(x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage))
 
     def apply_force_to_all(self, fx, fy):
         for particle in self.particles:
@@ -90,14 +91,14 @@ class ParticleSystem:
         for particle in self.particles:
             # Check collision with player
             if game.player.rect.colliderect(particle.x, particle.y, particle.size * 2, particle.size * 2):
-                game.player.health -= 10  # Adjust damage as needed
+                game.player.health -= particle.damage
                 self.particles.remove(particle)
                 continue
 
             # Check collision with zombies
             for zombie in game.enemies:
                 if zombie.rect.colliderect(particle.x, particle.y, particle.size * 2, particle.size * 2):
-                    zombie.health -= 10  # Adjust damage as needed
+                    zombie.health -= particle.damage
                     self.particles.remove(particle)
                     break
 
