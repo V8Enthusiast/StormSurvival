@@ -1,7 +1,6 @@
 import pygame
 import random
 import math
-from app import App
 from classes import particles
 
 class Weapon:
