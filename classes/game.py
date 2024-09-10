@@ -1,10 +1,11 @@
+import math
 import random
 import time
 
 import pygame
 
 import images
-from classes import buttons, inputBox, GameObject, particles, hotbar
+from classes import buttons, inputBox, GameObject, particles, hotbar, weapon
 
 import images
 
@@ -19,6 +20,7 @@ class Game:
         self.screen = self.app.screen
         self.buttons = []
         self.chests = []
+        self.enemies = []
         self.selected_chest = None
         self.chest_ui = None
         self.speed = 10
@@ -32,6 +34,11 @@ class Game:
         chest = GameObject.Chest(self, 300, 300, 100, 100, images.chest, True)
         self.chests.append(chest)
         self.objects.append(chest)
+
+        zombie = GameObject.Zombie(self, 50, 50, 100, 100, images.player, True)
+
+        self.enemies.append(zombie)
+        self.objects.append(zombie)
 
         self.tiles = {}
         self.tile_size = 96
@@ -48,7 +55,7 @@ class Game:
         self.tile_width=96
 
         self.hotbar = hotbar.Hotbar(self, 10, self.app.height-100, 5)
-        self.hotbar.add_item("Gun", 0)
+        self.hotbar.add_item(weapon.Weapon(self.player, images.gun, 10, 10), 0)
 
 
 
@@ -172,6 +179,32 @@ class Game:
                     self.helpText = ""
                     self.selected_chest = None
                     self.chest_ui = None
+
+        for enemy in self.enemies:
+            # if self.player.x - enemy.x > 0:
+            #     enemy.angle = math.atan((self.player.y - enemy.y)/(self.player.x - enemy.x))
+            # if self.player.x - enemy.x < 0:
+            #     enemy.angle = math.atan((self.player.y - enemy.y)/(self.player.x - enemy.x)) + math.radians(180)
+
+            # Calculate the distance between the player and the enemy
+            distance_x = self.player.x - enemy.x
+            distance_y = self.player.y - enemy.y
+
+            # Calculate the total distance to move (5 blocks in this case)
+            total_distance = enemy.speed
+
+            # Calculate the angle towards the player
+            angle = math.atan2(distance_y, distance_x)
+
+            enemy.angle = angle
+
+            # Calculate the movement in x and y directions
+            move_x = min(total_distance, abs(distance_x)) * math.cos(angle)
+            move_y = min(total_distance, abs(distance_y)) * math.sin(angle)
+
+            # Update the enemy's position
+            enemy.x += move_x
+            enemy.y += move_y
 
 
         for p in self.weaponparticlesystem.particles:
