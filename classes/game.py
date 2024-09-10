@@ -155,7 +155,7 @@ class Game:
             distance_y = self.player.y - enemy.y
 
             # Calculate the total distance to move (5 blocks in this case)
-            total_distance = 4 # Zombie Speed
+            total_distance = enemy.speed
 
             # Calculate the angle towards the player
             angle = math.atan2(distance_y, distance_x)
