@@ -13,10 +13,13 @@ from pypresence import Presence
 resolutions = ["1000x800", "1200x900", "1920x1080", "2560x1440"]
 class App:
     def __init__(self, width, height, fullscreen, vsync):
-        client_id = '1282943400479559792'
-        rpc = Presence(client_id)
-        rpc.connect()
-        rpc.update(state="In Game", start=time.time())
+        try:
+            client_id = '1282943400479559792'
+            rpc = Presence(client_id)
+            rpc.connect()
+            rpc.update(state="In Game", start=time.time())
+        except:
+            print("Couldn't connect to Discord RPC")
 
         self.width = width
         self.height = height
