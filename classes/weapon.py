@@ -36,14 +36,7 @@ class Weapon:
         self.ammo = self.max_ammo
         self.game.sound_mixer.play_sound('Assets/reload.mp3')
 
-    def render(self):
-        if self.player.game.hotbar.items[self.player.game.hotbar.selected_slot] == "Gun":
-            rotated_gun = pygame.transform.rotate(self.image, -math.degrees(self.player.angle))
-            gun_length = self.image.get_width() // 2
-            offset_x = gun_length * math.cos(self.player.angle) * 1.5
-            offset_y = gun_length * math.sin(self.player.angle) * 1.5
-            gun_rect = rotated_gun.get_rect(center=(self.player.x + self.player.w // 2 + offset_x, self.player.y + self.player.h // 2 + offset_y))
-            self.player.screen.blit(rotated_gun, gun_rect)
+
 class Glock17(Weapon):
     def __init__(self, game, player):
         super().__init__(game, player, images.glock17, 17, 17)
