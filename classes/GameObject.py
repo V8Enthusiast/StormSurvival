@@ -19,10 +19,15 @@ class GameObject():
         self.collision = False
 
     def render(self):
-        self.x-=self.game.dx
-        self.y-=self.game.dy
-        self.rect=pygame.Rect(self.x,self.y,self.w,self.h)
-        self.screen.blit(self.image,self.rect)
+        self.x -= self.game.dx
+        self.y -= self.game.dy
+        # if type(self) == Chest:
+        #     print(self.x,self.y)
+        if self.x+self.w>=0 and self.x<=self.game.app.width:
+
+            self.rect=pygame.Rect(self.x,self.y,self.w,self.h)
+            self.screen.blit(self.image,self.rect)
+
 
 class Player(GameObject):
     def __init__(self, game,x,y,w,h,image_path,visible):
@@ -52,17 +57,40 @@ class Player(GameObject):
 
 
     def render(self):
-        self.rect=pygame.Rect(self.x,self.y,self.w,self.h)
-        rotated_gun = pygame.transform.rotate(self.gun_image, -math.degrees(self.angle))
-        gun_rect = rotated_gun.get_rect(center=(self.x + self.w // 2, self.y + self.h // 2))
-        self.screen.blit(rotated_gun, gun_rect)
-        self.screen.blit(self.image,self.rect)
+        if self.health > 0:
+            self.rect=pygame.Rect(self.x,self.y,self.w,self.h)
+            rotated_gun = pygame.transform.rotate(self.gun_image, -math.degrees(self.angle))
+            gun_rect = rotated_gun.get_rect(center=(self.x + self.w // 2, self.y + self.h // 2))
+            self.screen.blit(rotated_gun, gun_rect)
+            self.screen.blit(self.image,self.rect)
+
+    def handle_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            self.shoot()
+
+    def shoot(self):
+        gun_length = self.gun_image.get_width() // 2
+        tip_x = self.x + self.w // 2 + gun_length * math.cos(self.angle)
+        tip_y = self.y + self.h // 2 + gun_length * math.sin(self.angle)
+
+        for _ in range(100):
+            vx = 5 * math.cos(self.angle)
+            vy = 5 * math.sin(self.angle)
+            speed = random.uniform(1, 3)
+            lifespan = random.randint(20, 50)
+            size = random.randint(2, 5)
+            red, green, blue = 255, 255, 0
+            alpha = 255
+            shape = 'circle'
+            self.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape)
+
 
 class Storm(GameObject):
     def __init__(self, game,x,y,w,h,image_path,visible):
         super().__init__(game,x,y,w,h,image_path,visible)
         self.speed=1
-        self.dmg=3
+        self.dmg=20
+        self.last_damage_time = pygame.time.get_ticks()
     def distance(self):
         self.right=self.x+self.w
         return self.game.player.x-self.right
@@ -79,8 +107,22 @@ class Storm(GameObject):
     def render(self):
         self.x-=2*self.game.dx
         self.y-=2*self.game.dy
-        self.rect=pygame.Rect(self.x,self.y,self.w,self.h)
-        self.screen.blit(self.image,self.rect)
+        num_images = 200
+
+        total_width = (num_images+1) * self.w
+        self.rect = pygame.Rect(self.x - num_images*self.w, self.y, total_width, self.h)
+
+        for i in range(num_images):
+            offset_x = self.x - i * self.w
+            self.screen.blit(self.image, (offset_x, self.y))
+
+    def damage(self):
+        current_time = pygame.time.get_ticks()
+        if self.rect.colliderect(self.game.player.rect) and current_time - self.last_damage_time >= 500:
+            self.game.player.health-=self.dmg
+            self.last_damage_time = current_time
+            self.game.player.image = pygame.transform.scale(images.damagedplayer, (self.game.player.w, self.game.player.h))
+
 class Chest(GameObject):
     def __init__(self, game,x,y,w,h,image_path,visible):
         super().__init__(game,x,y,w,h,image_path,visible)
@@ -111,3 +153,4 @@ class Chest(GameObject):
 class Tile(GameObject):
     def __init__(self, game, x, y, image_path):
         super().__init__(game, x, y, 48, 48, image_path, True)
+
