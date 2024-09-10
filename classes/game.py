@@ -84,21 +84,19 @@ class Game:
     def events(self):
         keys = pygame.key.get_pressed()
 
+        collidesWithAnything = False
         for obj in self.objects:
-            collidesWithAnything = False
             if obj.collision is True:
                 if obj.x - obj.w <= self.player.gameObjectPos[0] + self.player.w <= obj.x + obj.w and obj.y - obj.h <= self.player.gameObjectPos[1] + self.player.h//2 <= obj.y + obj.h:
                     collidesWithAnything = True
                     self.player.canMoveRight = False
 
-                    print(self.player.relative_position[0] + self.player.w, obj.x - obj.half_w)
 
-
-            if collidesWithAnything is False:
-                self.player.canMoveRight = True
-                self.player.canMoveLeft = True
-                self.player.canMoveUp = True
-                self.player.canMoveDown = True
+        if collidesWithAnything is False:
+            self.player.canMoveRight = True
+            self.player.canMoveLeft = True
+            self.player.canMoveUp = True
+            self.player.canMoveDown = True
 
         if keys[pygame.K_w]:
             self.dy = -self.speed
