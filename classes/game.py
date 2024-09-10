@@ -117,6 +117,12 @@ class Game:
                 elif obj.x - obj.w <= self.player.gameObjectPos[0] <= obj.x + obj.w // 2 and obj.y - obj.h <= self.player.gameObjectPos[1] + self.player.h//2 <= obj.y + obj.h: # Right
                     collidesWithAnything = True
                     self.player.canMoveLeft = False
+                elif (obj.x - obj.w <= self.player.gameObjectPos[0] <= obj.x + obj.w // 2 or obj.x - obj.w <= self.player.gameObjectPos[0] + self.player.w <= obj.x + obj.w // 2) and obj.y - obj.h <= self.player.gameObjectPos[1] <= obj.y + obj.h:  # Up
+                    collidesWithAnything = True
+                    self.player.canMoveUp = False
+                elif (obj.x - obj.w <= self.player.gameObjectPos[0] <= obj.x + obj.w // 2 or obj.x - obj.w <= self.player.gameObjectPos[0] + self.player.w <= obj.x + obj.w // 2) and obj.y - obj.h <= self.player.gameObjectPos[1] + self.player.h <= obj.y + obj.h:  # Down
+                    collidesWithAnything = True
+                    self.player.canMoveDown = False
 
 
         if collidesWithAnything is False:
@@ -125,9 +131,9 @@ class Game:
             self.player.canMoveUp = True
             self.player.canMoveDown = True
 
-        if keys[pygame.K_w]:
+        if keys[pygame.K_w] and self.player.canMoveUp:
             self.dy = -self.speed
-        elif keys[pygame.K_s]:
+        elif keys[pygame.K_s] and self.player.canMoveDown:
             self.dy = self.speed
         else:
             self.dy = 0
