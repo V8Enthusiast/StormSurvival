@@ -154,3 +154,4 @@ class Tile(GameObject):
     def __init__(self, game, x, y, image_path):
         super().__init__(game, x, y, 48, 48, image_path, True)
 
+

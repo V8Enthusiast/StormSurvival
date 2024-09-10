@@ -34,6 +34,12 @@ class Game:
         #self.init_tiles()
 
         self.weaponparticlesystem = particles.ParticleSystem()
+        self.current_max_x=0
+        self.current_max_y=0
+        self.current_min_x=0
+        self.current_min_y=0
+        self.tile_width=96
+
 
     # def init_tiles(self):
     #     for y in range(0, self.app.height, self.tile_size):
@@ -44,9 +50,22 @@ class Game:
     # def add_tile(self, x, y, tile_image, force=False):
     #     if force or (x, y) not in self.tiles:
     #         self.tiles[(x, y)] = tile_image
+    def generate_tiles(self):
+        if self.current_max_x*self.tile_width<self.player.relative_position[0]+self.app.width/2:
+            self.current_max_x+=1
+            print(self.current_max_x,'a')
+            for y in range(self.current_min_y,self.current_max_y):
+                GameObject.GameObject(self,self.current_max_x*self.tile_width,y*self.tile_width,self.tile_width,self.tile_width,images.water,True)
+
+        if self.current_min_y*self.tile_width>self.player.relative_position[1]-self.app.height/2:
+            self.current_min_y-=1
+            for x in range(self.current_min_x,self.current_max_x):
+                GameObject.GameObject(self,x*self.tile_width,self.current_min_y*self.tile_width,self.tile_width,self.tile_width,images.water,True)
+            print(self.current_min_y,'b')
 
     def render(self):
-        print(self.dx)
+        self.generate_tiles()
+        # print(self.dx)
         self.app.screen.fill((0, 0, 0))
 
         player_x, player_y = self.player.relative_position
@@ -115,6 +134,7 @@ class Game:
         # Update player position based on current dx and dy
         self.player.relative_position[0] += self.dx
         self.player.relative_position[1] += self.dy
+        # print(self.player.relative_position)
 
         self.player.gameObjectPos[0] += self.dx
         self.player.gameObjectPos[1] += self.dy
