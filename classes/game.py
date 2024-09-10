@@ -14,6 +14,7 @@ class Game:
         self.objects = []
         self.main_text_rect_center = (self.app.width//2, 150 * self.app.scale)
         self.font = "fonts/main_font.ttf"
+        self.helpText = ""
         self.font_color = (255, 255, 255)
         self.screen = self.app.screen
         self.buttons = []
@@ -93,6 +94,13 @@ class Game:
             elif isinstance(obj, GameObject.Storm):
                 obj.move()
                 obj.render()
+            if isinstance(obj, GameObject.Chest):
+                print("here")
+                if obj.rect.colliderect(self.player.rect):
+                    self.helpText = "Press E to open"
+                elif self.helpText == "Press E to open":
+                    self.helpText = ""
+
 
         for p in self.weaponparticlesystem.particles:
             p.apply_force(random.uniform(-1, 1), random.uniform(-1, 1))
@@ -103,6 +111,13 @@ class Game:
 
         self.hotbar.render()
         self.hotbar.add_item("Gun", 0)
+
+        font = pygame.font.Font(self.font, int(48 * self.app.scale))
+        display_text = font.render(self.helpText, True, self.font_color)
+        display_text_rect = display_text.get_rect()
+        display_text_rect.center = self.main_text_rect_center
+        self.app.screen.blit(display_text, display_text_rect)
+
 
 
     def events(self):

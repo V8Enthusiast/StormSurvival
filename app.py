@@ -80,7 +80,8 @@ class App:
                 pass
                 # print(pygame.mouse.get_pos())
             if not self.onLevel and event.type == pygame.KEYDOWN:
-                self.ui.textBox.handle_event(event)
+                #self.ui.textBox.handle_event(event)
+                pass
 
 
 
