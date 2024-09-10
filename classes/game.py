@@ -28,19 +28,19 @@ class Game:
 
         self.tiles = {}
         self.tile_size = 96
-        self.init_tiles()
+        # self.init_tiles()
 
         self.weaponparticlesystem = particles.ParticleSystem()
 
-    def init_tiles(self):
-        for y in range(0, self.app.height, self.tile_size):
-            for x in range(0, self.app.width, self.tile_size):
-                tile_image = random.choice([images.grass, images.grass, images.grass, images.water])
-                self.add_tile(x, y, tile_image)
-
-    def add_tile(self, x, y, tile_image, force=False):
-        if force or (x, y) not in self.tiles:
-            self.tiles[(x, y)] = tile_image
+    # def init_tiles(self):
+    #     for y in range(0, self.app.height, self.tile_size):
+    #         for x in range(0, self.app.width, self.tile_size):
+    #             tile_image = random.choice([images.grass, images.grass, images.grass, images.water])
+    #             self.add_tile(x, y, tile_image)
+    #
+    # def add_tile(self, x, y, tile_image, force=False):
+    #     if force or (x, y) not in self.tiles:
+    #         self.tiles[(x, y)] = tile_image
 
     def render(self):
         print(self.dx)
@@ -48,16 +48,16 @@ class Game:
 
         player_x, player_y = self.player.relative_position
 
-        max_x = max(x for x, y in self.tiles.keys())
+        # max_x = max(x for x, y in self.tiles.keys())
 
         self.test_object.damage()
 
-        if player_x * 2 + self.app.width > max_x:
-            for y in range(0, self.app.height, self.tile_size):
-                self.add_tile(max_x + self.tile_size, y, random.choice([images.grass, images.grass, images.water]), force=True)
-
-        for (x, y), tile_image in self.tiles.items():
-            self.screen.blit(tile_image, (x - player_x * 2, y - player_y * 2))
+        # if player_x * 2 + self.app.width > max_x:
+        #     for y in range(0, self.app.height, self.tile_size):
+        #         self.add_tile(max_x + self.tile_size, y, random.choice([images.grass, images.grass, images.water]), force=True)
+        #
+        # for (x, y), tile_image in self.tiles.items():
+        #     self.screen.blit(tile_image, (x - player_x * 2, y - player_y * 2))
 
         # Render other game objects
         for obj in self.objects:

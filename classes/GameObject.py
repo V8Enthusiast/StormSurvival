@@ -17,10 +17,15 @@ class GameObject():
         self.rect=pygame.Rect(x,y,w,h)
         self.game.objects.append(self)
     def render(self):
-        self.x-=self.game.dx
-        self.y-=self.game.dy
-        self.rect=pygame.Rect(self.x,self.y,self.w,self.h)
-        self.screen.blit(self.image,self.rect)
+        self.x -= self.game.dx
+        self.y -= self.game.dy
+        # if type(self) == Chest:
+        #     print(self.x,self.y)
+        if self.x+self.w>=0 and self.x<=self.game.app.width:
+
+            self.rect=pygame.Rect(self.x,self.y,self.w,self.h)
+            self.screen.blit(self.image,self.rect)
+
 
 class Player(GameObject):
     def __init__(self, game,x,y,w,h,image_path,visible):
@@ -129,3 +134,4 @@ class Chest(GameObject):
 class Tile(GameObject):
     def __init__(self, game, x, y, image_path):
         super().__init__(game, x, y, 48, 48, image_path, True)
+
