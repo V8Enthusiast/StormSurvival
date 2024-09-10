@@ -31,14 +31,14 @@ class Hotbar:
             pygame.draw.rect(self.game.screen, color, rect, 2)
             if self.items[i]:
                 if isinstance(self.items[i], weapon.Weapon):
+                    weapon_image = self.items[i].image
                     if self.moved_item is not None and self.moved_item == i:
                         mouse_pos = pygame.mouse.get_pos()
-                        gun_image_scaled = pygame.transform.scale(images.gun, (self.slot_width, self.slot_height))
-                        self.game.screen.blit(gun_image_scaled, (mouse_pos[0], mouse_pos[1]))
+                        weapon_image_scaled = pygame.transform.scale(weapon_image, (self.slot_width, self.slot_height))
+                        self.game.screen.blit(weapon_image_scaled, (mouse_pos[0], mouse_pos[1]))
                     else:
-                        gun_image_scaled = pygame.transform.scale(images.gun,
-                                                                  (self.slot_width - 10, self.slot_height - 10))
-                        self.game.screen.blit(gun_image_scaled, (x + 5, y + 5))
+                        weapon_image_scaled = pygame.transform.scale(weapon_image, (self.slot_width - 10, self.slot_height - 10))
+                        self.game.screen.blit(weapon_image_scaled, (x + 5, y + 5))
                         ammo_text = self.font.render(str(self.items[i].ammo), True, (255, 255, 255))
                         self.game.screen.blit(ammo_text, (x + 5, y + 5))
                 else:
