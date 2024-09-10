@@ -74,6 +74,9 @@ class Player(GameObject):
     def render(self):
         if self.health > 0:
             self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
+            rotated_image = pygame.transform.rotate(self.image, -math.degrees(self.angle))
+            rotated_rect = rotated_image.get_rect(center=self.rect.center)
+            self.screen.blit(rotated_image, rotated_rect.topleft)
             if self.game.hotbar.items[self.game.hotbar.selected_slot] == "Gun":
                 rotated_gun = pygame.transform.rotate(self.gun_image, -math.degrees(self.angle))
                 gun_length = self.gun_image.get_width() // 2
@@ -81,7 +84,6 @@ class Player(GameObject):
                 offset_y = gun_length * math.sin(self.angle) * 1.5
                 gun_rect = rotated_gun.get_rect(center=(self.x + self.w // 2 + offset_x, self.y + self.h // 2 + offset_y))
                 self.screen.blit(rotated_gun, gun_rect)
-            self.screen.blit(self.image, self.rect)
             self.render_health_bar()
 
     def handle_event(self, event):
@@ -173,13 +175,18 @@ class Player(GameObject):
         self.ammo = self.max_ammo
 
 class Storm(GameObject):
-    def __init__(self, game,x,y,w,h,image_path,visible):
-        super().__init__(game,x,y,w,h,image_path,visible)
+    def __init__(self, game,x,y,w,h,image,visible):
+        super().__init__(game,x,y,w,h,image,visible)
         self.speed=1
         self.dmg=20
         self.last_damage_time = pygame.time.get_ticks()
-        self.first_image=pygame.image.load('Assets/burza (1).jpg')
+        self.head_image=pygame.image.load('Assets/burza (1).png')
+        self.head_image = pygame.transform.scale(self.head_image, (self.w, self.h))
+        self.first_image=pygame.image.load('Assets/Bez-nazwy (1).jpg')
         self.first_image = pygame.transform.scale(self.first_image, (self.w, self.h))
+
+        self.second_image = pygame.image.load('Assets/Bez-nazwy (2).jpg')
+        self.second_image = pygame.transform.scale(self.second_image, (self.w, self.h))
     def distance(self):
         self.right=self.x+self.w
         return self.game.player.x-self.right
@@ -210,10 +217,14 @@ class Storm(GameObject):
         for i in range(num_images):
             offset_x = self.x - i * self.w
             if i==0:
-                self.screen.blit(self.first_image, (offset_x, self.y))
+                self.screen.blit(self.head_image, (offset_x, self.y))
             else:
+                if i%2==0:
 
-                self.screen.blit(self.image, (offset_x, self.y))
+                    self.screen.blit(self.first_image, (offset_x, self.y))
+                else:
+                    self.screen.blit(self.second_image, (offset_x, self.y))
+
 
     def damage(self):
         current_time = pygame.time.get_ticks()

@@ -27,8 +27,8 @@ class Game:
 
         self.player = GameObject.Player(self, self.app.width // 2 - 50, self.app.height // 2 - 50, 100, 100,
                                         images.player, True)
-        self.storm = GameObject.Storm(self, -1000, 0, 500, 1080, images.storm, True)
-        self.storm2=GameObject.Storm(self, -1000, -1000, 500, 1080, images.storm, True)
+        self.storm = GameObject.Storm(self, -1000, 0, 500, 1080, images.storm,True)
+        self.storm2=GameObject.Storm(self, -1000, -1000, 500, 1080, images.storm,True)
         chest = GameObject.Chest(self, 300, 300, 100, 100, images.chest, True)
         self.chests.append(chest)
         self.objects.append(chest)
@@ -88,8 +88,12 @@ class Game:
             for x in range(min_x, max_x + self.tile_size, self.tile_size):
                 self.add_tile(x, min_y - self.tile_size, random.choice([images.grass, images.grass, images.water]))
 
+        visible_area = pygame.Rect(player_x * 2 - self.app.width // 2, player_y * 2 - self.app.height // 2,
+                                   self.app.width * 2, self.app.height * 2)
+
         for (x, y), tile_image in self.tiles.items():
-            self.screen.blit(tile_image, (x - player_x * 2, y - player_y * 2))
+            if visible_area.collidepoint(x, y):
+                self.screen.blit(tile_image, (x - player_x * 2, y - player_y * 2))
 
         # Render other game objects
         for obj in self.objects:
