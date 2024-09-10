@@ -66,42 +66,59 @@ class Game:
         for y in range(0, self.app.height, self.tile_size):
             for x in range(0, self.app.width, self.tile_size):
                 self.choose_tile(x,y)
+
+    def surround_by_sand(self,x,y):
+        for dx in range(-1,2):
+            for dy in range(-1,2):
+                if abs(dx)!=abs(dy):
+                    if (x + dx * self.tile_size, y + dy * self.tile_size) in self.tiles:
+                        if self.tiles[(x + dx * self.tile_size,y + dy * self.tile_size)] not in self.waters:
+                            self.tiles[(x + dx * self.tile_size,y + dy * self.tile_size)]=images.sand
     def choose_tile(self,x,y):
+        tree_probability=100
+        mine_probability=50
         tile_image = images.grass
 
         for n in self.check_neighbours(x,y):
             print(n)
             if n in self.trees:
-                if random.randint(0,10)>7:
+                if random.randint(0,10)>6:
                     self.add_tile(x, y, random.choice(self.trees))
                     return
             elif n in self.waters:
-                if random.randint(0,10)>7:
+                if random.randint(0,10)>6:
                     self.add_tile(x, y, random.choice(self.waters))
+                    self.surround_by_sand(x,y)
                     return
+                else:
+                    self.add_tile(x, y, images.sand)
 
 
-        if random.randint(1, 50) == 1:
+        if random.randint(1, tree_probability) == 1:
             self.add_tile(x, y, random.choice(self.trees))
 
-        if random.randint(1, 50) == 1:
+        if random.randint(1, tree_probability) == 1:
             self.add_tile(x, y, random.choice(self.waters))
+            self.surround_by_sand(x, y)
 
-
+        if random.randint(1,mine_probability)==1:
+            self.add_tile(x, y, images.mine)
         else:
             self.add_tile(x, y, tile_image)
+
+
 
 
     def check_neighbours(self,x,y):
         neighs=[]
         for dx in range(-1,2):
             for dy in range(-1,2):
-                if abs(x)!=abs(y):
+                if abs(dx)!=abs(dy):
                     try:
                         print(self.tiles[(x + dx * self.tile_size, y + dy * self.tile_size)], self.trees)
 
                         if self.tiles[(x + dx * self.tile_size, y + dy * self.tile_size)] in self.trees or self.tiles[
-                            (x + dx * self.tile_size, y + dy * self.tile_size)] in self.waters:
+                            (x + dx * self.tile_size, y + dy * self.tile_size)] in self.waters :
                             neighs.append(self.tiles[(x + dx * self.tile_size, y + dy * self.tile_size)])
 
 
