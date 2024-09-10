@@ -61,7 +61,10 @@ class Player(GameObject):
             self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
             if self.game.hotbar.items[self.game.hotbar.selected_slot] == "Gun":
                 rotated_gun = pygame.transform.rotate(self.gun_image, -math.degrees(self.angle))
-                gun_rect = rotated_gun.get_rect(center=(self.x + self.w // 2, self.y + self.h // 2))
+                gun_length = self.gun_image.get_width() // 2
+                offset_x = gun_length * math.cos(self.angle) * 1.5
+                offset_y = gun_length * math.sin(self.angle) * 1.5
+                gun_rect = rotated_gun.get_rect(center=(self.x + self.w // 2 + offset_x, self.y + self.h // 2 + offset_y))
                 self.screen.blit(rotated_gun, gun_rect)
             self.screen.blit(self.image, self.rect)
 
