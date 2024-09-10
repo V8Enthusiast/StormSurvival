@@ -98,14 +98,21 @@ class Storm(GameObject):
     def render(self):
         self.x-=2*self.game.dx
         self.y-=2*self.game.dy
-        self.rect=pygame.Rect(self.x,self.y,self.w,self.h)
-        self.screen.blit(self.image,self.rect)
+        num_images = 200
+
+        total_width = (num_images+1) * self.w
+        self.rect = pygame.Rect(self.x - num_images*self.w, self.y, total_width, self.h)
+
+        for i in range(num_images):
+            offset_x = self.x - i * self.w
+            self.screen.blit(self.image, (offset_x, self.y))
 
     def damage(self):
         current_time = pygame.time.get_ticks()
         if self.rect.colliderect(self.game.player.rect) and current_time - self.last_damage_time >= 500:
             self.game.player.health-=self.dmg
             self.last_damage_time = current_time
+            self.game.player.image = pygame.transform.scale(images.damagedplayer, (self.game.player.w, self.game.player.h))
 
 class Chest(GameObject):
     def __init__(self, game,x,y,w,h,image_path,visible):
