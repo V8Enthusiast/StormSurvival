@@ -31,10 +31,10 @@ class Game:
                                         images.player, True)
         self.storm = GameObject.Storm(self, -1000, 0, 500, 1080, images.storm,True)
         self.storm2=GameObject.Storm(self, -1000, -1000, 500, 1080, images.storm,True)
-        chest = GameObject.Chest(self, 300, 300, 100, 100, images.chest, True)
-        self.chests.append(chest)
-        self.objects.append(chest)
-
+        #chest = GameObject.Chest(self, 600, 600, 100, 100, images.chest, True)
+        #self.chests.append(chest)
+        #self.objects.append(chest)
+        #self.objects.append(GameObject.Chest(self, 600, 600, 100, 100, images.chest, True))
         zombie = GameObject.Zombie(self, 50, 50, 100, 100, images.player, True)
 
         self.enemies.append(zombie)
@@ -77,6 +77,7 @@ class Game:
     def choose_tile(self,x,y):
         tree_probability=100
         mine_probability=50
+        chest_probability = 100
         tile_image = images.grass
 
         for n in self.check_neighbours(x,y):
@@ -104,6 +105,11 @@ class Game:
         if random.randint(1,mine_probability)==1:
             self.add_tile(x, y, images.mine)
         else:
+            if random.randint(1, chest_probability) == 1:
+                chest = GameObject.Chest(self, y, x, 96, 96, images.chest, True)
+                self.objects.append(chest)
+                self.chests.append(chest)
+
             self.add_tile(x, y, tile_image)
 
 
@@ -190,14 +196,26 @@ class Game:
             elif isinstance(obj, GameObject.Storm):
                 obj.move()
                 obj.render()
-            if isinstance(obj, GameObject.Chest):
-                if obj.rect.colliderect(self.player.rect) and self.chest_ui is None:
-                    self.helpText = "Press E to open"
-                    self.selected_chest = obj
-                elif self.helpText == "Press E to open" or (self.chest_ui is not None and obj.rect.colliderect(self.player.rect) is False):
-                    self.helpText = ""
-                    self.selected_chest = None
-                    self.chest_ui = None
+            # if isinstance(obj, GameObject.Chest):
+            #     if obj.rect.colliderect(self.player.rect) and self.chest_ui is None:
+            #         self.helpText = "Press E to open"
+            #         self.selected_chest = obj
+            #     elif self.helpText == "Press E to open" or (self.chest_ui is not None and obj.rect.colliderect(self.player.rect) is False):
+            #         self.helpText = ""
+            #         self.selected_chest = None
+            #         self.chest_ui = None
+
+        for chest in self.chests:
+            if chest.rect.colliderect(self.player.rect) and self.chest_ui is None:
+                print(chest)
+                self.helpText = "Press E to open"
+                self.selected_chest = chest
+                break
+            elif self.helpText == "Press E to open" or (
+                    self.chest_ui is not None and self.selected_chest.rect.colliderect(self.player.rect) is False):
+                self.helpText = ""
+                self.selected_chest = None
+                self.chest_ui = None
 
         for enemy in self.enemies:
             # if self.player.x - enemy.x > 0:
@@ -256,18 +274,25 @@ class Game:
         keys = pygame.key.get_pressed()
 
         collidesWithAnything = False
+        player_x = self.player.x
+        player_y = self.player.y
+
         for obj in self.objects:
             if obj.collision is True:
-                if obj.x - obj.w <= self.player.gameObjectPos[0] + self.player.w <= obj.x + obj.w // 2 and obj.y - obj.h <= self.player.gameObjectPos[1] + self.player.h//2 <= obj.y + obj.h: # Left
+                obj_x = obj.x
+                obj_y = obj.y
+                if obj_x <= player_x + self.player.w <= obj_x + obj.w and ((player_y >= obj_y and player_y <= obj_y + obj.h) or (player_y + self.player.h >= obj_y and player_y + self.player.h <= obj_y + obj.h)): # Left
                     collidesWithAnything = True
                     self.player.canMoveRight = False
-                elif obj.x - obj.w <= self.player.gameObjectPos[0] <= obj.x + obj.w // 2 and obj.y - obj.h <= self.player.gameObjectPos[1] + self.player.h//2 <= obj.y + obj.h: # Right
+                    self.dx = obj_x - (player_x + self.player.w)
+                    #print(self.player.gameObjectPos[0], self.player.gameObjectPos[1], obj.x, obj.y)
+                elif obj_x <= player_x <= obj_x + obj.w and ((player_y >= obj_y and player_y <= obj_y + obj.h) or (player_y + self.player.h >= obj_y and player_y + self.player.h <= obj_y + obj.h)): # Right
                     collidesWithAnything = True
                     self.player.canMoveLeft = False
-                elif (obj.x - obj.w <= self.player.gameObjectPos[0] <= obj.x + obj.w // 2 or obj.x - obj.w <= self.player.gameObjectPos[0] + self.player.w <= obj.x + obj.w // 2) and obj.y - obj.h <= self.player.gameObjectPos[1] <= obj.y + obj.h:  # Up
+                if ((obj_x <= player_x <= obj_x + obj.w) or (obj_x <= player_x + self.player.w <= obj_x + obj.w)) and player_y >= obj_y and player_y <= obj_y + obj.h:  # Up
                     collidesWithAnything = True
                     self.player.canMoveUp = False
-                elif (obj.x - obj.w <= self.player.gameObjectPos[0] <= obj.x + obj.w // 2 or obj.x - obj.w <= self.player.gameObjectPos[0] + self.player.w <= obj.x + obj.w // 2) and obj.y - obj.h <= self.player.gameObjectPos[1] + self.player.h <= obj.y + obj.h:  # Down
+                elif ((obj_x <= player_x <= obj_x + obj.w) or (obj_x <= player_x + self.player.w <= obj_x + obj.w)) and player_y + self.player.h >= obj_y and player_y + self.player.h <= obj_y + obj.h:  # Down
                     collidesWithAnything = True
                     self.player.canMoveDown = False
 
@@ -320,8 +345,6 @@ class Game:
 
                 elif event.key == pygame.K_e:
                     if self.selected_chest is not None:
-                        print(self.selected_chest.Items)
-
                         if self.chest_ui is not None:
                             self.chest_ui = None
                         else:

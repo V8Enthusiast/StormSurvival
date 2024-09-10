@@ -149,9 +149,9 @@ class Player(GameObject):
                             self.from_ui = self.game.hotbar
                     else:
                         self.from_ui = self.game.chest_ui
-
-                    self.from_ui.moved_item = slot_num
-                    self.isMovingItem = True
+                    if selected_ui:
+                        self.from_ui.moved_item = slot_num
+                        self.isMovingItem = True
 
                 else:
                     slot_num = 0
