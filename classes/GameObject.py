@@ -49,6 +49,27 @@ class Player(GameObject):
         self.screen.blit(rotated_gun, gun_rect)
         self.screen.blit(self.image,self.rect)
 
+    def handle_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            self.shoot()
+
+    def shoot(self):
+        gun_length = self.gun_image.get_width() // 2
+        tip_x = self.x + self.w // 2 + gun_length * math.cos(self.angle)
+        tip_y = self.y + self.h // 2 + gun_length * math.sin(self.angle)
+
+        for _ in range(100):
+            vx = 5 * math.cos(self.angle)
+            vy = 5 * math.sin(self.angle)
+            speed = random.uniform(1, 3)
+            lifespan = random.randint(20, 50)
+            size = random.randint(2, 5)
+            red, green, blue = 255, 255, 0
+            alpha = 255
+            shape = 'circle'
+            self.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape)
+
+
 class Storm(GameObject):
     def __init__(self, game,x,y,w,h,image_path,visible):
         super().__init__(game,x,y,w,h,image_path,visible)

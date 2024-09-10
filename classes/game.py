@@ -30,7 +30,7 @@ class Game:
         self.tile_size = 96
         self.init_tiles()
 
-        self.unityparticlesystem = particles.ParticleSystem()
+        self.weaponparticlesystem = particles.ParticleSystem()
 
     def init_tiles(self):
         for y in range(0, self.app.height, self.tile_size):
@@ -69,10 +69,12 @@ class Game:
                 obj.move()
                 obj.render()
 
+        for p in self.weaponparticlesystem.particles:
+            p.apply_force(random.uniform(-1, 1), random.uniform(-1, 1))
 
-        self.unityparticlesystem.update()
+        self.weaponparticlesystem.update()
 
-        self.unityparticlesystem.draw(self.screen)
+        self.weaponparticlesystem.draw(self.screen)
 
 
     def events(self):
@@ -100,3 +102,4 @@ class Game:
             if event.type == pygame.QUIT:
                 self.app.run = False
                 pygame.quit()
+            self.player.handle_event(event)
