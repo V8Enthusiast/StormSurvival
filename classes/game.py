@@ -1,14 +1,11 @@
 import math
 import random
-import time
 
 import pygame
 
-import images
-from classes import buttons, inputBox, GameObject, particles, hotbar, weapon
+from classes import GameObject, particles, hotbar, weapon
 
-
-import mixer
+from Assets import mixer
 import images
 
 class Game:

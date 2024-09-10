@@ -29,10 +29,11 @@ class Weapon:
                 shape = 'circle'
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape)
 
-            self.game.sound_mixer.play_sound('Assets/shoot.wav')
+            self.game.sound_mixer.play_sound('Assets/shoot.mp3')
 
     def reload(self):
         self.ammo = self.max_ammo
+        self.game.sound_mixer.play_sound('Assets/reload.mp3')
 
     def render(self):
         if self.player.game.hotbar.items[self.player.game.hotbar.selected_slot] == "Gun":

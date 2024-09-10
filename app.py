@@ -2,7 +2,7 @@ import json
 
 import pygame
 from classes.particles import ParticleSystem
-from mixer import Mixer
+from Assets.mixer import Mixer
 from classes import mainmenu
 import settings_values
 
