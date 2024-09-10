@@ -295,11 +295,12 @@ class Storm(GameObject):
             self.last_damage_time = current_time
             self.game.player.image = pygame.transform.scale(images.damagedplayer, (self.game.player.w, self.game.player.h))
 
-class Chest(GameObject):
-    def __init__(self, game,x,y,w,h,image_path,visible):
-        super().__init__(game,x,y,w,h,image_path,visible)
 
-        self.Items = [None]*5
+class Chest(GameObject):
+    def __init__(self, game, x, y, w, h, image_path, visible):
+        super().__init__(game, x, y, w, h, image_path, visible)
+
+        self.Items = [None] * 5
         self.CommonDrops = ["Glock 17", "Pump Action Shotgun", "Ammo Box"]
         self.UncommonDrops = ["M4A1", "Bolt Action Sniper", "Ammo Crate"]
         self.EpicDrops = ["MAC-10", "M1911 .45"]
@@ -309,19 +310,33 @@ class Chest(GameObject):
 
         self.generateRandomItems()
 
-
     def generateRandomItems(self):
+        weapon_classes = {
+            "Glock 17": weapon.Glock17,
+            "Pump Action Shotgun": weapon.PumpActionShotgun,
+            "Ammo Box": weapon.AmmoBox,
+            "M4A1": weapon.M4A1,
+            "Bolt Action Sniper": weapon.BoltActionSniper,
+            "Ammo Crate": weapon.AmmoCrate,
+            "MAC-10": weapon.MAC10,
+            "M1911 .45": weapon.M1911,
+            "Scar-H": weapon.ScarH,
+            "Desert Eagle": weapon.DesertEagle,
+            ".44 Magnum": weapon.Magnum44
+        }
+
         for i in range(random.randint(1, 5)):
-            # rarity = random.randint(0, 100)
-            # if rarity > 35:
-            #     self.Items[i] = random.choice(self.UncommonDrops)
-            # elif rarity > 75:
-            #     self.Items[i] = random.choice(self.EpicDrops)
-            # elif rarity > 90:
-            #     self.Items[i] = random.choice(self.LegendaryDrops)
-            # else:
-            #     self.Items[i] = random.choice(self.CommonDrops)
-            self.Items[i] = random.choice([weapon.Weapon(self.game, self.game.player, images.gun, 5, 5)])
+            rarity = random.randint(0, 100)
+            if rarity > 90:
+                weapon_name = random.choice(self.LegendaryDrops)
+            elif rarity > 75:
+                weapon_name = random.choice(self.EpicDrops)
+            elif rarity > 35:
+                weapon_name = random.choice(self.UncommonDrops)
+            else:
+                weapon_name = random.choice(self.CommonDrops)
+
+            self.Items[i] = weapon_classes[weapon_name](self.game, self.game.player)
 
 class Tile(GameObject):
     def __init__(self, game, x, y, image_path):
