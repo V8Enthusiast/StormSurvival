@@ -49,6 +49,8 @@ class Player(GameObject):
         self.canMoveUp = True
         self.canMoveDown = True
 
+        self.isMovingItem = False
+
         self.ammo = 10
         self.max_ammo = 10
 
@@ -86,15 +88,45 @@ class Player(GameObject):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             click_pos = pygame.mouse.get_pos()
             if self.game.chest_ui is not None:
-                slot_num = 0
-                print(self.game.chest_ui.slot_rects)
-                for slot_rect in self.game.chest_ui.slot_rects:
-                    if slot_rect.collidepoint(click_pos):
-                        print("slot " , slot_num , " selected")
-                        break
-                    slot_num += 1
-                self.game.chest_ui.moved_item = slot_num
-            if self.game.hotbar.items[self.game.hotbar.selected_slot] == "Gun":
+                if self.isMovingItem is False:
+                    slot_num = 0
+                    print(self.game.chest_ui.slot_rects)
+                    for slot_rect in self.game.chest_ui.slot_rects:
+                        if slot_rect.collidepoint(click_pos):
+                            print("slot ", slot_num, " selected")
+                            break
+                        slot_num += 1
+                    self.game.chest_ui.moved_item = slot_num
+                    self.isMovingItem = True
+                else:
+                    slot_num = 0
+
+                    slot_selected = False
+                    for slot_rect in self.game.hotbar.slot_rects:
+                        if slot_rect.collidepoint(click_pos):
+                            print("slot ", slot_num, " selected")
+                            slot_selected = True
+                            break
+                        slot_num += 1
+                    if slot_selected:
+                        if self.game.hotbar.items[slot_num] is None:
+                            self.game.hotbar.add_item(self.game.chest_ui.items[self.game.chest_ui.moved_item], slot_num)
+                            print(self.game.chest_ui.items[self.game.chest_ui.moved_item])
+                            self.game.selected_chest.Items.pop(self.game.chest_ui.moved_item)
+                            self.game.chest_ui.remove_item(self.game.chest_ui.moved_item)
+                            self.game.chest_ui.moved_item = None
+                            self.isMovingItem = False
+                        else:
+                            temp_item = self.game.chest_ui.items[self.game.chest_ui.moved_item]
+                            self.game.chest_ui.remove_item(self.game.chest_ui.moved_item)
+                            self.game.selected_chest.Items[self.game.chest_ui.moved_item] = self.game.hotbar.items[slot_num]
+                            self.game.chest_ui.add_item(self.game.hotbar.items[slot_num], self.game.chest_ui.moved_item)
+                            self.game.chest_ui.moved_item = None
+                            self.game.hotbar.add_item(temp_item, slot_num)
+                            print(self.game.hotbar.items[slot_num])
+                            self.isMovingItem = False
+
+            elif self.game.hotbar.items[self.game.hotbar.selected_slot] == "Gun":
                 self.shoot()
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_e:

@@ -50,3 +50,6 @@ class Hotbar:
     def add_item(self, item, slot):
         if 0 <= slot < self.num_slots:
             self.items[slot] = item
+    def remove_item(self, slot):
+        if 0 <= slot < self.num_slots:
+            self.items[slot] = None
