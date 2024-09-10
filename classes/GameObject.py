@@ -62,47 +62,33 @@ class Zombie(GameObject):
 class Player(GameObject):
     def __init__(self, game, x, y, w, h, image_path, visible):
         super().__init__(game, x, y, w, h, image_path, visible)
-
         self.angle = 0
-
         self.health = 100
         self.size = 25
         self.color = (255, 105, 55)
-
         self.relative_position = [0, 0]
         self.gameObjectPos = [x, y]
-
         self.gun_image = images.gun
-
         self.canMoveRight = True
         self.canMoveLeft = True
         self.canMoveUp = True
         self.canMoveDown = True
-
         self.isMovingItem = False
         self.to_ui = None
         self.from_ui = None
-
-
-        self.weapon = weapon.Weapon(self, images.gun, 10, 10)
-
 
     def render_health_bar(self):
         health_bar_width = 100
         health_bar_height = 10
         health_bar_x = self.x + (self.w - health_bar_width) // 2
         health_bar_y = self.y - 20
-
         pygame.draw.rect(self.screen, (100, 100, 100), (health_bar_x, health_bar_y, health_bar_width, health_bar_height))
-
         current_health_width = int(health_bar_width * (self.health / 100))
         pygame.draw.rect(self.screen, (0, 255, 0), (health_bar_x, health_bar_y, current_health_width, health_bar_height))
-
 
     def rotate_towards_cursor(self):
         mouse_x, mouse_y = pygame.mouse.get_pos()
         self.angle = math.atan2(mouse_y - self.y, mouse_x - self.x)
-
 
     def render(self):
         if self.health > 0:
@@ -110,15 +96,18 @@ class Player(GameObject):
             rotated_image = pygame.transform.rotate(self.image, -math.degrees(self.angle))
             rotated_rect = rotated_image.get_rect(center=self.rect.center)
             self.screen.blit(rotated_image, rotated_rect.topleft)
-            if self.game.hotbar.items[self.game.hotbar.selected_slot] == "Gun":
-                rotated_gun = pygame.transform.rotate(self.gun_image, -math.degrees(self.angle))
-                gun_length = self.gun_image.get_width() // 2
+
+            selected_item = self.game.hotbar.items[self.game.hotbar.selected_slot]
+            if isinstance(selected_item, weapon.Weapon):
+                rotated_gun = pygame.transform.rotate(selected_item.image, -math.degrees(self.angle))
+                gun_length = selected_item.image.get_width() // 2
                 offset_x = gun_length * math.cos(self.angle) * 1.5
                 offset_y = gun_length * math.sin(self.angle) * 1.5
-                gun_rect = rotated_gun.get_rect(center=(self.x + self.w // 2 + offset_x, self.y + self.h // 2 + offset_y))
+                gun_rect = rotated_gun.get_rect(
+                    center=(self.x + self.w // 2 + offset_x, self.y + self.h // 2 + offset_y))
                 self.screen.blit(rotated_gun, gun_rect)
-            self.render_health_bar()
 
+            self.render_health_bar()
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             click_pos = pygame.mouse.get_pos()
@@ -196,15 +185,19 @@ class Player(GameObject):
                             print(self.to_ui.items[slot_num])
                             self.isMovingItem = False
 
-            elif self.game.hotbar.items[self.game.hotbar.selected_slot] == "Gun":
-                self.weapon.shoot()
+            else:
+                selected_item = self.game.hotbar.items[self.game.hotbar.selected_slot]
+                if isinstance(selected_item, weapon.Weapon):
+                    selected_item.shoot()
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_e:
                 self.pick_up_item()
             elif event.key == pygame.K_q:
                 self.drop_item()
             elif event.key == pygame.K_r:
-                self.weapon.reload()
+                selected_item = self.game.hotbar.items[self.game.hotbar.selected_slot]
+                if selected_item == "Gun":
+                    self.reload()
 
     def drop_item(self):
         item_name = self.game.hotbar.items[self.game.hotbar.selected_slot]
@@ -222,26 +215,14 @@ class Player(GameObject):
         self.game.hotbar.add_item(item_name, self.game.hotbar.selected_slot)
 
     def shoot(self):
-        if self.ammo > 0:
-            self.ammo -= 1
-            gun_length = self.gun_image.get_width() // 2
-            tip_x = self.x + self.w // 2 + gun_length * math.cos(self.angle) *2.2
-            tip_y = self.y + self.h // 2 + gun_length * math.sin(self.angle) *2.2
-
-            for _ in range(100):
-                vx = 5 * math.cos(self.angle)
-                vy = 5 * math.sin(self.angle)
-                speed = random.uniform(1, 3)
-                lifespan = random.randint(20, 50)
-                size = random.randint(2, 5)
-                red, green, blue = 255, 255, 0
-                alpha = 255
-                shape = 'circle'
-                self.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape)
+        selected_item = self.game.hotbar.items[self.game.hotbar.selected_slot]
+        if isinstance(selected_item, weapon.Weapon):
+            selected_item.shoot()
 
     def reload(self):
-        self.ammo = self.max_ammo
-
+        selected_item = self.game.hotbar.items[self.game.hotbar.selected_slot]
+        if isinstance(selected_item, weapon.Weapon):
+            selected_item.reload()
 class Storm(GameObject):
     def __init__(self, game,x,y,w,h,image,visible):
         super().__init__(game,x,y,w,h,image,visible)
@@ -318,15 +299,16 @@ class Chest(GameObject):
 
     def generateRandomItems(self):
         for i in range(random.randint(1, 5)):
-            rarity = random.randint(0, 100)
-            if rarity > 35:
-                self.Items[i] = random.choice(self.UncommonDrops)
-            elif rarity > 75:
-                self.Items[i] = random.choice(self.EpicDrops)
-            elif rarity > 90:
-                self.Items[i] = random.choice(self.LegendaryDrops)
-            else:
-                self.Items[i] = random.choice(self.CommonDrops)
+            # rarity = random.randint(0, 100)
+            # if rarity > 35:
+            #     self.Items[i] = random.choice(self.UncommonDrops)
+            # elif rarity > 75:
+            #     self.Items[i] = random.choice(self.EpicDrops)
+            # elif rarity > 90:
+            #     self.Items[i] = random.choice(self.LegendaryDrops)
+            # else:
+            #     self.Items[i] = random.choice(self.CommonDrops)
+            self.Items[i] = random.choice([weapon.Weapon(self.game.player, images.gun, 5, 5)])
 
 class Tile(GameObject):
     def __init__(self, game, x, y, image_path):
