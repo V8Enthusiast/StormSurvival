@@ -70,26 +70,22 @@ class Game:
         min_y = min(y for x, y in self.tiles.keys())
 
         self.test_object.damage()
-
-        if player_x * 2 + self.app.width > max_x:
+        #right
+        if player_x * 2 + self.app.width >= max_x:
             for y in range(min_y, max_y + self.tile_size, self.tile_size):
-                self.add_tile(max_x + self.tile_size, y, random.choice([images.grass, images.grass, images.water]),
-                              force=True)
-
-        if player_x * 2 < min_x:
+                self.add_tile(max_x + self.tile_size, y, random.choice([images.grass, images.grass, images.water]))
+        #left
+        if player_x * 2 <= min_x:
             for y in range(min_y, max_y + self.tile_size, self.tile_size):
-                self.add_tile(min_x - self.tile_size, y, random.choice([images.grass, images.grass, images.water]),
-                              force=True)
-
-        if player_y * 2 + self.app.height > max_y:
+                self.add_tile(min_x - self.tile_size, y, random.choice([images.grass, images.grass, images.water]))
+        #down
+        if player_y * 2 + self.app.height >= max_y:
             for x in range(min_x, max_x + self.tile_size, self.tile_size):
-                self.add_tile(x, max_y + self.tile_size, random.choice([images.grass, images.grass, images.water]),
-                              force=True)
-
-        if player_y * 2 < min_y:
+                self.add_tile(x, max_y + self.tile_size, random.choice([images.grass, images.grass, images.water]))
+        #up
+        if player_y * 2 <= min_y:
             for x in range(min_x, max_x + self.tile_size, self.tile_size):
-                self.add_tile(x, min_y - self.tile_size, random.choice([images.grass, images.grass, images.water]),
-                              force=True)
+                self.add_tile(x, min_y - self.tile_size, random.choice([images.grass, images.grass, images.water]))
 
         for (x, y), tile_image in self.tiles.items():
             self.screen.blit(tile_image, (x - player_x * 2, y - player_y * 2))
