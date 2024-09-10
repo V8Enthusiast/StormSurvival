@@ -43,11 +43,12 @@ class Player(GameObject):
 
 
     def render(self):
-        self.rect=pygame.Rect(self.x,self.y,self.w,self.h)
-        rotated_gun = pygame.transform.rotate(self.gun_image, -math.degrees(self.angle))
-        gun_rect = rotated_gun.get_rect(center=(self.x + self.w // 2, self.y + self.h // 2))
-        self.screen.blit(rotated_gun, gun_rect)
-        self.screen.blit(self.image,self.rect)
+        if self.health > 0:
+            self.rect=pygame.Rect(self.x,self.y,self.w,self.h)
+            rotated_gun = pygame.transform.rotate(self.gun_image, -math.degrees(self.angle))
+            gun_rect = rotated_gun.get_rect(center=(self.x + self.w // 2, self.y + self.h // 2))
+            self.screen.blit(rotated_gun, gun_rect)
+            self.screen.blit(self.image,self.rect)
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -74,7 +75,8 @@ class Storm(GameObject):
     def __init__(self, game,x,y,w,h,image_path,visible):
         super().__init__(game,x,y,w,h,image_path,visible)
         self.speed=1
-        self.dmg=3
+        self.dmg=20
+        self.last_damage_time = pygame.time.get_ticks()
     def distance(self):
         self.right=self.x+self.w
         return self.game.player.x-self.right
@@ -93,6 +95,13 @@ class Storm(GameObject):
         self.y-=2*self.game.dy
         self.rect=pygame.Rect(self.x,self.y,self.w,self.h)
         self.screen.blit(self.image,self.rect)
+
+    def damage(self):
+        current_time = pygame.time.get_ticks()
+        if self.rect.colliderect(self.game.player.rect) and current_time - self.last_damage_time >= 500:
+            self.game.player.health-=self.dmg
+            self.last_damage_time = current_time
+
 class Chest(GameObject):
     def __init__(self, game,x,y,w,h,image_path,visible):
         super().__init__(game,x,y,w,h,image_path,visible)
