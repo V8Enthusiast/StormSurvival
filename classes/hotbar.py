@@ -1,5 +1,6 @@
 import pygame
 import images
+from classes import weapon
 
 class Hotbar:
     def __init__(self, game, x, y, num_slots=5):
@@ -29,20 +30,20 @@ class Hotbar:
             rect = self.slot_rects[i]
             pygame.draw.rect(self.game.screen, color, rect, 2)
             if self.items[i]:
-                if self.items[i] == "Gun" or True: # remove when gun textures are added later
+                if isinstance(self.items[i], weapon.Weapon):
                     if self.moved_item is not None and self.moved_item == i:
                         mouse_pos = pygame.mouse.get_pos()
-                        gun_image_scaled = pygame.transform.scale(images.gun,(self.slot_width, self.slot_height))
+                        gun_image_scaled = pygame.transform.scale(images.gun, (self.slot_width, self.slot_height))
                         self.game.screen.blit(gun_image_scaled, (mouse_pos[0], mouse_pos[1]))
                     else:
-                        gun_image_scaled = pygame.transform.scale(images.gun, (self.slot_width - 10, self.slot_height - 10))
+                        gun_image_scaled = pygame.transform.scale(images.gun,
+                                                                  (self.slot_width - 10, self.slot_height - 10))
                         self.game.screen.blit(gun_image_scaled, (x + 5, y + 5))
-                        ammo_text = self.font.render(str(self.game.player.ammo), True, (255, 255, 255))
+                        ammo_text = self.font.render(str(self.items[i].ammo), True, (255, 255, 255))
                         self.game.screen.blit(ammo_text, (x + 5, y + 5))
                 else:
                     item_text = self.font.render(self.items[i], True, (255, 255, 255))
                     self.game.screen.blit(item_text, (x + 5, y + 5))
-
     def select_slot(self, slot):
         if 0 <= slot < self.num_slots:
             self.selected_slot = slot
