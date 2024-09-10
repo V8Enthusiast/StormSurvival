@@ -72,6 +72,9 @@ class Player(GameObject):
     def render(self):
         if self.health > 0:
             self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
+            rotated_image = pygame.transform.rotate(self.image, -math.degrees(self.angle))
+            rotated_rect = rotated_image.get_rect(center=self.rect.center)
+            self.screen.blit(rotated_image, rotated_rect.topleft)
             if self.game.hotbar.items[self.game.hotbar.selected_slot] == "Gun":
                 rotated_gun = pygame.transform.rotate(self.gun_image, -math.degrees(self.angle))
                 gun_length = self.gun_image.get_width() // 2
@@ -79,7 +82,6 @@ class Player(GameObject):
                 offset_y = gun_length * math.sin(self.angle) * 1.5
                 gun_rect = rotated_gun.get_rect(center=(self.x + self.w // 2 + offset_x, self.y + self.h // 2 + offset_y))
                 self.screen.blit(rotated_gun, gun_rect)
-            self.screen.blit(self.image, self.rect)
             self.render_health_bar()
 
     def handle_event(self, event):
