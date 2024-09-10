@@ -1,6 +1,7 @@
 import pygame
 import random
 import math
+import images
 from classes import particles
 
 class Weapon:
@@ -43,3 +44,46 @@ class Weapon:
             offset_y = gun_length * math.sin(self.player.angle) * 1.5
             gun_rect = rotated_gun.get_rect(center=(self.player.x + self.player.w // 2 + offset_x, self.player.y + self.player.h // 2 + offset_y))
             self.player.screen.blit(rotated_gun, gun_rect)
+class Glock17(Weapon):
+    def __init__(self, game, player):
+        super().__init__(game, player, images.glock17, 17, 17)
+
+class PumpActionShotgun(Weapon):
+    def __init__(self, game, player):
+        super().__init__(game, player, images.pump_action_shotgun, 5, 5)
+
+class AmmoBox(Weapon):
+    def __init__(self, game, player):
+        super().__init__(game, player, images.ammo_box, 0, 0)
+
+class M4A1(Weapon):
+    def __init__(self, game, player):
+        super().__init__(game, player, images.m4a1, 30, 30)
+
+class BoltActionSniper(Weapon):
+    def __init__(self, game, player):
+        super().__init__(game, player, images.bolt_action_sniper, 5, 5)
+
+class AmmoCrate(Weapon):
+    def __init__(self, game, player):
+        super().__init__(game, player, images.ammo_crate, 0, 0)
+
+class MAC10(Weapon):
+    def __init__(self, game, player):
+        super().__init__(game, player, images.mac10, 30, 30)
+
+class M1911(Weapon):
+    def __init__(self, game, player):
+        super().__init__(game, player, images.m1911, 7, 7)
+
+class ScarH(Weapon):
+    def __init__(self, game, player):
+        super().__init__(game, player, images.scarh, 20, 20)
+
+class DesertEagle(Weapon):
+    def __init__(self, game, player):
+        super().__init__(game, player, images.desert_eagle, 7, 7)
+
+class Magnum44(Weapon):
+    def __init__(self, game, player):
+        super().__init__(game, player, images.magnum44, 6, 6)
