@@ -35,6 +35,8 @@ class Game:
 
         self.tiles = {}
         self.tile_size = 96
+
+        self.trees = [images.tree1, images.tree2, images.tree3]
         self.init_tiles()
 
         self.weaponparticlesystem = particles.ParticleSystem()
@@ -48,11 +50,28 @@ class Game:
         self.hotbar.add_item("Gun", 0)
 
 
+
+
     def init_tiles(self):
         for y in range(0, self.app.height, self.tile_size):
             for x in range(0, self.app.width, self.tile_size):
-                tile_image = random.choice([images.grass, images.grass, images.grass, images.water])
-                self.add_tile(x, y, tile_image)
+                self.choose_tile(x,y)
+    def choose_tile(self,x,y):
+        tile_image = random.choice([images.grass, images.grass, images.grass, images.water])
+        print(random.randint(-5, 5))
+        if random.randint(1, 50) == 1:
+            self.add_tile(x, y, random.choice(self.trees))
+            self.make_forest(x, y)
+
+        else:
+            self.add_tile(x, y, tile_image)
+    def make_forest(self,x,y):
+        for dx in range(-3,3):
+            for dy in range(-3,3):
+                # if random.randint(1,int((abs(dx)+abs(dy))/3)+1):
+                self.tiles[(x+dx, y+dy)] = random.choice(self.trees)
+                # self.add_tile(x+dx,y+dy,images.tree1)
+
 
     def add_tile(self, x, y, tile_image, force=False):
         if force or (x, y) not in self.tiles:
@@ -74,23 +93,27 @@ class Game:
         #right
         if player_x * 2 + self.app.width >= max_x:
             for y in range(min_y, max_y + self.tile_size, self.tile_size):
-                self.add_tile(max_x + self.tile_size, y, random.choice([images.grass, images.grass, images.water]))
+                self.choose_tile(max_x + self.tile_size, y)
+                # self.add_tile(max_x + self.tile_size, y, random.choice([images.grass, images.grass, images.water]))
         #left
         if player_x * 2 <= min_x:
             for y in range(min_y, max_y + self.tile_size, self.tile_size):
-                self.add_tile(min_x - self.tile_size, y, random.choice([images.grass, images.grass, images.water]))
+                self.choose_tile(min_x- self.tile_size, y)
+                # self.add_tile(min_x - self.tile_size, y, random.choice([images.grass, images.grass, images.water]))
         #down
         if player_y * 2 + self.app.height >= max_y:
             for x in range(min_x, max_x + self.tile_size, self.tile_size):
-                self.add_tile(x, max_y + self.tile_size, random.choice([images.grass, images.grass, images.water]))
+                self.choose_tile(x, max_y + self.tile_size)
+                # self.add_tile(x, max_y + self.tile_size, random.choice([images.grass, images.grass, images.water]))
         #up
         if player_y * 2 <= min_y:
             for x in range(min_x, max_x + self.tile_size, self.tile_size):
-                self.add_tile(x, min_y - self.tile_size, random.choice([images.grass, images.grass, images.water]))
+                self.choose_tile(x, min_y - self.tile_size)
+                # self.add_tile(x, min_y - self.tile_size, random.choice([images.grass, images.grass, images.water]))
 
         visible_area = pygame.Rect(player_x * 2 - self.app.width // 2, player_y * 2 - self.app.height // 2,
                                    self.app.width * 2, self.app.height * 2)
-
+        print(self.tiles.items())
         for (x, y), tile_image in self.tiles.items():
             if visible_area.collidepoint(x, y):
                 self.screen.blit(tile_image, (x - player_x * 2, y - player_y * 2))
