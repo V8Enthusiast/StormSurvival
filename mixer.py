@@ -15,3 +15,7 @@ class Mixer:
 
     def stop_music(self):
         pygame.mixer.music.stop()
+
+    def play_sound(self, file_path):
+        sound = pygame.mixer.Sound(file_path)
+        sound.play()

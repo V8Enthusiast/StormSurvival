@@ -7,6 +7,8 @@ import pygame
 import images
 from classes import buttons, inputBox, GameObject, particles, hotbar, weapon
 
+
+import mixer
 import images
 
 class Game:
@@ -55,9 +57,9 @@ class Game:
         self.tile_width=96
 
         self.hotbar = hotbar.Hotbar(self, 10, self.app.height-100, 5)
-        self.hotbar.add_item(weapon.Weapon(self.player, images.gun, 10, 10), 0)
+        self.hotbar.add_item(weapon.Weapon(self, self.player, images.gun, 10, 10), 0)
 
-
+        self.sound_mixer = mixer.Mixer()
 
 
     def init_tiles(self):
