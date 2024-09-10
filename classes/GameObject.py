@@ -2,17 +2,17 @@ import pygame.image
 import pygame
 import random
 import math
+import images
 
 class GameObject():
-    def __init__(self,game,x,y,w,h,image_path,visible):
+    def __init__(self,game,x,y,w,h,image,visible):
         self.game=game
         self.screen = self.game.screen
         self.x=x
         self.y=y
         self.w=w
         self.h=h
-        self.image_path=image_path
-        self.image=pygame.image.load(image_path)
+        self.image=image
         self.image= pygame.transform.scale(self.image,(self.w,self.h))
         self.rect=pygame.Rect(x,y,w,h)
         self.game.objects.append(self)
@@ -26,13 +26,27 @@ class Player(GameObject):
     def __init__(self, game,x,y,w,h,image_path,visible):
         super().__init__(game,x,y,w,h,image_path,visible)
 
+        self.angle = 0
+
         self.health = 100
         self.size = 25
         self.color = (255, 105, 55)
 
         self.relative_position = [0, 0]
+
+        self.gun_image = images.gun
+
+
+    def rotate_towards_cursor(self):
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        self.angle = math.atan2(mouse_y - self.y, mouse_x - self.x)
+
+
     def render(self):
         self.rect=pygame.Rect(self.x,self.y,self.w,self.h)
+        rotated_gun = pygame.transform.rotate(self.gun_image, -math.degrees(self.angle))
+        gun_rect = rotated_gun.get_rect(center=(self.x + self.w // 2, self.y + self.h // 2))
+        self.screen.blit(rotated_gun, gun_rect)
         self.screen.blit(self.image,self.rect)
 
 class Storm(GameObject):

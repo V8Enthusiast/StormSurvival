@@ -2,7 +2,12 @@ import random
 import time
 
 import pygame
+
+import images
 from classes import buttons, inputBox, GameObject, particles
+
+import images
+
 class Game:
     def __init__(self, app):
         self.app = app
@@ -17,12 +22,12 @@ class Game:
         self.dy = 0
 
         self.player = GameObject.Player(self, self.app.width // 2 - 50, self.app.height // 2 - 50, 100, 100,
-                                        'Assets/player.png', True)
-        self.test_object = GameObject.Storm(self, -1000, 0, 500, 1080, 'Assets/Bez-nazwy (1).jpg', True)
-        self.objects.append(GameObject.Chest(self, 300, 300, 150, 150, "Assets/Chest.jpeg", True))
+                                        images.player, True)
+        self.test_object = GameObject.Storm(self, -1000, 0, 500, 1080, images.storm, True)
+        self.objects.append(GameObject.Chest(self, 300, 300, 150, 150, images.chest, True))
 
         self.tiles = {}
-        self.tile_image = pygame.image.load('Assets/tile.png').convert_alpha()
+        self.tile_image = images.tile
         self.tile_size = 96
         self.init_tiles()
 
@@ -58,6 +63,7 @@ class Game:
             if not isinstance(obj, (GameObject.Tile, GameObject.Player, GameObject.Storm)):
                 obj.render()
             elif isinstance(obj, GameObject.Player):
+                obj.rotate_towards_cursor()
                 obj.render()
             elif isinstance(obj, GameObject.Storm):
                 obj.move()
