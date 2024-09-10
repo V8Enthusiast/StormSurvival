@@ -27,7 +27,8 @@ class Game:
 
         self.player = GameObject.Player(self, self.app.width // 2 - 50, self.app.height // 2 - 50, 100, 100,
                                         images.player, True)
-        self.test_object = GameObject.Storm(self, -1000, 0, 500, 1080, images.storm, True)
+        self.storm = GameObject.Storm(self, -1000, 0, 500, 1080, images.storm, True)
+        self.storm2=GameObject.Storm(self, -1000, -1000, 500, 1080, images.storm, True)
         chest = GameObject.Chest(self, 300, 300, 100, 100, images.chest, True)
         self.chests.append(chest)
         self.objects.append(chest)
@@ -69,7 +70,7 @@ class Game:
         max_y = max(y for x, y in self.tiles.keys())
         min_y = min(y for x, y in self.tiles.keys())
 
-        self.test_object.damage()
+        self.storm.damage()
         #right
         if player_x * 2 + self.app.width >= max_x:
             for y in range(min_y, max_y + self.tile_size, self.tile_size):
