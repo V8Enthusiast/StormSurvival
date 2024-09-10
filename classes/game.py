@@ -55,7 +55,7 @@ class Game:
         self.tile_width=96
 
         self.hotbar = hotbar.Hotbar(self, 10, self.app.height-100, 5)
-        self.hotbar.add_item(weapon.Weapon(self, self.player, images.gun, 12, 12, 5, 1, 20), 0)
+        self.hotbar.add_item(weapon.Weapon(self, self.player, images.gun, 12, 12, 5, 2, 20), 0)
 
         self.sound_mixer = mixer.Mixer()
         self.time_of_last_shot = time.time_ns()

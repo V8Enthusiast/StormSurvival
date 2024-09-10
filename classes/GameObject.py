@@ -223,6 +223,15 @@ class Player(GameObject):
                 selected_item = self.game.hotbar.items[self.game.hotbar.selected_slot]
                 if isinstance(selected_item, weapon.Weapon):
                     selected_item.reload()
+            elif event.key == pygame.K_b:
+                selected_item = self.game.hotbar.items[self.game.hotbar.selected_slot]
+                if isinstance(selected_item, weapon.Weapon):
+                    if selected_item.firemode == 1:
+                        selected_item.firemode = 2
+                    elif selected_item.firemode == 2:
+                        selected_item.firemode = 1
+                    else:
+                        print("Weapon does not support extra fire modes")
 
     def drop_item(self):
         selected_item = self.game.hotbar.items[self.game.hotbar.selected_slot]
