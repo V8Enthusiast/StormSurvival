@@ -1,3 +1,4 @@
+import math
 import random
 import time
 
@@ -19,6 +20,7 @@ class Game:
         self.screen = self.app.screen
         self.buttons = []
         self.chests = []
+        self.enemies = []
         self.selected_chest = None
         self.chest_ui = None
         self.speed = 10
@@ -32,6 +34,11 @@ class Game:
         chest = GameObject.Chest(self, 300, 300, 100, 100, images.chest, True)
         self.chests.append(chest)
         self.objects.append(chest)
+
+        zombie = GameObject.Zombie(self, 50, 50, 100, 100, images.player, True)
+
+        self.enemies.append(zombie)
+        self.objects.append(zombie)
 
         self.tiles = {}
         self.tile_size = 96
@@ -136,6 +143,12 @@ class Game:
                     self.helpText = ""
                     self.selected_chest = None
                     self.chest_ui = None
+
+        for enemy in self.enemies:
+            if self.player.x - enemy.x > 0:
+                enemy.angle = math.atan((self.player.y - enemy.y)/(self.player.x - enemy.x))
+            if self.player.x - enemy.x < 0:
+                enemy.angle = math.atan((self.player.y - enemy.y)/(self.player.x - enemy.x)) + math.radians(180)
 
 
         for p in self.weaponparticlesystem.particles:
