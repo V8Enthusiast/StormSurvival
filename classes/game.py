@@ -99,6 +99,7 @@ class Game:
 
 
                     except:
+                        pass
 
         if len(neighs)!=0:
 
