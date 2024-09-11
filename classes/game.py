@@ -61,6 +61,8 @@ class Game:
         self.time_of_last_shot = time.time_ns()
         self.burst_shots = 0
 
+        self.resource_manager=GameObject.Resource_Manager(0,0,self,[('gems',10),('wood',50)],[images.gem,images.wood])
+
 
     def init_tiles(self):
         for y in range(-96, self.app.height+96, self.tile_size):
