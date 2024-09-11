@@ -1,8 +1,10 @@
+import math
+
 import pygame
 
 
 class Particle:
-    def __init__(self, x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage, glowy = False):
+    def __init__(self, x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage, glowy = False, face_direction=False):
         self.x = x
         self.y = y
         self.vx = vx
@@ -17,6 +19,7 @@ class Particle:
         self.shape = shape
         self.damage = damage
         self.glowy = glowy
+        self.face_direction = face_direction
 
     def apply_force(self, fx, fy):
         self.vx += fx
@@ -30,6 +33,9 @@ class Particle:
         if self.alpha > 0 and self.lifespan > 0:
             self.alpha -= self.alpha // (1 / 2 * self.lifespan)
             self.lifespan -= 2
+
+    def get_angle(self):
+        return math.degrees(math.atan2(self.vy, self.vx))-90
 
     def draw(self, screen):
         screen_width, screen_height = screen.get_size()
@@ -76,6 +82,11 @@ class Particle:
                 points = [(self.size, 0), (self.size * 1.5, self.size * 1.5), (self.size, self.size * 2), (self.size * 0.5, self.size * 1.5)]
                 pygame.draw.polygon(surface, (self.red, self.green, self.blue, self.alpha), points)
                 pygame.draw.circle(surface, (self.red, self.green, self.blue, self.alpha), (self.size, self.size * 1.5), self.size // 2)
+
+            if self.face_direction:
+                angle = self.get_angle()
+                surface = pygame.transform.rotate(surface, -angle)
+
             screen.blit(surface, (self.x - self.size, self.y - self.size))
 
 class ParticleSystem:
@@ -84,8 +95,8 @@ class ParticleSystem:
         self.movable = movable
         self.game = game
 
-    def add_particle(self, x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage, glowy = False):
-        self.particles.append(Particle(x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage, glowy))
+    def add_particle(self, x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage, glowy = False, face_direction=False):
+        self.particles.append(Particle(x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage, glowy, face_direction))
 
     def apply_force_to_all(self, fx, fy):
         for particle in self.particles:

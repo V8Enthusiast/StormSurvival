@@ -312,7 +312,7 @@ class Game:
             red, green, blue, alpha = 171,190,191, 255
             shape = 'water_drop'
             damage = 0
-            self.environmentparticlesystem.add_particle(x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage)
+            self.environmentparticlesystem.add_particle(x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage, face_direction=True)
 
 
     def events(self):
