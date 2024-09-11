@@ -301,15 +301,15 @@ class Game:
         print(t2-t1)
 
     def generate_rain(self):
-        for _ in range(5):
+        for _ in range(3):
             x = random.randint(-self.app.width//10, self.app.width)
             y = 0
             vx = 1
             vy = random.uniform(2, 5)
-            speed = 3
+            speed = 2
             lifespan = 250
             size = random.randint(5, 7)
-            red, green, blue, alpha = 171,190,191, 255
+            red, green, blue, alpha = 25,25,250, 255
             shape = 'water_drop'
             damage = 0
             self.environmentparticlesystem.add_particle(x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage, face_direction=True)
