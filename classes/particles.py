@@ -61,6 +61,16 @@ class Particle:
                     (self.size * 0.5, self.size * 1.5)
                 ]
                 pygame.draw.polygon(surface, (self.red, self.green, self.blue, self.alpha), points)
+
+            elif self.shape == 'bullet':
+                points = [
+                    (self.size * 2, self.size),
+                    (self.size * 1.3, self.size * 0.5),
+                    (0, self.size * 0.5),
+                    (0, self.size * 1.5),
+                    (self.size * 1.3, self.size * 1.5)
+                ]
+                pygame.draw.polygon(surface, (self.red, self.green, self.blue, self.alpha), points)
             screen.blit(surface, (self.x - self.size, self.y - self.size))
 
 class ParticleSystem:

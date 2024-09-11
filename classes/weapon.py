@@ -34,7 +34,7 @@ class Weapon:
                 size = random.randint(2, 5)
                 red, green, blue = 255, 255, 0
                 alpha = 255
-                shape = 'circle'
+                shape = 'bullet'
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, self.damage)
 
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
@@ -67,7 +67,7 @@ class PumpActionShotgun(Weapon):
                 size = random.randint(2, 5)
                 red, green, blue = 255, 255, 0
                 alpha = 255
-                shape = 'circle'
+                shape = 'bullet'
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red,
                                                                    green, blue, alpha, shape, self.damage)
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
@@ -102,7 +102,7 @@ class M4A1(Weapon):
                 size = random.randint(5, 5)
                 red, green, blue = 255, 255, 0
                 alpha = 255
-                shape = 'circle'
+                shape = 'bullet'
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red,
                                                                    green, blue, alpha, shape, self.damage)
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
@@ -126,7 +126,7 @@ class BoltActionSniper(Weapon):
                 size = random.randint(5, 5)
                 red, green, blue = 255, 255, 0
                 alpha = 255
-                shape = 'circle'
+                shape = 'bullet'
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red,
                                                                    green, blue, alpha, shape, self.damage)
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
@@ -161,7 +161,7 @@ class MAC10(Weapon):
                 size = random.randint(2, 5)
                 red, green, blue = 255, 255, 0
                 alpha = 255
-                shape = 'circle'
+                shape = 'bullet'
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red,
                                                                    green, blue, alpha, shape, self.damage)
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
@@ -185,7 +185,7 @@ class M1911(Weapon):
                 size = random.randint(2, 5)
                 red, green, blue = 255, 255, 0
                 alpha = 255
-                shape = 'circle'
+                shape = 'bullet'
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red,
                                                                    green, blue, alpha, shape, self.damage)
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
@@ -209,7 +209,7 @@ class ScarH(Weapon):
                 size = random.randint(2, 5)
                 red, green, blue = 255, 255, 0
                 alpha = 255
-                shape = 'circle'
+                shape = 'bullet'
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red,
                                                                    green, blue, alpha, shape, self.damage)
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
@@ -233,7 +233,7 @@ class DesertEagle(Weapon):
                 size = random.randint(2, 5)
                 red, green, blue = 255, 255, 0
                 alpha = 255
-                shape = 'circle'
+                shape = 'bullet'
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red,
                                                                    green, blue, alpha, shape, self.damage)
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
@@ -257,7 +257,7 @@ class Magnum44(Weapon):
                 size = random.randint(2, 5)
                 red, green, blue = 255, 255, 0
                 alpha = 255
-                shape = 'circle'
+                shape = 'bullet'
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red,
                                                                    green, blue, alpha, shape, self.damage)
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
