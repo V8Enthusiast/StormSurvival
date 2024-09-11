@@ -34,4 +34,17 @@ class MainMenu:
 
 
     def events(self):
-        pass
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                self.app.run = False
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                click_pos = pygame.mouse.get_pos()
+                for button in self.buttons:
+                    if button.rect.collidepoint(click_pos[0], click_pos[1]):
+                        self.app.fade(fade_in=False)
+                        button.click()
+            if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+                pass
+            if not self.app.onLevel and event.type == pygame.KEYDOWN:
+                self.app.ui.textBox.handle_event(event)

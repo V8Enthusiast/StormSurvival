@@ -64,6 +64,24 @@ class App:
         else:
             self.screen = pygame.display.set_mode((self.width, self.height), vsync=int(vsync))
 
+    def fade(self, fade_in=True, duration=1):
+        fade_surface = pygame.Surface((self.width, self.height))
+        fade_surface.fill((0, 0, 0))
+        fade_surface.set_alpha(0)
+        fade_alpha = 255 if fade_in else 0
+        fade_step = 255 / (self.fps * duration)
+
+        for _ in range(int(self.fps * duration)):
+            if fade_in:
+                fade_alpha -= fade_step
+            else:
+                fade_alpha += fade_step
+
+            fade_surface.set_alpha(int(fade_alpha))
+            self.screen.blit(fade_surface, (0, 0))
+            pygame.display.flip()
+            self.clock.tick(self.fps)
+
     def events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

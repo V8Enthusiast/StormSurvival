@@ -129,6 +129,7 @@ class Settings:
                 click_pos = pygame.mouse.get_pos()
                 for button in self.buttons:
                     if button.rect.collidepoint(click_pos[0], click_pos[1]):
+                        self.app.fade(fade_in=False)
                         button.click()
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 pass
