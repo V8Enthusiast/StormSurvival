@@ -310,7 +310,7 @@ class Game:
             lifespan = 250
             size = random.randint(5, 7)
             red, green, blue, alpha = 171,190,191, 255
-            shape = 'circle'
+            shape = 'water_drop'
             damage = 0
             self.environmentparticlesystem.add_particle(x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage)
 
