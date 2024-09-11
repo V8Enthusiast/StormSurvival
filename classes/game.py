@@ -63,8 +63,8 @@ class Game:
 
 
     def init_tiles(self):
-        for y in range(0, self.app.height, self.tile_size):
-            for x in range(0, self.app.width, self.tile_size):
+        for y in range(-96, self.app.height+96, self.tile_size):
+            for x in range(-96, self.app.width+96, self.tile_size):
                 self.choose_tile(x,y)
 
     def surround_by_sand(self,x,y):
@@ -141,7 +141,7 @@ class Game:
         return neighs
 
     def add_tile(self, x, y, tile_image, force=False):
-        if force or (x, y) not in self.tiles:
+        if force or (x, y) not in self.tiles.keys():
             self.tiles[(x, y)] = tile_image
 
     def render(self):
@@ -149,7 +149,7 @@ class Game:
         #     print('a')
 
         # print(self.dx)
-        self.app.screen.fill((0, 0, 0))
+        self.app.screen.fill((45, 149, 34))
 
         player_x, player_y = self.player.relative_position
 
