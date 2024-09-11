@@ -95,14 +95,16 @@ class Game:
                     self.add_tile(x, y, images.sand)
 
 
-        if random.randint(1, tree_probability) == 1:
-            self.add_tile(x, y, random.choice(self.trees))
+
 
         if random.randint(1, tree_probability) == 1:
             self.add_tile(x, y, random.choice(self.waters))
             self.surround_by_sand(x, y)
 
-        if random.randint(1,mine_probability)==1:
+        elif random.randint(1, tree_probability) == 1:
+            self.add_tile(x, y, random.choice(self.trees))
+
+        elif random.randint(1,mine_probability)==1:
             self.add_tile(x, y, images.mine)
         else:
             if random.randint(1, chest_probability) == 1:
