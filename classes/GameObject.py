@@ -40,10 +40,13 @@ class Zombie(GameObject):
         self.health = 100
         self.size = 25
         self.color = (255, 105, 55)
-        self.weapon = "Glock 17"
+        self.weapon = weapon.Glock17(game, self)
 
-        self.gun_image = images.gun
+        self.gun_image = images.glock17
         self.speed = 4
+
+        self.shoot_interval = 1000
+        self.last_shot_time = pygame.time.get_ticks()
 
     def render_health_bar(self):
         health_bar_width = 100
@@ -54,10 +57,15 @@ class Zombie(GameObject):
         current_health_width = int(health_bar_width * (self.health / 100))
         pygame.draw.rect(self.screen, (0, 200, 0), (health_bar_x, health_bar_y, current_health_width, health_bar_height))
 
+    def shoot(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_shot_time >= self.shoot_interval:
+            self.weapon.shoot()
+            self.last_shot_time = current_time
+
     def render(self):
         if self.health > 0:
             self.x -= self.game.dx
-
             self.y -= self.game.dy
             self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
             rotated_image = pygame.transform.rotate(self.image, -math.degrees(self.angle))
@@ -72,6 +80,8 @@ class Zombie(GameObject):
 
             # Render the health bar
             self.render_health_bar()
+
+            self.shoot()
 
 class Player(GameObject):
     def __init__(self, game, x, y, w, h, image_path, visible):
