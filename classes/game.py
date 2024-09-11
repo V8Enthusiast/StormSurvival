@@ -47,6 +47,8 @@ class Game:
         self.trees = [images.tree1, images.tree2, images.tree3]
         self.init_tiles()
 
+        self.environmentparticlesystem = particles.ParticleSystem(self)
+
         self.weaponparticlesystem = particles.ParticleSystem(self, movable=True)
         self.current_max_x=0
         self.current_max_y=0
@@ -259,7 +261,10 @@ class Game:
             enemy.x += move_x
             enemy.y += move_y
 
+        self.generate_rain()
 
+        self.environmentparticlesystem.update(self)
+        self.environmentparticlesystem.draw(self.screen)
 
         self.weaponparticlesystem.update(self)
         self.weaponparticlesystem.draw(self.screen)
@@ -294,6 +299,22 @@ class Game:
             self.app.screen.blit(firemode_display, firemode_display_rect)
         t2 = time.time()
         print(t2-t1)
+
+    def generate_rain(self):
+        for _ in range(5):
+            x = random.randint(-self.app.width//10, self.app.width)
+            y = 0
+            vx = 1
+            vy = random.uniform(2, 5)
+            speed = 3
+            lifespan = 250
+            size = random.randint(5, 7)
+            red, green, blue, alpha = 171,190,191, 255
+            shape = 'circle'
+            damage = 0
+            self.environmentparticlesystem.add_particle(x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage)
+
+
     def events(self):
         keys = pygame.key.get_pressed()
 

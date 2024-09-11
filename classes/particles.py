@@ -2,7 +2,7 @@ import pygame
 
 
 class Particle:
-    def __init__(self, x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage):
+    def __init__(self, x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage, glowy = False):
         self.x = x
         self.y = y
         self.vx = vx
@@ -16,6 +16,7 @@ class Particle:
         self.alpha = alpha
         self.shape = shape
         self.damage = damage
+        self.glowy = glowy
 
     def apply_force(self, fx, fy):
         self.vx += fx
@@ -34,14 +35,14 @@ class Particle:
         screen_width, screen_height = screen.get_size()
         if 0 <= self.x <= screen_width and 0 <= self.y <= screen_height:
             #aura, memory laggy, fine for now
+            if self.glowy:
+                aura_surface = pygame.Surface((self.size * 4, self.size * 4), pygame.SRCALPHA)
 
-            aura_surface = pygame.Surface((self.size * 4, self.size * 4), pygame.SRCALPHA)
-
-            for i in range(self.size * 2, 0, -1):
-                aura_alpha = max(self.alpha // 2 * (i / (self.size * 2)), 0)
-                pygame.draw.circle(aura_surface, (self.red, self.green, self.blue, int(aura_alpha)),
-                                   (self.size * 2, self.size * 2), i)
-            screen.blit(aura_surface, (self.x - self.size * 2, self.y - self.size * 2))
+                for i in range(self.size * 2, 0, -1):
+                    aura_alpha = max(self.alpha // 2 * (i / (self.size * 2)), 0)
+                    pygame.draw.circle(aura_surface, (self.red, self.green, self.blue, int(aura_alpha)),
+                                       (self.size * 2, self.size * 2), i)
+                screen.blit(aura_surface, (self.x - self.size * 2, self.y - self.size * 2))
 
             surface = pygame.Surface((self.size * 2, self.size * 2), pygame.SRCALPHA)
             if self.shape == 'circle':
@@ -79,8 +80,8 @@ class ParticleSystem:
         self.movable = movable
         self.game = game
 
-    def add_particle(self, x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage):
-        self.particles.append(Particle(x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage))
+    def add_particle(self, x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage, glowy = False):
+        self.particles.append(Particle(x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage, glowy))
 
     def apply_force_to_all(self, fx, fy):
         for particle in self.particles:
@@ -110,18 +111,20 @@ class ParticleSystem:
 
     def check_collisions(self, game):
         for particle in self.particles:
-            # Check collision with player
-            if game.player.rect.colliderect(particle.x, particle.y, particle.size * 2, particle.size * 2):
-                game.player.health -= particle.damage
-                self.particles.remove(particle)
-                continue
-
-            # Check collision with zombies
-            for zombie in game.enemies:
-                if zombie.rect.colliderect(particle.x, particle.y, particle.size * 2, particle.size * 2):
-                    zombie.health -= particle.damage
+            if particle.damage != 0:
+                # Check collision with player
+                if game.player.rect.colliderect(particle.x, particle.y, particle.size * 2, particle.size * 2):
+                    game.player.health -= particle.damage
                     self.particles.remove(particle)
-                    break
+                    continue
+
+                # Check collision with zombies
+                for zombie in game.enemies:
+                    if zombie.rect != None:
+                        if zombie.rect.colliderect(particle.x, particle.y, particle.size * 2, particle.size * 2):
+                            zombie.health -= particle.damage
+                            self.particles.remove(particle)
+                            break
 
     def draw(self, screen):
         for particle in self.particles:

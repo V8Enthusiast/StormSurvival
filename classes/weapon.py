@@ -35,7 +35,7 @@ class Weapon:
                 red, green, blue = 255, 255, 0
                 alpha = 255
                 shape = 'bullet'
-                self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, self.damage)
+                self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, self.damage, glowy=True)
 
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
 
@@ -69,7 +69,7 @@ class PumpActionShotgun(Weapon):
                 alpha = 255
                 shape = 'bullet'
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red,
-                                                                   green, blue, alpha, shape, self.damage)
+                                                                   green, blue, alpha, shape, self.damage, glowy=True)
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
 
 
@@ -104,7 +104,7 @@ class M4A1(Weapon):
                 alpha = 255
                 shape = 'bullet'
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red,
-                                                                   green, blue, alpha, shape, self.damage)
+                                                                   green, blue, alpha, shape, self.damage, glowy=True)
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
 
 class BoltActionSniper(Weapon):
@@ -128,7 +128,7 @@ class BoltActionSniper(Weapon):
                 alpha = 255
                 shape = 'bullet'
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red,
-                                                                   green, blue, alpha, shape, self.damage)
+                                                                   green, blue, alpha, shape, self.damage, glowy=True)
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
 
 
@@ -163,7 +163,7 @@ class MAC10(Weapon):
                 alpha = 255
                 shape = 'bullet'
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red,
-                                                                   green, blue, alpha, shape, self.damage)
+                                                                   green, blue, alpha, shape, self.damage, glowy=True)
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
 
 class M1911(Weapon):
@@ -187,7 +187,7 @@ class M1911(Weapon):
                 alpha = 255
                 shape = 'bullet'
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red,
-                                                                   green, blue, alpha, shape, self.damage)
+                                                                   green, blue, alpha, shape, self.damage, glowy=True)
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
 
 class ScarH(Weapon):
@@ -211,7 +211,7 @@ class ScarH(Weapon):
                 alpha = 255
                 shape = 'bullet'
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red,
-                                                                   green, blue, alpha, shape, self.damage)
+                                                                   green, blue, alpha, shape, self.damage, glowy=True)
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
 
 class DesertEagle(Weapon):
@@ -235,7 +235,7 @@ class DesertEagle(Weapon):
                 alpha = 255
                 shape = 'bullet'
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red,
-                                                                   green, blue, alpha, shape, self.damage)
+                                                                   green, blue, alpha, shape, self.damage, glowy=True)
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
 
 class Magnum44(Weapon):
@@ -259,5 +259,5 @@ class Magnum44(Weapon):
                 alpha = 255
                 shape = 'bullet'
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red,
-                                                                   green, blue, alpha, shape, self.damage)
+                                                                   green, blue, alpha, shape, self.damage, glowy=True)
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')

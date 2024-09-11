@@ -83,6 +83,10 @@ class Zombie(GameObject):
 
             self.shoot()
 
+        else:
+            self.rect = None
+            
+
 class Player(GameObject):
     def __init__(self, game, x, y, w, h, image_path, visible):
         super().__init__(game, x, y, w, h, image_path, visible)
