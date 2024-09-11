@@ -23,7 +23,7 @@ class Game:
         self.enemies = []
         self.selected_chest = None
         self.chest_ui = None
-        self.speed = 10
+        self.speed = (math.pi + math.e)/2
         self.dx = 0
         self.dy = 0
 
@@ -187,8 +187,8 @@ class Game:
         visible_area = pygame.Rect(player_x2 - self.app.width // 2, player_y2 - self.app.height // 2,
                                    self.app.width * 2, self.app.height * 2)
         # print(self.tiles.items())
-        player_x = (self.player.relative_position[0]+self.player.gameObjectPos[0])
-        player_y = (self.player.relative_position[1]+self.player.gameObjectPos[1])
+        player_x = int((self.player.relative_position[0]+self.player.gameObjectPos[0]))
+        player_y = int((self.player.relative_position[1]+self.player.gameObjectPos[1]))
         for x in range(((player_x-self.app.width//2)//self.tile_size)*self.tile_size,((player_x+self.app.width//2)//self.tile_size)*self.tile_size+2*self.tile_size,self.tile_size):
             for y in range(((player_y - self.app.height//2) // self.tile_size) * self.tile_size,
                            ((player_y + self.app.height//2) // self.tile_size) * self.tile_size + 2*self.tile_size,
