@@ -101,6 +101,7 @@ class Player(GameObject):
         self.to_ui = None
         self.from_ui = None
         self.isShooting = False
+        self.last_damage_time = 0
 
     def render_health_bar(self):
         health_bar_width = 100
@@ -117,6 +118,10 @@ class Player(GameObject):
 
     def render(self):
         if self.health > 0:
+            current_time = pygame.time.get_ticks()
+            if current_time - self.last_damage_time >= 1000:
+                self.image = pygame.transform.scale(images.player, (self.w, self.h))
+
             self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
             rotated_image = pygame.transform.rotate(self.image, -math.degrees(self.angle))
             rotated_rect = rotated_image.get_rect(center=self.rect.center)
@@ -329,6 +334,7 @@ class Storm(GameObject):
         if self.rect.colliderect(self.game.player.rect) and current_time - self.last_damage_time >= 250:
             self.game.player.health-=self.dmg
             self.last_damage_time = current_time
+            self.game.player.last_damage_time = current_time
             self.game.player.image = pygame.transform.scale(images.damagedplayer, (self.game.player.w, self.game.player.h))
 
 
