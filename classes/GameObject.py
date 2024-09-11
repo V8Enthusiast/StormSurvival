@@ -57,6 +57,7 @@ class Zombie(GameObject):
     def render(self):
         if self.health > 0:
             self.x -= self.game.dx
+
             self.y -= self.game.dy
             self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
             rotated_image = pygame.transform.rotate(self.image, -math.degrees(self.angle))

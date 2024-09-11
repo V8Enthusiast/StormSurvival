@@ -23,7 +23,7 @@ class Game:
         self.enemies = []
         self.selected_chest = None
         self.chest_ui = None
-        self.speed = (math.pi + math.e)/2
+        self.speed = 10
         self.dx = 0
         self.dy = 0
 
@@ -74,6 +74,7 @@ class Game:
                     if (x + dx * self.tile_size, y + dy * self.tile_size) in self.tiles:
                         if self.tiles[(x + dx * self.tile_size,y + dy * self.tile_size)] not in self.waters:
                             self.tiles[(x + dx * self.tile_size,y + dy * self.tile_size)]=images.sand
+        pass
     def choose_tile(self,x,y):
         tree_probability=100
         mine_probability=50
@@ -81,7 +82,7 @@ class Game:
         tile_image = images.grass
 
         for n in self.check_neighbours(x,y):
-            print(n)
+            # print(n)
             if n in self.trees:
                 if random.randint(0,10)>6:
                     self.add_tile(x, y, random.choice(self.trees))
@@ -123,7 +124,7 @@ class Game:
             for dy in range(-1,2):
                 if abs(dx)!=abs(dy):
                     try:
-                        print(self.tiles[(x + dx * self.tile_size, y + dy * self.tile_size)], self.trees)
+                        # print(self.tiles[(x + dx * self.tile_size, y + dy * self.tile_size)], self.trees)
 
                         if self.tiles[(x + dx * self.tile_size, y + dy * self.tile_size)] in self.trees or self.tiles[
                             (x + dx * self.tile_size, y + dy * self.tile_size)] in self.waters :
@@ -145,6 +146,7 @@ class Game:
             self.tiles[(x, y)] = tile_image
 
     def render(self):
+        t1=time.time()
         # if self.trees[0]==self.trees[1]:
         #     print('a')
 
@@ -185,10 +187,18 @@ class Game:
         visible_area = pygame.Rect(player_x2 - self.app.width // 2, player_y2 - self.app.height // 2,
                                    self.app.width * 2, self.app.height * 2)
         # print(self.tiles.items())
-        for (x, y), tile_image in self.tiles.items():
-            if visible_area.collidepoint(x, y):
-                if tile_image!='tree':
+        player_x = (self.player.relative_position[0]+self.player.gameObjectPos[0])
+        player_y = (self.player.relative_position[1]+self.player.gameObjectPos[1])
+        for x in range(((player_x-self.app.width//2)//self.tile_size)*self.tile_size,((player_x+self.app.width//2)//self.tile_size)*self.tile_size+2*self.tile_size,self.tile_size):
+            for y in range(((player_y - self.app.height//2) // self.tile_size) * self.tile_size,
+                           ((player_y + self.app.height//2) // self.tile_size) * self.tile_size + 2*self.tile_size,
+                           self.tile_size):
+                try:
+                    tile_image=self.tiles[(x,y)]
+
                     self.screen.blit(tile_image, (x - player_x2, y - player_y2))
+                except:
+                    pass
 
         # Render other game objects
         for obj in self.objects:
@@ -280,8 +290,8 @@ class Game:
             firemode_display_rect = firemode_display.get_rect()
             firemode_display_rect.topright = (self.app.width - 10, 10)
             self.app.screen.blit(firemode_display, firemode_display_rect)
-
-
+        t2 = time.time()
+        print(t2-t1)
     def events(self):
         keys = pygame.key.get_pressed()
 
