@@ -47,7 +47,7 @@ class Game:
         self.trees = [images.tree1, images.tree2, images.tree3]
         self.init_tiles()
 
-        self.weaponparticlesystem = particles.ParticleSystem()
+        self.weaponparticlesystem = particles.ParticleSystem(self, movable=True)
         self.current_max_x=0
         self.current_max_y=0
         self.current_min_x=0

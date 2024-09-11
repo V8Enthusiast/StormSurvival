@@ -64,9 +64,10 @@ class Particle:
             screen.blit(surface, (self.x - self.size, self.y - self.size))
 
 class ParticleSystem:
-    def __init__(self, movable=False):
+    def __init__(self, game, movable=False):
         self.particles = []
         self.movable = movable
+        self.game = game
 
     def add_particle(self, x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage):
         self.particles.append(Particle(x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage))
@@ -79,17 +80,17 @@ class ParticleSystem:
         particle_x, particle_y = 0, 0
         if self.movable:
             keys = pygame.key.get_pressed()
-            if keys[pygame.K_RIGHT]:
-                particle_x = - 10
-            if keys[pygame.K_LEFT]:
-                particle_x = 10
-            if keys[pygame.K_UP]:
-                particle_y = 10
-            if keys[pygame.K_DOWN]:
-                particle_y = -10
-            if keys[pygame.K_RIGHT] and keys[pygame.K_LEFT]:
+            if keys[pygame.K_d]:
+                particle_x = -self.game.dx
+            if keys[pygame.K_a]:
+                particle_x = -self.game.dx
+            if keys[pygame.K_w]:
+                particle_y = -self.game.dy
+            if keys[pygame.K_s]:
+                particle_y = -self.game.dy
+            if keys[pygame.K_d] and keys[pygame.K_a]:
                 particle_x = 0
-            if keys[pygame.K_UP] and keys[pygame.K_DOWN]:
+            if keys[pygame.K_w] and keys[pygame.K_s]:
                 particle_y = 0
         for particle in self.particles:
             particle.update(particle_x, particle_y)

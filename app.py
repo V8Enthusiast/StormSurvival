@@ -28,8 +28,6 @@ class App:
         self.mixer = Mixer()
         self.mixer.load_music('sounds/Jim Yosef - Link [NCS Release].mp3')
         self.mixer.play_music()
-        self.unityparticlesystem = ParticleSystem()
-
         # Save the data passed into the function to variables
         with open('settings.json', 'r') as file:
             data = json.load(file)
