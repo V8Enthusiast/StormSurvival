@@ -23,7 +23,7 @@ class Game:
         self.enemies = []
         self.selected_chest = None
         self.chest_ui = None
-        self.speed = 10
+        self.speed = (math.pi + math.e)/2
         self.dx = 0
         self.dy = 0
 
