@@ -56,7 +56,7 @@ class Game:
         self.current_min_y=0
         self.tile_width=96
 
-        self.hotbar = hotbar.Hotbar(self, 10, self.app.height-100, 5)
+        self.hotbar = hotbar.Hotbar(self, self.app.width//2 - ((50 + 10) * 5 -50)//2, self.app.height-75, 5)
         self.hotbar.add_item(weapon.Weapon(self, self.player, images.gun, 12, 12, 5, 2, 20), 0)
 
         self.sound_mixer = mixer.Mixer()
@@ -150,6 +150,39 @@ class Game:
     def add_tile(self, x, y, tile_image, force=False):
         if force or (x, y) not in self.tiles.keys():
             self.tiles[(x, y)] = tile_image
+
+    def render_player_info(self):
+        ui_surface = pygame.Surface((self.app.width, 100), pygame.SRCALPHA)
+        ui_surface.fill((0, 0, 0, 150))  # RGBA, where A is the alpha value for transparency
+
+        font = pygame.font.Font(self.font, 24)
+        text_color = (255, 255, 255)
+
+        health_text = font.render(f"Health: {self.player.health}", True, text_color)
+        ui_surface.blit(health_text, (10, 10))
+
+        hunger_text = font.render(f"Hunger: {self.player.hunger}", True, text_color)
+        ui_surface.blit(hunger_text, (10, 40))
+
+        drink_text = font.render(f"Drink: {self.player.drink}", True, text_color)
+        ui_surface.blit(drink_text, (10, 70))
+
+        gem_icon = pygame.transform.scale(images.gem, (24, 24))
+        wood_icon = pygame.transform.scale(images.wood, (24, 24))
+
+        ui_surface.blit(gem_icon, (200, 10))
+        gem_text = font.render(f"{self.resource_manager.resources[0][1]}", True, text_color)
+        ui_surface.blit(gem_text, (230, 10))
+        gem_label = font.render("Gems", True, text_color)
+        ui_surface.blit(gem_label, (260, 10))
+
+        ui_surface.blit(wood_icon, (200, 40))
+        wood_text = font.render(f"{self.resource_manager.resources[1][1]}", True, text_color)
+        ui_surface.blit(wood_text, (230, 40))
+        wood_label = font.render("Wood", True, text_color)
+        ui_surface.blit(wood_label, (260, 40))
+
+        self.screen.blit(ui_surface, (0, self.app.height - 100))
 
     def render(self):
         t1=time.time()
@@ -271,7 +304,7 @@ class Game:
         self.weaponparticlesystem.update(self)
         self.weaponparticlesystem.draw(self.screen)
 
-        self.hotbar.render()
+
         if self.chest_ui is not None:
             self.chest_ui.render()
 
@@ -292,13 +325,19 @@ class Game:
                     self.burst_shots += 1
                     self.time_of_last_shot = time.time_ns()
 
+        self.render_player_info()
+        self.hotbar.render()
+
         if isinstance(self.hotbar.items[self.hotbar.selected_slot], weapon.Weapon):
             firemode_text = self.hotbar.items[self.hotbar.selected_slot].get_firemode_text()
             font = pygame.font.Font(self.font, int(24 * self.app.scale))
             firemode_display = font.render(f"Fire Mode: {firemode_text}", True, self.font_color)
             firemode_display_rect = firemode_display.get_rect()
-            firemode_display_rect.topright = (self.app.width - 10, 10)
+            firemode_display_rect.topright = (self.app.width - 30, self.app.height - 75+ firemode_display_rect.height//2)
             self.app.screen.blit(firemode_display, firemode_display_rect)
+
+
+
         current_time = time.time()
         if current_time - self.last_fps_time >= 1:
             self.current_fps = int(1 / (current_time - t1))
