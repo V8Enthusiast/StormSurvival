@@ -23,14 +23,14 @@ class Game:
         self.enemies = []
         self.selected_chest = None
         self.chest_ui = None
-        self.speed = (math.pi + math.e)/2
+        self.speed = 3
         self.dx = 0
         self.dy = 0
 
         self.player = GameObject.Player(self, self.app.width // 2 - 50, self.app.height // 2 - 50, 100, 100,
                                         images.player, True)
-        self.storm = GameObject.Storm(self, -1000, 0, 500, self.app.height, images.storm,True)
-        self.storm2=GameObject.Storm(self, -1000, -self.app.height, 500, self.app.height, images.storm,True)
+        # self.storm = GameObject.Storm(self, -1000, 0, 500, self.app.height, images.storm,True)
+        # self.storm2=GameObject.Storm(self, -1000, -self.app.height, 500, self.app.height, images.storm,True)
         #chest = GameObject.Chest(self, 600, 600, 100, 100, images.chest, True)
         #self.chests.append(chest)
         #self.objects.append(chest)
@@ -43,8 +43,8 @@ class Game:
         self.tiles = {}
         self.tile_size = 96
 
-        self.waters=[images.water]
-        self.trees = [images.tree1, images.tree2, images.tree3]
+        self.waters=['water']
+        self.trees = ['tree1','tree2','tree3']
         self.init_tiles()
 
         self.environmentparticlesystem = particles.ParticleSystem(self)
@@ -66,9 +66,12 @@ class Game:
         self.resource_manager=GameObject.Resource_Manager(0,0,self,[('gems',10),('wood',50)],[images.gem,images.wood])
         self.e=False
         self.bar_speed=2
+        self.move_x =0#self.app.width//2%self.tile_size
+        self.move_y =0 #self.app.height//2%self.tile_size
 
         self.last_fps_time = time.time()
         self.current_fps = 0
+
 
 
 
@@ -76,6 +79,7 @@ class Game:
         for y in range(-96, self.app.height+96, self.tile_size):
             for x in range(-96, self.app.width+96, self.tile_size):
                 self.choose_tile(x,y)
+                # print(x,y)
 
     def surround_by_sand(self,x,y):
         for dx in range(-1,2):
@@ -83,51 +87,66 @@ class Game:
                 if abs(dx)!=abs(dy):
                     if (x + dx * self.tile_size, y + dy * self.tile_size) in self.tiles:
                         if self.tiles[(x + dx * self.tile_size,y + dy * self.tile_size)] not in self.waters:
-                            self.tiles[(x + dx * self.tile_size,y + dy * self.tile_size)]=images.sand
+                            self.tiles[(x + dx * self.tile_size,y + dy * self.tile_size)]='sand'
 
-        pass
-    def choose_tile(self,x,y):
-        tree_probability=100
-        mine_probability=50
-        chest_probability = 100
-        tile_image = images.grass
 
-        for n in self.check_neighbours(x,y):
-            # print(n)
-            if n in self.trees:
-                if random.randint(0,10)>6:
-                    self.add_tile(x, y, random.choice(self.trees))
-                    return
-            elif n in self.waters:
-                if random.randint(0,10)>6:
-                    self.add_tile(x, y, random.choice(self.waters))
-                    self.surround_by_sand(x,y)
-                    return
-                else:
-                    self.add_tile(x, y, images.sand)
+
 
     def build(self):
-        self.bar.value+=self.bar_speed
-        if self.bar.value>self.bar.max_value:
-            self.bar.value = self.bar.max_value
+        try:
+            self.bar.value+=self.bar_speed
+            if self.bar.value>self.bar.max_value:
+                self.bar.value = self.bar.max_value
+                self.end_building()
+                self.e=False
+
+        except:
+            pass
+
+
     def start_building(self):
-        self.bar = GameObject.Bar(self, (self.app.width // 2) // 96 * 96 - 50, (self.app.height // 2 // 96 * 96) - 10,
+
+        for a in self.tiles.items():
+            print(a)
+        try:
+
+            print(self.tiles[(2*self.player.relative_position[0]+5*self.tile_size-self.move_x,2*self.player.relative_position[1]-self.move_y+4*self.tile_size)])
+            if self.tiles[(2*self.player.relative_position[0]+5*self.tile_size-self.move_x,2*self.player.relative_position[1]+4*self.tile_size-self.move_y)] !='grass':
+
+
+                self.bar = GameObject.Bar(self, (self.app.width // 2) // 96 * 96 - 50, (self.app.height // 2 // 96 * 96) - 10,
                                   100, 20, (255, 255, 0), 0, 100)
+                print('is')
+            else:
+                self.e=False
+                print('not')
+        except:
+            pass
     def end_building(self):
-        self.objects.remove(self.bar)
-        self.bar=None
+        try:
+            self.objects.remove(self.bar)
+            self.bar=None
+        except:
+            pass
     def choose_tile(self, x, y):
         tree_probability = 100
         mine_probability = 50
         chest_probability = 200
-        tile_image = images.grass
+        tile_image = 'grass'
 
         for n in self.check_neighbours(x, y):
-            print(n)
+            # print(n)
             # print(n)
             if n in self.trees:
                 if random.randint(0, 10) > 6:
                     self.add_tile(x, y, random.choice(self.trees))
+                    return
+            elif n in self.waters:
+                if random.randint(0, 10) > 6:
+                    self.add_tile(x, y, random.choice(self.waters))
+                    self.surround_by_sand(x,y)
+                else:
+                    self.add_tile(x, y, 'sand')
 
 
 
@@ -139,7 +158,7 @@ class Game:
             self.add_tile(x, y, random.choice(self.trees))
 
         elif random.randint(1,mine_probability)==1:
-            self.add_tile(x, y, images.mine)
+            self.add_tile(x, y, 'mine')
         else:
             if random.randint(1, chest_probability) == 1:
                 chest = GameObject.Chest(self, y, x, 96, 96, images.chest_closed, True)
@@ -260,9 +279,23 @@ class Game:
                            ((player_y + self.app.height//2) // self.tile_size) * self.tile_size + 2*self.tile_size,
                            self.tile_size):
                 try:
+                    image=None
                     tile_image=self.tiles[(x,y)]
-
-                    self.screen.blit(tile_image, (x - player_x2, y - player_y2))
+                    if tile_image=='tree1':
+                        image=images.tree1
+                    if tile_image=='tree2':
+                        image=images.tree2
+                    if tile_image=='tree3':
+                        image=images.tree3
+                    if tile_image=='water':
+                        image=images.water
+                    if tile_image=='grass':
+                        image=images.grass
+                    if tile_image=='mine':
+                        image=images.mine
+                    if tile_image=='sand':
+                        image=images.sand
+                    self.screen.blit(image, (x - player_x2, y - player_y2))
                 except:
                     pass
 
@@ -287,7 +320,7 @@ class Game:
 
         for chest in self.chests:
             if chest.rect.colliderect(self.player.rect) and self.chest_ui is None:
-                print(chest)
+                # print(chest)
                 self.helpText = "Press E to open"
                 self.selected_chest = chest
                 break
@@ -377,7 +410,7 @@ class Game:
         self.app.screen.blit(fps_text, fps_text_rect)
 
         t2 = time.time()
-        print(t2-t1)
+        # print(t2-t1)
 
     def generate_rain(self):
         for _ in range(3):
@@ -440,17 +473,23 @@ class Game:
             self.dx = self.speed
         else:
             self.dx = 0
-
+        # print('aa',2*self.dx)
+        self.move_x+=2*self.dx
+        self.move_x=self.move_x%self.tile_size
+        self.move_y += 2*self.dy
+        self.move_y = self.move_y % self.tile_size
+        # print(self.move_x,self.move_y)
         if keys[pygame.K_e]:
             if self.e==False:
+                self.e = True
                 self.start_building()
-            self.e=True
+
 
         else:
             if self.e:
                 self.end_building()
-            self.e=False
-
+                self.e=False
+        # print(self.e)
         if self.e:
             self.build()
 

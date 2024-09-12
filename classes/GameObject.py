@@ -451,5 +451,15 @@ class Bar:
         pygame.draw.rect(self.game.screen,(0,0,0),pygame.Rect(self.x,self.y,self.w,self.h))
         pygame.draw.rect(self.game.screen, self.color, pygame.Rect(self.x+self.outline, self.y+self.outline, self.w*self.value//self.max_value-self.outline*2, self.h-self.outline*2))
 
+class Resource():
+    def __init__(self,game,x,y,resource,image,time,max):
+        self.game=game
+        self.x=x
+        self.y=y
+        self.resource=resource
+        self.image=image
+        self.time=time
+        self.max=max
+
 
 
