@@ -29,8 +29,8 @@ class Game:
 
         self.player = GameObject.Player(self, self.app.width // 2 - 50, self.app.height // 2 - 50, 100, 100,
                                         images.player, True)
-        self.storm = GameObject.Storm(self, -1000, 0, 500, 1080, images.storm,True)
-        self.storm2=GameObject.Storm(self, -1000, -1000, 500, 1080, images.storm,True)
+        self.storm = GameObject.Storm(self, -1000, 0, 500, self.app.height, images.storm,True)
+        self.storm2=GameObject.Storm(self, -1000, -self.app.height, 500, self.app.height, images.storm,True)
         #chest = GameObject.Chest(self, 600, 600, 100, 100, images.chest, True)
         #self.chests.append(chest)
         #self.objects.append(chest)
