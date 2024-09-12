@@ -115,7 +115,7 @@ class Game:
             self.add_tile(x, y, images.mine)
         else:
             if random.randint(1, chest_probability) == 1:
-                chest = GameObject.Chest(self, y, x, 96, 96, images.chest, True)
+                chest = GameObject.Chest(self, y, x, 96, 96, images.chest_closed, True)
                 self.objects.append(chest)
                 self.chests.append(chest)
 

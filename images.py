@@ -25,3 +25,6 @@ desert_eagle = pygame.image.load("Assets/Weapons/Deagle.png")
 magnum44 = pygame.image.load("Assets/Weapons/.44Magnum.png")
 gem=pygame.image.load("Assets/Krysztalek.png")
 wood=pygame.image.load("Assets/wood.png")
+
+chest_open = pygame.image.load("Assets/Tiles/Chest_Open.png")
+chest_closed = pygame.image.load("Assets/Tiles/Chest_Closed.png")
