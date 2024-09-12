@@ -87,25 +87,6 @@ class Game:
                         if self.tiles[(x + dx * self.tile_size,y + dy * self.tile_size)] not in self.waters:
                             self.tiles[(x + dx * self.tile_size,y + dy * self.tile_size)]=images.sand
         pass
-    def choose_tile(self,x,y):
-        tree_probability=100
-        mine_probability=50
-        chest_probability = 100
-        tile_image = images.grass
-
-        for n in self.check_neighbours(x,y):
-            # print(n)
-            if n in self.trees:
-                if random.randint(0,10)>6:
-                    self.add_tile(x, y, random.choice(self.trees))
-                    return
-            elif n in self.waters:
-                if random.randint(0,10)>6:
-                    self.add_tile(x, y, random.choice(self.waters))
-                    self.surround_by_sand(x,y)
-                    return
-                else:
-                    self.add_tile(x, y, images.sand)
 
     def build(self):
         self.bar.value+=self.bar_speed
@@ -124,8 +105,17 @@ class Game:
             print(n)
             # print(n)
             if n in self.trees:
-                if random.randint(0, 10) > 6:
+                if random.randint(0,10)>6:
                     self.add_tile(x, y, random.choice(self.trees))
+                    return
+            elif n in self.waters:
+                if random.randint(0,10)>6:
+                    self.add_tile(x, y, random.choice(self.waters))
+                    self.surround_by_sand(x,y)
+                    return
+                else:
+                    self.add_tile(x, y, images.sand)
+
 
 
 
