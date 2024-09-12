@@ -64,6 +64,9 @@ class Button:
         elif self.function == 'settings':
             self.app.last_player = self.app.ui.textBox.text
             self.app.ui = settings.Settings(self.app)
+        elif self.function == 'exit':
+            pygame.quit()
+            self.app.run = False
         elif self.function == 'save_score':
             playernick.Playernick.SaveScore(self.app.ui.score)
         elif self.function == 'plus':
