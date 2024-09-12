@@ -40,9 +40,9 @@ class Zombie(GameObject):
         self.health = 100
         self.size = 25
         self.color = (255, 105, 55)
-        self.weapon = weapon.Glock17(game, self)
+        self.weapon = weapon.M4A1(game, self)
 
-        self.gun_image = images.glock17
+        self.gun_image = images.m4a1
         self.speed = 4
 
         self.shoot_interval = 1000
