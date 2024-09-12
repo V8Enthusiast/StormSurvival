@@ -5,6 +5,7 @@ import pygame
 import random
 import math
 import images
+import copy
 from classes import weapon, gameover
 
 class GameObject():
@@ -418,17 +419,25 @@ class Resource_Manager():
         offsety=40
         image_width=35
         offsetx=70
+        self.font = pygame.font.Font('freesansbold.ttf', 32)
         for r in range(0, len(self.resources)):
-            font = pygame.font.Font('freesansbold.ttf', 32)
+
             # text = font.render(self.resources[r], True, (0,0,0))
-            text = font.render(str(self.resources[r][1]), True, (0,0,0))
+            text = self.font.render(str(self.resources[r][1]), True, (0,0,0))
             textRect = text.get_rect()
             textRect.center = (self.x+offsetx,self.y+offsety*(r)+offsety//2)
-            self.texts.append((text,textRect))
+            self.texts.append([text,textRect])
             rect = pygame.Rect(self.x, self.y+offsety*(r), offsety, offsety)
             self.images[r]=pygame.transform.scale(self.images[r],(image_width,image_width))
             self.image_objects.append([self.images[r],rect])
+    def update(self):
+        for r in range(0, len(self.resources)):
+
+            self.texts[r][0]= self.font.render(str(self.resources[r][1]), True, (0,0,0))
+
+
     def render(self):
+        self.update()
         for x in range(len(self.texts)):
             self.game.screen.blit(self.texts[x][0],self.texts[x][1])
             self.game.screen.blit(self.image_objects[x][0], self.image_objects[x][1])
@@ -460,6 +469,38 @@ class Resource():
         self.image=image
         self.time=time
         self.max=max
+        self.value=0
+        self.game.resources[(x,y)]=self
+        self.tick=0
+        offsety = 40
+        image_width = 35
+        offsetx = 70
+        self.font = pygame.font.Font('freesansbold.ttf', 32)
+        self.text = self.font.render(str(self.value), True, (0, 0, 0))
+        self.textRect = self.text.get_rect()
+        self.textRect.center = (self.x + offsetx, self.y + offsety  + offsety // 2)
+        self.rect = pygame.Rect(self.x, self.y + offsety, offsety, offsety)
+        self.image = pygame.transform.scale(self.image, (image_width, image_width))
+        print(x,y)
+        self.offset_modx=self.game.player_x2%96-self.game.tile_size//2+25
+        self.offset_mody = self.game.player_y2%9+10
+    def render(self):
+        self.update()
+        self.new_rect=self.rect.copy()
+        self.new_rect.x-=self.game.player_x2+self.offset_modx
+        self.new_rect.y -= self.game.player_y2+self.offset_mody
+        self.new_textRect=self.textRect.copy()
+        self.new_textRect.x -= self.game.player_x2+self.offset_modx
+        self.new_textRect.y -= self.game.player_y2+self.offset_mody
 
-
+        self.game.screen.blit(self.image,self.new_rect)
+        self.game.screen.blit(self.text, self.new_textRect)
+    def update(self):
+        self.tick+=1
+        if self.tick>=self.time:
+            self.value+=1
+            self.tick=0
+        if self.value>self.max:
+            self.value=self.max
+        self.text = self.font.render(str(self.value), True, (0, 0, 0))
 

@@ -63,7 +63,8 @@ class Game:
         self.time_of_last_shot = time.time_ns()
         self.burst_shots = 0
 
-        self.resource_manager=GameObject.Resource_Manager(0,0,self,[('gems',10),('wood',50)],[images.gem,images.wood])
+        self.resource_manager=GameObject.Resource_Manager(0,0,self,[['gems',10],['wood',50]],[images.gem,images.wood])
+        self.resources = {}
         self.e=False
         self.bar_speed=2
         self.move_x =0#self.app.width//2%self.tile_size
@@ -71,6 +72,7 @@ class Game:
 
         self.last_fps_time = time.time()
         self.current_fps = 0
+
 
 
 
@@ -97,29 +99,39 @@ class Game:
             self.bar.value+=self.bar_speed
             if self.bar.value>self.bar.max_value:
                 self.bar.value = self.bar.max_value
+                self.build_success()
                 self.end_building()
                 self.e=False
 
         except:
             pass
 
+    def build_success(self):
+        if self.tiles[(self.current_tile_x,self.current_tile_y)] in self.trees:
+            self.tiles[(self.current_tile_x, self.current_tile_y)]=self.tiles[(self.current_tile_x, self.current_tile_y)]+'_farm'
+            GameObject.Resource(self,self.current_tile_x,self.current_tile_y,'wood',images.wood,50,10)
+        elif self.tiles[(self.current_tile_x,self.current_tile_y)] =='mine' and self.resource_manager.resources[1][1]>=100:
+            self.resource_manager.resources[1][1]-=100
+            GameObject.Resource(self, self.current_tile_x, self.current_tile_y, 'gems', images.gem, 50, 10)
 
     def start_building(self):
 
-        for a in self.tiles.items():
-            print(a)
-        try:
+        #for a in self.tiles.items():
+            # print(a)
 
-            print(self.tiles[(2*self.player.relative_position[0]+5*self.tile_size-self.move_x,2*self.player.relative_position[1]-self.move_y+4*self.tile_size)])
-            if self.tiles[(2*self.player.relative_position[0]+5*self.tile_size-self.move_x,2*self.player.relative_position[1]+4*self.tile_size-self.move_y)] !='grass':
+        try:
+            self.current_tile_x=2*self.player.relative_position[0]+5*self.tile_size-self.move_x
+            self.current_tile_y=2*self.player.relative_position[1]+4*self.tile_size-self.move_y
+            # print(self.tiles[(2*self.player.relative_position[0]+5*self.tile_size-self.move_x,2*self.player.relative_position[1]-self.move_y+4*self.tile_size)])
+            if self.tiles[(self.current_tile_x,self.current_tile_y)] !='grass':
 
 
                 self.bar = GameObject.Bar(self, (self.app.width // 2) // 96 * 96 - 50, (self.app.height // 2 // 96 * 96) - 10,
                                   100, 20, (255, 255, 0), 0, 100)
-                print('is')
+                # print('is')
             else:
                 self.e=False
-                print('not')
+                # print('not')
         except:
             pass
     def end_building(self):
@@ -128,6 +140,29 @@ class Game:
             self.bar=None
         except:
             pass
+    def collect(self):
+
+
+        self.current_tile_x = 2 * self.player.relative_position[0] + 5 * self.tile_size - self.move_x
+        self.current_tile_y = 2 * self.player.relative_position[1] + 4 * self.tile_size - self.move_y
+        a=1
+        print(self.resources[(self.current_tile_x, self.current_tile_y)].resource, 'bb')
+        if self.resources[(self.current_tile_x, self.current_tile_y)].resource == 'wood':
+            # print('x')
+            # print(self.resource_manager.resources[1][1],
+            #       self.resources[(self.current_tile_x, self.current_tile_y)].value)
+            self.resource_manager.resources[1][1] += self.resources[
+                (self.current_tile_x, self.current_tile_y)].value
+            # print('y')
+        elif self.resources[(self.current_tile_x, self.current_tile_y)].resource == 'gems':
+            self.resource_manager.resources[0][1] += self.resources[
+                (self.current_tile_x, self.current_tile_y)].value
+        self.resources[(self.current_tile_x, self.current_tile_y)].value = 0
+
+
+
+
+
     def choose_tile(self, x, y):
         tree_probability = 100
         mine_probability = 50
@@ -247,6 +282,8 @@ class Game:
 
         player_x2 = player_x * 2
         player_y2 = player_y * 2
+        self.player_x2=player_x2
+        self.player_y2 = player_y2
 
         #right
         if player_x2 + self.app.width >= max_x:
@@ -283,9 +320,15 @@ class Game:
                     tile_image=self.tiles[(x,y)]
                     if tile_image=='tree1':
                         image=images.tree1
+                    if tile_image=='tree1_farm':
+                        image=images.tree1
                     if tile_image=='tree2':
                         image=images.tree2
+                    if tile_image=='tree2_farm':
+                        image=images.tree2
                     if tile_image=='tree3':
+                        image=images.tree3
+                    if tile_image=='tree3_farm':
                         image=images.tree3
                     if tile_image=='water':
                         image=images.water
@@ -309,6 +352,8 @@ class Game:
             elif isinstance(obj, GameObject.Storm):
                 obj.move()
                 obj.render()
+        for obj in self.resources.values():
+            obj.render()
             # if isinstance(obj, GameObject.Chest):
             #     if obj.rect.colliderect(self.player.rect) and self.chest_ui is None:
             #         self.helpText = "Press E to open"
@@ -482,7 +527,10 @@ class Game:
         if keys[pygame.K_e]:
             if self.e==False:
                 self.e = True
-                self.start_building()
+                try:
+                    self.collect()
+                except:
+                    self.start_building()
 
 
         else:
