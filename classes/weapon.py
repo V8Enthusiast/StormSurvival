@@ -48,9 +48,29 @@ class Glock17(Weapon):
     def __init__(self, game, player):
         super().__init__(game, player, images.glock17, 17, 17, 3, 0, 10)
 
+    def shoot(self):
+        if self.ammo > 0:
+            self.ammo -= 1
+            gun_length = self.image.get_width() // 2
+            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 2.2
+            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 2.2
+
+            for _ in range(1):
+                vx = math.cos(self.player.angle)
+                vy = math.sin(self.player.angle)
+                speed = random.uniform(15, 17)
+                lifespan = random.randint(40, 100)
+                size = random.randint(2, 4)
+                red, green, blue = 255, 255, 0
+                alpha = 255
+                shape = 'bullet'
+                self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red,
+                                                                   green, blue, alpha, shape, self.damage, glowy=True)
+            self.game.sound_mixer.play_sound('Assets/shoot.mp3')
+
 class PumpActionShotgun(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.pump_action_shotgun, 5, 5, 2, 0, 1)
+        super().__init__(game, player, images.pump_action_shotgun, 5, 5, 2, 0, 2)
 
     def shoot(self):
         if self.ammo > 0:
@@ -59,12 +79,12 @@ class PumpActionShotgun(Weapon):
             tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 2.2
             tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 2.2
 
-            for _ in range(100):
-                vx = random.uniform(math.cos(self.player.angle - 0.6), math.cos(self.player.angle + 0.6))
-                vy = random.uniform(math.sin(self.player.angle - 0.6), math.sin(self.player.angle + 0.6))
-                speed = random.uniform(7, 13)
-                lifespan = random.randint(20, 500)
-                size = random.randint(2, 5)
+            for _ in range(20):
+                vx = random.uniform(math.cos(self.player.angle - 0.4), math.cos(self.player.angle + 0.4))
+                vy = random.uniform(math.sin(self.player.angle - 0.4), math.sin(self.player.angle + 0.4))
+                speed = random.uniform(7, 10)
+                lifespan = random.randint(20, 50)
+                size = random.randint(2, 4)
                 red, green, blue = 255, 255, 0
                 alpha = 255
                 shape = 'bullet'
@@ -97,9 +117,9 @@ class M4A1(Weapon):
             for _ in range(1):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
-                speed = random.uniform(18, 19)
-                lifespan = random.randint(20, 500)
-                size = random.randint(5, 5)
+                speed = random.uniform(16, 18)
+                lifespan = random.randint(40, 100)
+                size = random.randint(3, 5)
                 red, green, blue = 255, 255, 0
                 alpha = 255
                 shape = 'bullet'
@@ -109,7 +129,7 @@ class M4A1(Weapon):
 
 class BoltActionSniper(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.bolt_action_sniper, 5, 5, 1, 0, 200)
+        super().__init__(game, player, images.bolt_action_sniper, 5, 5, 1, 0, 100)
 
     def shoot(self):
         if self.ammo > 0:
@@ -121,9 +141,9 @@ class BoltActionSniper(Weapon):
             for _ in range(1):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
-                speed = random.uniform(20, 20)
-                lifespan = random.randint(20, 500)
-                size = random.randint(5, 5)
+                speed = random.uniform(25, 30)
+                lifespan = random.randint(200, 1000)
+                size = random.randint(2, 4)
                 red, green, blue = 255, 255, 0
                 alpha = 255
                 shape = 'bullet'
@@ -156,9 +176,9 @@ class MAC10(Weapon):
             for _ in range(1):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
-                speed = random.uniform(14, 17)
-                lifespan = random.randint(20, 500)
-                size = random.randint(2, 5)
+                speed = random.uniform(12, 14)
+                lifespan = random.randint(40, 100)
+                size = random.randint(3, 5)
                 red, green, blue = 255, 255, 0
                 alpha = 255
                 shape = 'bullet'
@@ -180,9 +200,9 @@ class M1911(Weapon):
             for _ in range(1):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
-                speed = random.uniform(14, 18)
-                lifespan = random.randint(20, 500)
-                size = random.randint(2, 5)
+                speed = random.uniform(14, 16)
+                lifespan = random.randint(40, 100)
+                size = random.randint(2, 4)
                 red, green, blue = 255, 255, 0
                 alpha = 255
                 shape = 'bullet'
@@ -192,7 +212,7 @@ class M1911(Weapon):
 
 class ScarH(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.scarh, 20, 20, 5, 1, 27)
+        super().__init__(game, player, images.scarh, 20, 20, 5, 1, 25)
 
     def shoot(self):
         if self.ammo > 0:
@@ -204,9 +224,9 @@ class ScarH(Weapon):
             for _ in range(1):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
-                speed = random.uniform(15, 20)
-                lifespan = random.randint(20, 500)
-                size = random.randint(2, 5)
+                speed = random.uniform(15, 18)
+                lifespan = random.randint(40, 100)
+                size = random.randint(2, 4)
                 red, green, blue = 255, 255, 0
                 alpha = 255
                 shape = 'bullet'
@@ -216,7 +236,7 @@ class ScarH(Weapon):
 
 class DesertEagle(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.desert_eagle, 7, 7, 3, 0, 34)
+        super().__init__(game, player, images.desert_eagle, 7, 7, 3, 0, 30)
 
     def shoot(self):
         if self.ammo > 0:
@@ -228,9 +248,9 @@ class DesertEagle(Weapon):
             for _ in range(1):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
-                speed = random.uniform(16, 18)
-                lifespan = random.randint(20, 500)
-                size = random.randint(2, 5)
+                speed = random.uniform(14, 16)
+                lifespan = random.randint(40, 100)
+                size = random.randint(2, 4)
                 red, green, blue = 255, 255, 0
                 alpha = 255
                 shape = 'bullet'
@@ -240,7 +260,7 @@ class DesertEagle(Weapon):
 
 class Magnum44(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.magnum44, 6, 6, 2, 0, 69)
+        super().__init__(game, player, images.magnum44, 6, 6, 2, 0, 30)
 
     def shoot(self):
         if self.ammo > 0:
@@ -252,9 +272,9 @@ class Magnum44(Weapon):
             for _ in range(1):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
-                speed = random.uniform(14, 17)
-                lifespan = random.randint(20, 500)
-                size = random.randint(2, 5)
+                speed = random.uniform(14, 16)
+                lifespan = random.randint(40, 100)
+                size = random.randint(2, 4)
                 red, green, blue = 255, 255, 0
                 alpha = 255
                 shape = 'bullet'
