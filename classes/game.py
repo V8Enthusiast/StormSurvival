@@ -71,9 +71,7 @@ class Game:
         self.current_fps = 0
 
 
-    def end_building(self):
-        self.objects.remove(self.bar)
-        self.bar=None
+
     def init_tiles(self):
         for y in range(-96, self.app.height+96, self.tile_size):
             for x in range(-96, self.app.width+96, self.tile_size):
@@ -86,6 +84,7 @@ class Game:
                     if (x + dx * self.tile_size, y + dy * self.tile_size) in self.tiles:
                         if self.tiles[(x + dx * self.tile_size,y + dy * self.tile_size)] not in self.waters:
                             self.tiles[(x + dx * self.tile_size,y + dy * self.tile_size)]=images.sand
+
         pass
     def choose_tile(self,x,y):
         tree_probability=100
@@ -114,6 +113,9 @@ class Game:
     def start_building(self):
         self.bar = GameObject.Bar(self, (self.app.width // 2) // 96 * 96 - 50, (self.app.height // 2 // 96 * 96) - 10,
                                   100, 20, (255, 255, 0), 0, 100)
+    def end_building(self):
+        self.objects.remove(self.bar)
+        self.bar=None
     def choose_tile(self, x, y):
         tree_probability = 100
         mine_probability = 50
