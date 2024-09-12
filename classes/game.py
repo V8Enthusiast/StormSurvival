@@ -65,6 +65,8 @@ class Game:
 
         self.resource_manager=GameObject.Resource_Manager(0,0,self,[('gems',10),('wood',50)],[images.gem,images.wood])
 
+        self.last_fps_time = time.time()
+        self.current_fps = 0
 
     def init_tiles(self):
         for y in range(-96, self.app.height+96, self.tile_size):
@@ -297,6 +299,17 @@ class Game:
             firemode_display_rect = firemode_display.get_rect()
             firemode_display_rect.topright = (self.app.width - 10, 10)
             self.app.screen.blit(firemode_display, firemode_display_rect)
+        current_time = time.time()
+        if current_time - self.last_fps_time >= 1:
+            self.current_fps = int(1 / (current_time - t1))
+            self.last_fps_time = current_time
+
+        font = pygame.font.Font(self.font, int(24 * self.app.scale))
+        fps_text = font.render(f"FPS: {self.current_fps}", True, self.font_color)
+        fps_text_rect = fps_text.get_rect()
+        fps_text_rect.midtop = (self.app.width//2, 10)
+        self.app.screen.blit(fps_text, fps_text_rect)
+
         t2 = time.time()
         print(t2-t1)
 
