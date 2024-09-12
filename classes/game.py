@@ -27,6 +27,7 @@ class Game:
         self.dx = 0
         self.dy = 0
 
+
         self.player = GameObject.Player(self, self.app.width // 2 - 50, self.app.height // 2 - 50, 100, 100,
                                         images.player, True)
         # self.storm = GameObject.Storm(self, -1000, 0, 500, self.app.height, images.storm,True)
@@ -63,7 +64,7 @@ class Game:
         self.time_of_last_shot = time.time_ns()
         self.burst_shots = 0
 
-        self.resource_manager=GameObject.Resource_Manager(0,0,self,[['gems',10],['wood',50]],[images.gem,images.wood])
+        self.resource_manager=GameObject.Resource_Manager(0,0,self,[['gems',999],['wood',50]],[images.gem,images.wood])
         self.resources = {}
         self.e=False
         self.bar_speed=2
@@ -365,10 +366,15 @@ class Game:
 
         for chest in self.chests:
             if chest.rect.colliderect(self.player.rect) and self.chest_ui is None:
+                self.selected_chest = chest
                 # print(chest)
                 if self.resource_manager.resources[0][1]>=20:
-                    self.helpText = "Press E to open"
-                    self.selected_chest = chest
+                    if self.selected_chest.opened == False:
+                        self.helpText = "Pay 20 gems to be able to open"
+                        self.selected_chest = chest
+                    else:
+                        self.helpText = "Press E to open"
+                        self.selected_chest = chest
                 else:
                     self.helpText = "Not enough gems"
                     self.selected_chest = None
@@ -577,8 +583,14 @@ class Game:
                         if self.chest_ui is not None:
                             self.chest_ui = None
                         else:
-                            self.chest_ui = hotbar.Hotbar(self, self.selected_chest.x - 100,
-                                                          self.selected_chest.y - 100, 5)
-                            for i in range(len(self.selected_chest.Items)):
-                                self.chest_ui.add_item(self.selected_chest.Items[i], i)
-                            self.helpText = ""
+                                if self.selected_chest.opened == True:
+                                    pass
+                                else:
+                                    self.selected_chest.opened = True
+                                    self.resource_manager.resources[0][1] -= 20
+                                    break
+                                self.chest_ui = hotbar.Hotbar(self, self.selected_chest.x - 100,
+                                                              self.selected_chest.y - 100, 5)
+                                for i in range(len(self.selected_chest.Items)):
+                                    self.chest_ui.add_item(self.selected_chest.Items[i], i)
+                                self.helpText = ""

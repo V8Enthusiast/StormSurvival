@@ -356,7 +356,7 @@ class Chest(GameObject):
         self.LegendaryDrops = ["Scar-H", "Desert Eagle", ".44 Magnum"]
 
         self.collision = True
-
+        self.opened = False
         self.generateRandomItems()
 
     def generateRandomItems(self):
