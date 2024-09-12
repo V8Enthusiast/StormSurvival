@@ -85,7 +85,7 @@ class Zombie(GameObject):
 
         else:
             self.rect = None
-            
+
 
 class Player(GameObject):
     def __init__(self, game, x, y, w, h, image_path, visible):
@@ -109,6 +109,14 @@ class Player(GameObject):
         self.hunger = 100
         self.drink = 100
 
+    def render_health_bar(self):
+        health_bar_width = 100
+        health_bar_height = 10
+        health_bar_x = self.x + (self.w - health_bar_width) // 2
+        health_bar_y = self.y - 20
+        pygame.draw.rect(self.screen, (100, 100, 100), (health_bar_x, health_bar_y, health_bar_width, health_bar_height))
+        current_health_width = int(health_bar_width * (self.health / 100))
+        pygame.draw.rect(self.screen, (0, 255, 0), (health_bar_x, health_bar_y, current_health_width, health_bar_height))
 
     def rotate_towards_cursor(self):
         mouse_x, mouse_y = pygame.mouse.get_pos()
@@ -135,6 +143,7 @@ class Player(GameObject):
                     center=(self.x + self.w // 2 + offset_x, self.y + self.h // 2 + offset_y))
                 self.screen.blit(rotated_gun, gun_rect)
 
+            self.render_health_bar()
         else:
             self.game.app.ui = gameover.GameOver(self.game.app)
     def handle_event(self, event):
@@ -406,23 +415,41 @@ class Resource_Manager():
         self.y=y
         self.texts=[]
         self.image_objects=[]
-    #     offsety=40
-    #     image_width=35
-    #     offsetx=70
-    #     for r in range(0, len(self.resources)):
-    #         font = pygame.font.Font('freesansbold.ttf', 32)
-    #         # text = font.render(self.resources[r], True, (0,0,0))
-    #         text = font.render(str(self.resources[r][1]), True, (0,0,0))
-    #         textRect = text.get_rect()
-    #         textRect.center = (self.x+offsetx,self.y+offsety*(r)+offsety//2)
-    #         self.texts.append((text,textRect))
-    #         rect = pygame.Rect(self.x, self.y+offsety*(r), offsety, offsety)
-    #         self.images[r]=pygame.transform.scale(self.images[r],(image_width,image_width))
-    #         self.image_objects.append([self.images[r],rect])
-    # def render(self):
-    #     for x in range(len(self.texts)):
-    #         self.game.screen.blit(self.texts[x][0],self.texts[x][1])
-    #         self.game.screen.blit(self.image_objects[x][0], self.image_objects[x][1])
+        offsety=40
+        image_width=35
+        offsetx=70
+        for r in range(0, len(self.resources)):
+            font = pygame.font.Font('freesansbold.ttf', 32)
+            # text = font.render(self.resources[r], True, (0,0,0))
+            text = font.render(str(self.resources[r][1]), True, (0,0,0))
+            textRect = text.get_rect()
+            textRect.center = (self.x+offsetx,self.y+offsety*(r)+offsety//2)
+            self.texts.append((text,textRect))
+            rect = pygame.Rect(self.x, self.y+offsety*(r), offsety, offsety)
+            self.images[r]=pygame.transform.scale(self.images[r],(image_width,image_width))
+            self.image_objects.append([self.images[r],rect])
     def render(self):
-        pass
+        for x in range(len(self.texts)):
+            self.game.screen.blit(self.texts[x][0],self.texts[x][1])
+            self.game.screen.blit(self.image_objects[x][0], self.image_objects[x][1])
+class Bar:
+    def __init__(self,game,x,y,w,h,color,value,max_value):
+        self.game=game
+        self.x=x
+        self.w=w
+        self.y=y
+        self.h=h
+        self.color=color
+        self.max_value=max_value
+        self.value=value
+        self.collision=False
+        self.game.objects.append(self)
+        self.outline=2
+    def render(self):
+        self.x-=2*self.game.dx
+        self.y-=2*self.game.dy
+        pygame.draw.rect(self.game.screen,(0,0,0),pygame.Rect(self.x,self.y,self.w,self.h))
+        pygame.draw.rect(self.game.screen, self.color, pygame.Rect(self.x+self.outline, self.y+self.outline, self.w*self.value//self.max_value-self.outline*2, self.h-self.outline*2))
+
+
 

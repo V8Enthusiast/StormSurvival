@@ -64,10 +64,16 @@ class Game:
         self.burst_shots = 0
 
         self.resource_manager=GameObject.Resource_Manager(0,0,self,[('gems',10),('wood',50)],[images.gem,images.wood])
+        self.e=False
+        self.bar_speed=2
 
         self.last_fps_time = time.time()
         self.current_fps = 0
 
+
+    def end_building(self):
+        self.objects.remove(self.bar)
+        self.bar=None
     def init_tiles(self):
         for y in range(-96, self.app.height+96, self.tile_size):
             for x in range(-96, self.app.width+96, self.tile_size):
@@ -101,6 +107,25 @@ class Game:
                 else:
                     self.add_tile(x, y, images.sand)
 
+    def build(self):
+        self.bar.value+=self.bar_speed
+        if self.bar.value>self.bar.max_value:
+            self.bar.value = self.bar.max_value
+    def start_building(self):
+        self.bar = GameObject.Bar(self, (self.app.width // 2) // 96 * 96 - 50, (self.app.height // 2 // 96 * 96) - 10,
+                                  100, 20, (255, 255, 0), 0, 100)
+    def choose_tile(self, x, y):
+        tree_probability = 100
+        mine_probability = 50
+        chest_probability = 200
+        tile_image = images.grass
+
+        for n in self.check_neighbours(x, y):
+            print(n)
+            # print(n)
+            if n in self.trees:
+                if random.randint(0, 10) > 6:
+                    self.add_tile(x, y, random.choice(self.trees))
 
 
 
@@ -413,6 +438,19 @@ class Game:
             self.dx = self.speed
         else:
             self.dx = 0
+
+        if keys[pygame.K_e]:
+            if self.e==False:
+                self.start_building()
+            self.e=True
+
+        else:
+            if self.e:
+                self.end_building()
+            self.e=False
+
+        if self.e:
+            self.build()
 
         # Update player position based on current dx and dy
         self.player.relative_position[0] += self.dx
