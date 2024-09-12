@@ -366,8 +366,13 @@ class Game:
         for chest in self.chests:
             if chest.rect.colliderect(self.player.rect) and self.chest_ui is None:
                 # print(chest)
-                self.helpText = "Press E to open"
-                self.selected_chest = chest
+                if self.resource_manager.resources[0][1]>=20:
+                    self.helpText = "Press E to open"
+                    self.selected_chest = chest
+                else:
+                    self.helpText = "Not enough gems"
+                    self.selected_chest = None
+                    self.chest_ui = None
                 break
             elif self.helpText == "Press E to open" or (
                     self.chest_ui is not None and self.selected_chest.rect.colliderect(self.player.rect) is False):
