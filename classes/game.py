@@ -258,16 +258,12 @@ class Game:
         wood_icon = pygame.transform.scale(images.wood, (24, 24))
 
         ui_surface.blit(gem_icon, (200, 10))
-        gem_text = font.render(f"{self.resource_manager.resources[0][1]}", True, text_color)
+        gem_text = font.render(f"{self.resource_manager.resources[0][1]} Gems", True, text_color)
         ui_surface.blit(gem_text, (230, 10))
-        gem_label = font.render("Gems", True, text_color)
-        ui_surface.blit(gem_label, (260, 10))
 
         ui_surface.blit(wood_icon, (200, 40))
-        wood_text = font.render(f"{self.resource_manager.resources[1][1]}", True, text_color)
+        wood_text = font.render(f"{self.resource_manager.resources[1][1]} Wood", True, text_color)
         ui_surface.blit(wood_text, (230, 40))
-        wood_label = font.render("Wood", True, text_color)
-        ui_surface.blit(wood_label, (260, 40))
 
         self.screen.blit(ui_surface, (0, self.app.height - 100))
 
