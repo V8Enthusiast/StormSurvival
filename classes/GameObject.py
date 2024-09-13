@@ -110,14 +110,14 @@ class Player(GameObject):
         self.hunger = 100
         self.drink = 100
 
-    def render_health_bar(self):
-        health_bar_width = 100
-        health_bar_height = 10
-        health_bar_x = self.x + (self.w - health_bar_width) // 2
-        health_bar_y = self.y - 20
-        pygame.draw.rect(self.screen, (100, 100, 100), (health_bar_x, health_bar_y, health_bar_width, health_bar_height))
-        current_health_width = int(health_bar_width * (self.health / 100))
-        pygame.draw.rect(self.screen, (0, 255, 0), (health_bar_x, health_bar_y, current_health_width, health_bar_height))
+    # def render_health_bar(self):
+    #     health_bar_width = 100
+    #     health_bar_height = 10
+    #     health_bar_x = self.x + (self.w - health_bar_width) // 2
+    #     health_bar_y = self.y - 20
+    #     pygame.draw.rect(self.screen, (100, 100, 100), (health_bar_x, health_bar_y, health_bar_width, health_bar_height))
+    #     current_health_width = int(health_bar_width * (self.health / 100))
+    #     pygame.draw.rect(self.screen, (0, 255, 0), (health_bar_x, health_bar_y, current_health_width, health_bar_height))
 
     def rotate_towards_cursor(self):
         mouse_x, mouse_y = pygame.mouse.get_pos()
@@ -143,8 +143,8 @@ class Player(GameObject):
                 gun_rect = rotated_gun.get_rect(
                     center=(self.x + self.w // 2 + offset_x, self.y + self.h // 2 + offset_y))
                 self.screen.blit(rotated_gun, gun_rect)
-
-            self.render_health_bar()
+            #
+            # self.render_health_bar()
         else:
             self.game.app.ui = gameover.GameOver(self.game.app)
     def handle_event(self, event):
