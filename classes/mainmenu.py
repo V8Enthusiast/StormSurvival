@@ -11,13 +11,13 @@ class MainMenu:
         self.font_color = (255, 255, 255)
         self.buttons = [
             buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 - 100 * self.app.scale,
-                           self.app.height / 2 - 75 * self.app.scale / 2, False, self.font, "Start", (0, 0, 0),
+                           self.app.height / 2 - 25 * self.app.scale / 2, False, self.font, "Start", (0, 0, 0),
                            self.font_color, 'start', self.app),
             buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 - 100 * self.app.scale,
-                           self.app.height / 2 + 150 * self.app.scale / 2, False, self.font, "Settings", (0, 0, 0),
+                           self.app.height / 2 + 200 * self.app.scale / 2, False, self.font, "Settings", (0, 0, 0),
                            self.font_color, 'settings', self.app),
             buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 - 100 * self.app.scale,
-                           self.app.height / 2 + 375 * self.app.scale / 2, False, self.font, "Exit", (0, 0, 0),
+                           self.app.height / 2 + 500 * self.app.scale / 2, False, self.font, "Exit", (0, 0, 0),
                            self.font_color, 'exit', self.app)
         ]
         self.textBox = inputBox.TextBox(self.app.width/2 - 100 * self.app.scale,
