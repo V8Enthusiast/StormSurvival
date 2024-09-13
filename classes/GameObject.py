@@ -490,16 +490,16 @@ class Resource():
         self.rect = pygame.Rect(self.x, self.y + offsety, offsety, offsety)
         self.image = pygame.transform.scale(self.image, (image_width, image_width))
         print(x,y)
-        self.offset_modx=self.game.player_x2%96-self.game.tile_size//2+25
-        self.offset_mody = self.game.player_y2%9+10
+        self.offset_modx=+8
+        self.offset_mody = -10
     def render(self):
         self.update()
         self.new_rect=self.rect.copy()
-        self.new_rect.x-=self.game.player_x2+self.offset_modx
-        self.new_rect.y -= self.game.player_y2+self.offset_mody
+        self.new_rect.x-=self.game.player_x2-self.offset_modx
+        self.new_rect.y -= self.game.player_y2-self.offset_mody
         self.new_textRect=self.textRect.copy()
-        self.new_textRect.x -= self.game.player_x2+self.offset_modx
-        self.new_textRect.y -= self.game.player_y2+self.offset_mody
+        self.new_textRect.x -= self.game.player_x2-self.offset_modx
+        self.new_textRect.y -= self.game.player_y2-self.offset_mody
 
         self.game.screen.blit(self.image,self.new_rect)
         self.game.screen.blit(self.text, self.new_textRect)

@@ -30,8 +30,8 @@ class Game:
 
         self.player = GameObject.Player(self, self.app.width // 2 - 50, self.app.height // 2 - 50, 100, 100,
                                         images.player, True)
-        # self.storm = GameObject.Storm(self, -1000, 0, 500, self.app.height, images.storm,True)
-        # self.storm2=GameObject.Storm(self, -1000, -self.app.height, 500, self.app.height, images.storm,True)
+        self.storm = GameObject.Storm(self, -1000, 0, 500, self.app.height, images.storm,True)
+        self.storm2=GameObject.Storm(self, -1000, -self.app.height, 500, self.app.height, images.storm,True)
         #chest = GameObject.Chest(self, 600, 600, 100, 100, images.chest, True)
         #self.chests.append(chest)
         #self.objects.append(chest)
@@ -115,8 +115,11 @@ class Game:
     def build_success(self):
         if self.tiles[(self.current_tile_x,self.current_tile_y)] in self.trees:
             self.tiles[(self.current_tile_x, self.current_tile_y)]=self.tiles[(self.current_tile_x, self.current_tile_y)]+'_farm'
-            GameObject.Resource(self,self.current_tile_x,self.current_tile_y,'wood',images.wood,50,10)
+            GameObject.Resource(self,self.current_tile_x,self.current_tile_y-self.tile_size//6,'wood',images.wood,50,10)
+            GameObject.Resource(self, self.current_tile_x, self.current_tile_y +self.tile_size//6, 'food', images.food, 50, 10)
         elif self.tiles[(self.current_tile_x,self.current_tile_y)] =='mine' and self.resource_manager.resources[1][1]>=100:
+            self.tiles[(self.current_tile_x, self.current_tile_y)] = self.tiles[(
+            self.current_tile_x, self.current_tile_y)] + '_farm'
             self.resource_manager.resources[1][1]-=100
             GameObject.Resource(self, self.current_tile_x, self.current_tile_y, 'gems', images.gem, 50, 10)
 
@@ -151,19 +154,24 @@ class Game:
 
         self.current_tile_x = 2 * self.player.relative_position[0] + 5 * self.tile_size - self.move_x
         self.current_tile_y = 2 * self.player.relative_position[1] + 4 * self.tile_size - self.move_y
-        a=1
-        print(self.resources[(self.current_tile_x, self.current_tile_y)].resource, 'bb')
-        if self.resources[(self.current_tile_x, self.current_tile_y)].resource == 'wood':
+
+
+
+        print(self.resources[(self.current_tile_x,self.current_tile_y-self.tile_size//6)].resource )
+        if self.resources[(self.current_tile_x,self.current_tile_y-self.tile_size//6)].resource == 'wood':
             # print('x')
             # print(self.resource_manager.resources[1][1],
             #       self.resources[(self.current_tile_x, self.current_tile_y)].value)
             self.resource_manager.resources[1][1] += self.resources[
-                (self.current_tile_x, self.current_tile_y)].value
+                (self.current_tile_x, self.current_tile_y-self.tile_size//6)].value
+            self.resources[(self.current_tile_x, self.current_tile_y-self.tile_size//6)].value = 0
+            print('ymu yum yum',self.resources[(self.current_tile_x, self.current_tile_y + self.tile_size // 6)].value )
+            self.resources[(self.current_tile_x, self.current_tile_y + self.tile_size // 6)].value = 0
             # print('y')
         elif self.resources[(self.current_tile_x, self.current_tile_y)].resource == 'gems':
             self.resource_manager.resources[0][1] += self.resources[
                 (self.current_tile_x, self.current_tile_y)].value
-        self.resources[(self.current_tile_x, self.current_tile_y)].value = 0
+            self.resources[(self.current_tile_x, self.current_tile_y)].value = 0
 
 
 
@@ -172,7 +180,7 @@ class Game:
     def choose_tile(self, x, y):
         tree_probability = 100
         mine_probability = 50
-        chest_probability = 200
+        chest_probability = 50
         tile_image = 'grass'
 
         for n in self.check_neighbours(x, y):
@@ -205,6 +213,7 @@ class Game:
                 chest = GameObject.Chest(self, y, x, 96, 96, images.chest_closed, True)
                 self.objects.append(chest)
                 self.chests.append(chest)
+                print('aa')
 
             self.add_tile(x, y, tile_image)
 
@@ -332,21 +341,23 @@ class Game:
                     if tile_image=='tree1':
                         image=images.tree1
                     if tile_image=='tree1_farm':
-                        image=images.tree1
+                        image=images.tree_farm
                     if tile_image=='tree2':
                         image=images.tree2
                     if tile_image=='tree2_farm':
-                        image=images.tree2
+                        image=images.tree_farm
                     if tile_image=='tree3':
                         image=images.tree3
                     if tile_image=='tree3_farm':
-                        image=images.tree3
+                        image=images.tree_farm
                     if tile_image=='water':
                         image=images.water
                     if tile_image=='grass':
                         image=images.grass
                     if tile_image=='mine':
                         image=images.mine
+                    if tile_image=='mine_farm':
+                        image=images.mine_farm
                     if tile_image=='sand':
                         image=images.sand
                     self.screen.blit(image, (x - player_x2, y - player_y2))

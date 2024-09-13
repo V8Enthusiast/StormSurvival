@@ -28,3 +28,6 @@ wood=pygame.image.load("Assets/wood.png")
 
 chest_open = pygame.image.load("Assets/Tiles/Chest_Open.png")
 chest_closed = pygame.image.load("Assets/Tiles/Chest_Closed.png")
+tree_farm=pygame.image.load("Assets/Tiles/dzewa2Mining.png")
+mine_farm=pygame.image.load("Assets/Tiles/KopalniaMining.png")
+food=pygame.image.load("Assets/Japko.png")
