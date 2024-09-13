@@ -17,9 +17,9 @@ class Settings:
         self.buttons = [
             buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 - 575 * self.app.scale / 2, False, self.font, f"{resolutions[settings['Resolution']]}", (0, 0, 0), self.font_color, 'resolution', self.app),
             buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 - 375 * self.app.scale / 2, False, self.font, f"{settings['Fullscreen']}", (0, 0, 0), self.font_color, 'fullscreen', self.app),
-            buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 - 175 * self.app.scale / 2, False, self.font, f"{gamemodes[settings['Gamemode']]}", (0, 0, 0), self.font_color, 'mode', self.app),
-            buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 + 25 * self.app.scale / 2, False, self.font, f"{settings['Default level']}", (0, 0, 0), self.font_color, 'level', self.app),
-            buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 + 225 * self.app.scale / 2, False, self.font, f"{color_modes[settings['Block colors']]}", (0, 0, 0), self.font_color, 'colors', self.app),
+            # buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 - 175 * self.app.scale / 2, False, self.font, f"{gamemodes[settings['Gamemode']]}", (0, 0, 0), self.font_color, 'mode', self.app),
+            # buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 + 25 * self.app.scale / 2, False, self.font, f"{settings['Default level']}", (0, 0, 0), self.font_color, 'level', self.app),
+            # buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 + 225 * self.app.scale / 2, False, self.font, f"{color_modes[settings['Block colors']]}", (0, 0, 0), self.font_color, 'colors', self.app),
             buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 - 225 * self.app.scale, self.app.height / 2 + 625 * self.app.scale / 2, False, self.font, "Save", (0, 0, 0), self.font_color, 'save_settings', self.app),
             buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 25 * self.app.scale, self.app.height / 2 + 625 * self.app.scale / 2, False, self.font, "Exit", (0, 0, 0), self.font_color, 'back_to_menu', self.app)
         ]
@@ -27,23 +27,23 @@ class Settings:
         self.texts = [
             font.render("Resolution", True, self.font_color),
             font.render("Fullscreen", True, self.font_color),
-            font.render("Gamemode", True, self.font_color),
-            font.render("Default level", True, self.font_color),
-            font.render("Block colors", True, self.font_color),
+            # font.render("Gamemode", True, self.font_color),
+            # font.render("Default level", True, self.font_color),
+            # font.render("Block colors", True, self.font_color),
             font.render("Music volume", True, self.font_color)
         ]
 
         self.current_resolution = settings['Resolution']
         self.current_fs = settings['Fullscreen']
-        self.current_gamemode = settings['Gamemode']
-        self.current_default_level = settings['Default level']
-        self.current_colors = settings['Block colors']
-        self.current_fall_speed = settings['Max fall speed']
+        # self.current_gamemode = settings['Gamemode']
+        # self.current_default_level = settings['Default level']
+        # self.current_colors = settings['Block colors']
+        # self.current_fall_speed = settings['Max fall speed']
         self.current_volume = settings.get('Volume', 0.5)
 
         self.volume_slider = slider.Slider(
             self.app.width / 2 + 100 * self.app.scale,
-            self.app.height / 2 + 425 * self.app.scale / 2,
+            self.app.height / 2 - 175 * self.app.scale / 2,
             200 * self.app.scale,
             20 * self.app.scale,
             0, 1, self.current_volume, self.app
@@ -72,10 +72,10 @@ class Settings:
         settings = {
             'Resolution': self.current_resolution,
             'Fullscreen': self.current_fs,
-            'Gamemode': self.current_gamemode,
-            'Default level': self.current_default_level,
-            'Block colors': self.current_colors,
-            'Max fall speed': self.current_fall_speed,
+            # 'Gamemode': self.current_gamemode,
+            # 'Default level': self.current_default_level,
+            # 'Block colors': self.current_colors,
+            # 'Max fall speed': self.current_fall_speed,
             'Volume': self.volume_slider.value
         }
         with open('settings.json', 'w') as file:
@@ -91,24 +91,24 @@ class Settings:
             self.screen = pygame.display.set_mode((width, height), vsync=int(self.app.is_vsync_enabled))
         self.app.width = width
         self.app.height = height
-        settings_values.mode = settings['Gamemode']
-        settings_values.default_level = settings['Default level']
-        settings_values.block_colors = settings['Block colors']
-        settings_values.max_fall_speed = settings['Max fall speed']
+        # settings_values.mode = settings['Gamemode']
+        # settings_values.default_level = settings['Default level']
+        # settings_values.block_colors = settings['Block colors']
+        # settings_values.max_fall_speed = settings['Max fall speed']
         self.main_text_rect_center = (self.app.width // 2, 75 * self.app.scale)
         self.buttons = [
             buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 - 575 * self.app.scale / 2, False, self.font, f"{resolutions[settings['Resolution']]}", (0, 0, 0), self.font_color, 'resolution', self.app),
             buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 - 375 * self.app.scale / 2, False, self.font, f"{settings['Fullscreen']}", (0, 0, 0), self.font_color, 'fullscreen', self.app),
-            buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 - 175 * self.app.scale / 2, False, self.font, f"{gamemodes[settings['Gamemode']]}", (0, 0, 0), self.font_color, 'mode', self.app),
-            buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 + 25 * self.app.scale / 2, False, self.font, f"{settings['Default level']}", (0, 0, 0), self.font_color, 'level', self.app),
-            buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 + 225 * self.app.scale / 2, False, self.font, f"{color_modes[settings['Block colors']]}", (0, 0, 0), self.font_color, 'colors', self.app),
+            # buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 - 175 * self.app.scale / 2, False, self.font, f"{gamemodes[settings['Gamemode']]}", (0, 0, 0), self.font_color, 'mode', self.app),
+            # buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 + 25 * self.app.scale / 2, False, self.font, f"{settings['Default level']}", (0, 0, 0), self.font_color, 'level', self.app),
+            # buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 + 225 * self.app.scale / 2, False, self.font, f"{color_modes[settings['Block colors']]}", (0, 0, 0), self.font_color, 'colors', self.app),
             buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 - 225 * self.app.scale, self.app.height / 2 + 625 * self.app.scale / 2, False, self.font, "Save", (0, 0, 0), self.font_color, 'save_settings', self.app),
             buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 25 * self.app.scale, self.app.height / 2 + 625 * self.app.scale / 2, False, self.font, "Exit", (0, 0, 0), self.font_color, 'back_to_menu', self.app)
         ]
 
         self.volume_slider = slider.Slider(
             self.app.width / 2 + 100 * self.app.scale,
-            self.app.height / 2 + 425 * self.app.scale / 2,
+            self.app.height / 2 - 175 * self.app.scale / 2,
             200 * self.app.scale,
             20 * self.app.scale,
             0, 1, settings.get('Volume', 0.5), self.app

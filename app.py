@@ -33,10 +33,10 @@ class App:
             data = json.load(file)
             settings = data['settings']
 
-        settings_values.mode = settings['Gamemode']
-        settings_values.default_level = settings['Default level']
-        settings_values.block_colors = settings['Block colors']
-        settings_values.max_fall_speed = settings['Max fall speed']
+        # settings_values.mode = settings['Gamemode']
+        # settings_values.default_level = settings['Default level']
+        # settings_values.block_colors = settings['Block colors']
+        # settings_values.max_fall_speed = settings['Max fall speed']
 
         settings_values.volume = settings['Volume']
 
