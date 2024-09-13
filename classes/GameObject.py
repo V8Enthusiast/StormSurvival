@@ -355,9 +355,17 @@ class Chest(GameObject):
         self.EpicDrops = ["MAC-10", "M1911 .45"]
         self.LegendaryDrops = ["Scar-H", "Desert Eagle", ".44 Magnum"]
 
+        self.opened_image = images.chest_open
+        self.open_image = pygame.transform.scale(self.opened_image, (self.w, self.h))
+
         self.collision = True
         self.opened = False
         self.generateRandomItems()
+
+    def render(self):
+        if self.opened:
+            self.image = self.open_image
+        super().render()
 
     def generateRandomItems(self):
         weapon_classes = {
