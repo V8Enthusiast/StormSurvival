@@ -138,8 +138,8 @@ class Player(GameObject):
             if isinstance(selected_item, weapon.Weapon):
                 rotated_gun = pygame.transform.rotate(selected_item.image, -math.degrees(self.angle))
                 gun_length = selected_item.image.get_width() // 2
-                offset_x = gun_length * math.cos(self.angle) * 1.5
-                offset_y = gun_length * math.sin(self.angle) * 1.5
+                offset_x = gun_length * math.cos(self.angle) * 2.5
+                offset_y = gun_length * math.sin(self.angle) * 2.5
                 gun_rect = rotated_gun.get_rect(
                     center=(self.x + self.w // 2 + offset_x, self.y + self.h // 2 + offset_y))
                 self.screen.blit(rotated_gun, gun_rect)

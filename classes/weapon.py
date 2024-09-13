@@ -7,7 +7,7 @@ from classes import particles
 class Weapon:
     def __init__(self, game, player, image, ammo, max_ammo, fire_rate, firemode, damage):
         self.player = player
-        self.image = image
+        self.image = pygame.transform.scale(image,[60, 60])
         self.ammo = ammo
         self.max_ammo = max_ammo
         self.game = game
@@ -23,8 +23,8 @@ class Weapon:
         if self.ammo > 0:
             self.ammo -= 1
             gun_length = self.image.get_width() // 2
-            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 2.2
-            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 2.2
+            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 3.00
+            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 3.00
 
             for _ in range(100):
                 vx = 5 * math.cos(self.player.angle)
@@ -52,8 +52,8 @@ class Glock17(Weapon):
         if self.ammo > 0:
             self.ammo -= 1
             gun_length = self.image.get_width() // 2
-            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 2.2
-            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 2.2
+            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 3.00
+            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 3.00
 
             for _ in range(1):
                 vx = math.cos(self.player.angle)
@@ -76,8 +76,8 @@ class PumpActionShotgun(Weapon):
         if self.ammo > 0:
             self.ammo -= 1
             gun_length = self.image.get_width() // 2
-            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 2.2
-            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 2.2
+            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 3.00
+            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 3.00
 
             for _ in range(20):
                 vx = random.uniform(math.cos(self.player.angle - 0.4), math.cos(self.player.angle + 0.4))
@@ -111,8 +111,8 @@ class M4A1(Weapon):
         if self.ammo > 0:
             self.ammo -= 1
             gun_length = self.image.get_width() // 2
-            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 2.2
-            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 2.2
+            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 3.00
+            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 3.00
 
             for _ in range(1):
                 vx = math.cos(self.player.angle)
@@ -135,8 +135,8 @@ class BoltActionSniper(Weapon):
         if self.ammo > 0:
             self.ammo -= 1
             gun_length = self.image.get_width() // 2
-            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 2.2
-            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 2.2
+            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 3.00
+            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 3.00
 
             for _ in range(1):
                 vx = math.cos(self.player.angle)
@@ -170,8 +170,8 @@ class MAC10(Weapon):
         if self.ammo > 0:
             self.ammo -= 1
             gun_length = self.image.get_width() // 2
-            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 2.2
-            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 2.2
+            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 3.00
+            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 3.00
 
             for _ in range(1):
                 vx = math.cos(self.player.angle)
@@ -194,8 +194,8 @@ class M1911(Weapon):
         if self.ammo > 0:
             self.ammo -= 1
             gun_length = self.image.get_width() // 2
-            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 2.2
-            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 2.2
+            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 3.00
+            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 3.00
 
             for _ in range(1):
                 vx = math.cos(self.player.angle)
@@ -218,8 +218,8 @@ class ScarH(Weapon):
         if self.ammo > 0:
             self.ammo -= 1
             gun_length = self.image.get_width() // 2
-            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 2.2
-            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 2.2
+            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 3.00
+            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 3.00
 
             for _ in range(1):
                 vx = math.cos(self.player.angle)
@@ -242,8 +242,8 @@ class DesertEagle(Weapon):
         if self.ammo > 0:
             self.ammo -= 1
             gun_length = self.image.get_width() // 2
-            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 2.2
-            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 2.2
+            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 3.00
+            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 3.00
 
             for _ in range(1):
                 vx = math.cos(self.player.angle)
@@ -266,8 +266,8 @@ class Magnum44(Weapon):
         if self.ammo > 0:
             self.ammo -= 1
             gun_length = self.image.get_width() // 2
-            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 2.2
-            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 2.2
+            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 3.00
+            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 3.00
 
             for _ in range(1):
                 vx = math.cos(self.player.angle)

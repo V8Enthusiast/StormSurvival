@@ -62,7 +62,7 @@ class App:
         else:
             self.screen = pygame.display.set_mode((self.width, self.height), vsync=int(vsync))
 
-    def fade(self, fade_in=True, duration=1):
+    def fade(self, fade_in=True, duration=0.5):
         fade_surface = pygame.Surface((self.width, self.height))
         fade_surface.fill((0, 0, 0))
         fade_surface.set_alpha(0)
