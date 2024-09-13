@@ -61,6 +61,8 @@ class Game:
         self.hotbar.add_item(weapon.Weapon(self, self.player, images.gun, 12, 12, 5, 2, 20), 0)
 
         self.sound_mixer = mixer.Mixer()
+        self.sound_mixer.change_volume(self.app.mixer.get_volume())
+
         self.time_of_last_shot = time.time_ns()
         self.burst_shots = 0
 
