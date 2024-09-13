@@ -71,6 +71,9 @@ class Game:
         self.move_x =0#self.app.width//2%self.tile_size
         self.move_y =0 #self.app.height//2%self.tile_size
 
+        self.is_raining = False
+        self.next_weather_change = time.time() + random.uniform(30, 180)
+
         self.last_fps_time = time.time()
         self.current_fps = 0
 
@@ -266,6 +269,15 @@ class Game:
 
         self.screen.blit(ui_surface, (0, self.app.height - 100))
 
+    def render_weather_info(self):
+        font = pygame.font.Font(self.font, 24)
+        text_color = (255, 255, 255)
+        current_time = time.time()
+        time_remaining = int(self.next_weather_change - current_time)
+        weather_status = "Raining" if self.is_raining else "Not Raining"
+        weather_text = font.render(f"Weather: {weather_status} | Next change in: {time_remaining}s", True, text_color)
+        self.screen.blit(weather_text, (10, 10))
+
     def render(self):
         t1=time.time()
         # if self.trees[0]==self.trees[1]:
@@ -345,7 +357,7 @@ class Game:
 
         # Render other game objects
         for obj in self.objects:
-            if not isinstance(obj, (GameObject.Tile, GameObject.Player, GameObject.Storm)):
+            if not isinstance(obj, (GameObject.Tile, GameObject.Player, GameObject.Storm, GameObject.Resource_Manager)):
                 obj.render()
             elif isinstance(obj, GameObject.Player):
                 obj.rotate_towards_cursor()
@@ -380,7 +392,7 @@ class Game:
                     self.selected_chest = None
                     self.chest_ui = None
                 break
-            elif self.helpText == "Press E to open" or (
+            elif self.helpText in ["Press E to open", "Pay 20 gems to be able to open"] or (
                     self.chest_ui is not None and self.selected_chest.rect.colliderect(self.player.rect) is False):
                 self.helpText = ""
                 self.selected_chest = None
@@ -420,6 +432,7 @@ class Game:
         self.weaponparticlesystem.update(self)
         self.weaponparticlesystem.draw(self.screen)
 
+        self.render_weather_info()
 
         if self.chest_ui is not None:
             self.chest_ui.render()
@@ -455,6 +468,15 @@ class Game:
 
 
         current_time = time.time()
+        if current_time >= self.next_weather_change:
+            if self.is_raining:
+                self.is_raining = False
+                self.next_weather_change = current_time + random.uniform(60, 180)
+            else:
+                self.is_raining = True
+                self.next_weather_change = current_time + random.uniform(30, 180)
+
+
         if current_time - self.last_fps_time >= 1:
             self.current_fps = int(1 / (current_time - t1))
             self.last_fps_time = current_time
@@ -469,19 +491,20 @@ class Game:
         # print(t2-t1)
 
     def generate_rain(self):
-        for _ in range(3):
-            x = random.randint(-self.app.width//10, self.app.width)
-            y = 0
-            vx = 1
-            vy = random.uniform(2, 5)
-            speed = 2
-            lifespan = 250
-            size = random.randint(5, 7)
-            red, green, blue, alpha = 25,25,250, 255
-            shape = 'water_drop'
-            damage = 0
-            self.environmentparticlesystem.add_particle(x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage, face_direction=True)
-
+        if self.is_raining:
+            for _ in range(3):
+                x = random.randint(-self.app.width // 10, self.app.width)
+                y = 0
+                vx = 1
+                vy = random.uniform(2, 5)
+                speed = 2
+                lifespan = 250
+                size = random.randint(5, 7)
+                red, green, blue, alpha = 25, 25, 250, 255
+                shape = 'water_drop'
+                damage = 0
+                self.environmentparticlesystem.add_particle(x, y, vx, vy, speed, lifespan, size, red, green, blue,
+                                                            alpha, shape, damage, face_direction=True)
 
     def events(self):
         keys = pygame.key.get_pressed()

@@ -436,11 +436,11 @@ class Resource_Manager():
             self.texts[r][0]= self.font.render(str(self.resources[r][1]), True, (0,0,0))
 
 
-    def render(self):
-        self.update()
-        for x in range(len(self.texts)):
-            self.game.screen.blit(self.texts[x][0],self.texts[x][1])
-            self.game.screen.blit(self.image_objects[x][0], self.image_objects[x][1])
+    # def render(self):
+    #     self.update()
+    #     for x in range(len(self.texts)):
+    #         self.game.screen.blit(self.texts[x][0],self.texts[x][1])
+    #         self.game.screen.blit(self.image_objects[x][0], self.image_objects[x][1])
 class Bar:
     def __init__(self,game,x,y,w,h,color,value,max_value):
         self.game=game
@@ -475,8 +475,8 @@ class Resource():
         offsety = 40
         image_width = 35
         offsetx = 70
-        self.font = pygame.font.Font('freesansbold.ttf', 32)
-        self.text = self.font.render(str(self.value), True, (0, 0, 0))
+        self.font = pygame.font.Font('fonts/main_font.ttf', 36)
+        self.text = self.font.render(str(self.value), True, (255, 255, 255))
         self.textRect = self.text.get_rect()
         self.textRect.center = (self.x + offsetx, self.y + offsety  + offsety // 2)
         self.rect = pygame.Rect(self.x, self.y + offsety, offsety, offsety)
