@@ -42,7 +42,7 @@ class Zombie(GameObject):
         self.color = (255, 105, 55)
         self.weapon = weapon.M4A1(game, self)
 
-        self.gun_image = images.m4a1
+        self.gun_image = self.weapon.image
         self.speed = 4
         self.combat_range = 500
         self.distance_to_player = 10000000
