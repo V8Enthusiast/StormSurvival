@@ -497,9 +497,46 @@ class Game:
 
             enemy.angle = angle
 
-            # Calculate the movement in x and y directions
+            zombie_x = enemy.x
+            zombie_y = enemy.y
+
+            collidesWithAnything = False
+            canMoveRight = True
+            canMoveLeft = True
+            canMoveUp = True
+            canMoveDown = True
+
+            for obj in self.objects:
+                if obj.collision is True:
+                    obj_x = obj.x
+                    obj_y = obj.y
+                    if obj_x <= zombie_x + enemy.w <= obj_x + obj.w and ((zombie_y >= obj_y and zombie_y <= obj_y + obj.h) or (zombie_y + enemy.h >= obj_y and zombie_y + enemy.h <= obj_y + obj.h)):  # Left
+                        collidesWithAnything = True
+                        canMoveRight = False
+                        # print(self.player.gameObjectPos[0], self.player.gameObjectPos[1], obj.x, obj.y)
+                    elif obj_x <= zombie_x <= obj_x + obj.w and ((zombie_y >= obj_y and zombie_y <= obj_y + obj.h) or (zombie_y + enemy.h >= obj_y and zombie_y + enemy.h <= obj_y + obj.h)):  # Right
+                        collidesWithAnything = True
+                        canMoveLeft = False
+                    if ((obj_x <= zombie_x <= obj_x + obj.w) or (obj_x <= zombie_x + enemy.w <= obj_x + obj.w)) and zombie_y >= obj_y and zombie_y <= obj_y + obj.h:  # Up
+                        collidesWithAnything = True
+                        canMoveUp = False
+                    elif ((obj_x <= zombie_x <= obj_x + obj.w) or (obj_x <= zombie_x + enemy.w <= obj_x + obj.w)) and zombie_y + enemy.h >= obj_y and zombie_y + enemy.h <= obj_y + obj.h:  # Down
+                        collidesWithAnything = True
+                        canMoveDown = False
+
             move_x = min(total_distance, abs(distance_x)) * math.cos(angle)
             move_y = min(total_distance, abs(distance_y)) * math.sin(angle)
+
+            if collidesWithAnything:
+                # Calculate the movement in x and y directions
+                if not canMoveDown and move_y > 0:
+                    move_y = 0
+                if not canMoveRight and move_x > 0:
+                    move_x = 0
+                if not canMoveUp and move_y < 0:
+                    move_y = 0
+                if not canMoveLeft and move_x < 0:
+                    move_x = 0
 
             # Update the enemy's position
             enemy.x += move_x
@@ -649,7 +686,6 @@ class Game:
                 if obj_x <= player_x + self.player.w <= obj_x + obj.w and ((player_y >= obj_y and player_y <= obj_y + obj.h) or (player_y + self.player.h >= obj_y and player_y + self.player.h <= obj_y + obj.h)): # Left
                     collidesWithAnything = True
                     self.player.canMoveRight = False
-                    self.dx = obj_x - (player_x + self.player.w)
                     #print(self.player.gameObjectPos[0], self.player.gameObjectPos[1], obj.x, obj.y)
                 elif obj_x <= player_x <= obj_x + obj.w and ((player_y >= obj_y and player_y <= obj_y + obj.h) or (player_y + self.player.h >= obj_y and player_y + self.player.h <= obj_y + obj.h)): # Right
                     collidesWithAnything = True
