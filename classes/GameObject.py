@@ -293,6 +293,7 @@ class Player(GameObject):
             selected_item.reload()
 class Storm(GameObject):
     def __init__(self, game,x,y,w,h,image,visible):
+
         super().__init__(game,x,y,w,h,image,visible)
         self.speed=1
         self.dmg=10
@@ -304,18 +305,20 @@ class Storm(GameObject):
 
         self.second_image = pygame.image.load('Assets/burza (1).png')
         self.second_image = pygame.transform.scale(self.second_image, (self.w, self.h))
+        self.is_moving = False
     def distance(self):
         self.right=self.x+self.w
         return self.game.player.x-self.right
     def move(self):
-        ddx=self.speed
-        if self.distance()<100:
-            ddx+=0
-        elif self.distance()<0:
-            ddx+=0
-        else:
-            ddx+=math.sqrt(self.distance()-100)/100
-        self.x+=ddx
+        if self.is_moving:
+            ddx = self.speed
+            if self.distance() < 100:
+                ddx += 0
+            elif self.distance() < 0:
+                ddx += 0
+            else:
+                ddx += math.sqrt(self.distance() - 100) / 100
+            self.x += ddx
 
     def render(self):
 

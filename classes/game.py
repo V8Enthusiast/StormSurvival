@@ -33,6 +33,7 @@ class Game:
 
         self.player = GameObject.Player(self, self.app.width // 2 - 50, self.app.height // 2 - 50, 100, 100,
                                         images.player, True)
+        self.storm_counter=0
         self.storm = GameObject.Storm(self, -1000, 0, 500, self.app.height, images.storm,True)
         self.storm2=GameObject.Storm(self, -1000, -self.app.height, 500, self.app.height, images.storm,True)
         #chest = GameObject.Chest(self, 600, 600, 100, 100, images.chest, True)
@@ -153,8 +154,8 @@ class Game:
             # print(a)
 
         try:
-            self.current_tile_x=2*self.player.relative_position[0]+5*self.tile_size-self.move_x
-            self.current_tile_y=2*self.player.relative_position[1]+4*self.tile_size-self.move_y
+            self.current_tile_x = (2 * self.player.relative_position[0] + self.app.width//2//self.tile_size * self.tile_size) // 96 * 96
+            self.current_tile_y = (2 * self.player.relative_position[1] + self.app.height//2//self.tile_size*self.tile_size) // 96 * 96
             # print(self.tiles[(2*self.player.relative_position[0]+5*self.tile_size-self.move_x,2*self.player.relative_position[1]-self.move_y+4*self.tile_size)])
             if self.tiles[(self.current_tile_x,self.current_tile_y)] !='grass':
 
@@ -175,10 +176,10 @@ class Game:
             pass
     def collect(self):
 
-
-        self.current_tile_x = 2 * self.player.relative_position[0] + 5 * self.tile_size - self.move_x
-        self.current_tile_y = 2 * self.player.relative_position[1] + 4 * self.tile_size - self.move_y
-
+        self.current_tile_x = (2 * self.player.relative_position[
+            0] + self.app.width // 2 // self.tile_size * self.tile_size) // 96 * 96
+        self.current_tile_y = (2 * self.player.relative_position[
+            1] + self.app.height // 2 // self.tile_size * self.tile_size) // 96 * 96
 
 
         print(self.resources[(self.current_tile_x,self.current_tile_y-self.tile_size//6)].resource )
@@ -363,6 +364,10 @@ class Game:
 
     def render(self):
         t1=time.time()
+        self.storm_counter+=1
+        if self.storm_counter>2000:
+            self.storm.is_moving=True
+            self.storm2.is_moving=True
         # if self.trees[0]==self.trees[1]:
         #     print('a')
 
