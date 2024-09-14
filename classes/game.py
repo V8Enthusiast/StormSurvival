@@ -10,6 +10,39 @@ from classes import GameObject, particles, hotbar, weapon
 from Assets import mixer
 import images
 
+weapon_classes = {
+    "Glock 17": weapon.Glock17,
+    "Pump Action Shotgun": weapon.PumpActionShotgun,
+    "Ammo Box": weapon.AmmoBox,
+    "M4A1": weapon.M4A1,
+    "Bolt Action Sniper": weapon.BoltActionSniper,
+    "Ammo Crate": weapon.AmmoCrate,
+    "MAC-10": weapon.MAC10,
+    "M1911 .45": weapon.M1911,
+    "Scar-H": weapon.ScarH,
+    "Desert Eagle": weapon.DesertEagle,
+    ".44 Magnum": weapon.Magnum44
+}
+
+gun_images = {
+    "Glock 17": images.glock17,
+    "Pump Action Shotgun": images.pump_action_shotgun,
+    "Ammo Box": images.ammo_box,
+    "M4A1": images.m4a1,
+    "Bolt Action Sniper": images.bolt_action_sniper,
+    "Ammo Crate": images.ammo_crate,
+    "MAC-10": images.mac10,
+    "M1911 .45": images.m1911,
+    "Scar-H": images.scarh,
+    "Desert Eagle": images.desert_eagle,
+    ".44 Magnum": images.magnum44
+}
+
+CommonDrops = ["Glock 17", "Pump Action Shotgun", "Ammo Box"]
+UncommonDrops = ["M4A1", "Bolt Action Sniper", "Ammo Crate"]
+EpicDrops = ["MAC-10", "M1911 .45"]
+LegendaryDrops = ["Scar-H", "Desert Eagle", ".44 Magnum"]
+
 class Game:
     def __init__(self, app):
         self.app = app
@@ -586,10 +619,29 @@ class Game:
 
                     zombie = GameObject.Zombie(self, self.player.x + x_offset, self.player.y + y_offset, 100, 100, images.player, True)
 
-                    if random.randint(0, 100) > 75:
-                        zombie.health = 100
-                    if random.randint(0, 100) > 85:
+                    if random.randint(0, 100) > 75: # Tank zombie
+                        zombie.health = 150
+                    if random.randint(0, 100) > 85: # Speedy zombie
                         zombie.speed = 6
+
+                    if random.randint(0, 100) > 98: # Breacher zombie
+                        zombie.break_damage = 100
+                        zombie.break_cooldown = 1
+                        zombie.health = 25
+
+                    rarity = random.randint(0, 100)
+                    if rarity > 90:
+                        weapon_name = random.choice(LegendaryDrops)
+                    elif rarity > 75:
+                        weapon_name = random.choice(EpicDrops)
+                    elif rarity > 35:
+                        weapon_name = random.choice(UncommonDrops)
+                    else:
+                        weapon_name = random.choice(CommonDrops)
+
+                    zombie.weapon = weapon_classes[weapon_name](self, zombie)
+                    zombie.gun_image = gun_images[weapon_name]
+
 
                     self.enemies.append(zombie)
                     self.objects.append(zombie)
