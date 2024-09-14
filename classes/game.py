@@ -103,6 +103,7 @@ class Game:
         self.enemies.append(zombie)
         self.objects.append(zombie)
 
+        self.weapon_selection_ui = None
 
     def init_tiles(self):
         for y in range(-96, self.app.height+96, self.tile_size):
@@ -564,7 +565,8 @@ class Game:
 
         self.environmentparticlesystem.update(self)
         self.environmentparticlesystem.draw(self.screen)
-
+        if self.weapon_selection_ui:
+            self.weapon_selection_ui.render()
         self.weaponparticlesystem.update(self)
         self.weaponparticlesystem.draw(self.screen)
 
@@ -828,3 +830,8 @@ class Game:
 
                     # Deduct 10 wood from the player's resources
                     # self.resource_manager.resources['wood'] -= 10
+            if self.weapon_selection_ui:
+                selected_weapon = self.weapon_selection_ui.handle_event(event)
+                if selected_weapon:
+                    selected_weapon.ammo += 10
+                    self.weapon_selection_ui = None
