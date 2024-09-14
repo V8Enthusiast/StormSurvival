@@ -2,7 +2,7 @@ import pygame
 import random
 import math
 import images
-from classes import particles
+from classes import particles, weapon_selection_ui
 
 class Weapon:
     def __init__(self, game, player, image, ammo, max_ammo, fire_rate, firemode, damage):
@@ -98,7 +98,8 @@ class AmmoBox(Weapon):
         super().__init__(game, player, images.ammo_box, 0, 0, 1, 1, 0)
 
     def shoot(self):
-        pass
+        weapons = [item for item in self.game.hotbar.items if isinstance(item, Weapon)]
+        self.game.weapon_selection_ui = weapon_selection_ui.WeaponSelectionUI(self.game, weapons)
 
     def reload(self):
         pass
@@ -157,7 +158,8 @@ class AmmoCrate(Weapon):
         super().__init__(game, player, images.ammo_crate, 0, 0, 1, 1, 0)
 
     def shoot(self):
-        pass
+        weapons = [item for item in self.game.hotbar.items if isinstance(item, Weapon)]
+        self.game.weapon_selection_ui = weapon_selection_ui.WeaponSelectionUI(self.game, weapons)
 
     def reload(self):
         pass
