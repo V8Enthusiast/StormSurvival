@@ -44,6 +44,9 @@ class Zombie(GameObject):
 
         self.gun_image = images.m4a1
         self.speed = 4
+        self.combat_range = 750
+        self.distance_to_player = 10000000
+
 
         self.shoot_interval = 1500
         self.last_shot_time = pygame.time.get_ticks()
@@ -81,7 +84,8 @@ class Zombie(GameObject):
             # Render the health bar
             self.render_health_bar()
 
-            self.shoot()
+            if self.distance_to_player < self.combat_range:
+                self.shoot()
 
         else:
             self.game.score += self.game.wave ** 2

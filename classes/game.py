@@ -97,6 +97,12 @@ class Game:
         self.place_block_radius = 3 * 96
         self.place_mode = False
 
+        zombie = GameObject.Zombie(self, 50, 50, 100, 100, images.player,
+                                   True)
+        self.enemies.append(zombie)
+        self.objects.append(zombie)
+
+
     def init_tiles(self):
         for y in range(-96, self.app.height+96, self.tile_size):
             for x in range(-96, self.app.width+96, self.tile_size):
@@ -499,6 +505,9 @@ class Game:
             enemy.x += move_x
             enemy.y += move_y
 
+            enemy.distance_to_player = math.sqrt(distance_x**2 + distance_y**2)
+
+
         self.generate_rain()
 
         self.environmentparticlesystem.update(self)
@@ -752,7 +761,7 @@ class Game:
                 elif event.key == pygame.K_q:
                     self.place_mode = not self.place_mode
 
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.place_mode:
                 if True or self.resource_manager.resources[1][1] >= 10:
                     direction_x = (math.cos(self.player.angle) * self.place_block_radius // 96) * 96
                     direction_y = (math.sin(self.player.angle) * self.place_block_radius // 96) * 96
@@ -761,8 +770,7 @@ class Game:
                     closest_tile_y = ((self.player.y + 100 + direction_y) // 96) * 96
 
                     # self.add_tile(closest_tile_x, closest_tile_y, 'your_block_image_here', force=True)
-                    self.objects.append(
-                        GameObject.Block(self, closest_tile_x, closest_tile_y, 96, 96, images.chest, True))
+                    self.objects.append(GameObject.Block(self, closest_tile_x, closest_tile_y, 96, 96, images.chest, True))
                     print(closest_tile_x, closest_tile_y)
 
                     # Deduct 10 wood from the player's resources
