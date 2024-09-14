@@ -84,6 +84,7 @@ class Zombie(GameObject):
             self.shoot()
 
         else:
+            self.game.score += self.game.wave ** 2
             self.rect = None
 
 

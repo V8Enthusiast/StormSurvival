@@ -92,6 +92,7 @@ class Game:
         self.delay_between_spawns = self.enemies_per_spawn * self.day_night_cycle_duration / (self.enemy_spawns_left * 2)
         self.spawn_delay_clock = time.time_ns()
         self.enemy_spawn_offset = 350
+        self.score = 0
 
     def init_tiles(self):
         for y in range(-96, self.app.height+96, self.tile_size):
@@ -281,14 +282,17 @@ class Game:
         cycle_progress = elapsed_time / self.day_night_cycle_duration
 
         if cycle_progress < 0.25:
+            if self.time_of_day != "Dawn" and self.score != 0:
+                self.score += 2500
             time_of_day = "Dawn"
             time_to_next = int((0.25 - cycle_progress) * self.day_night_cycle_duration)
         elif cycle_progress < 0.75:
             time_of_day = "Noon"
             time_to_next = int((0.75 - cycle_progress) * self.day_night_cycle_duration)
         elif cycle_progress < 1.0:
-            self.wave += 1
-            self.delay_between_spawns = self.enemies_per_spawn * self.day_night_cycle_duration / (self.enemy_spawns_left * 2)
+            if self.time_of_day != "Evening":
+                self.wave += 1
+                self.delay_between_spawns = self.enemies_per_spawn * self.day_night_cycle_duration / (self.enemy_spawns_left * 2)
             time_of_day = "Evening"
             time_to_next = int((1.0 - cycle_progress) * self.day_night_cycle_duration)
         else:
@@ -300,6 +304,9 @@ class Game:
 
         time_to_next_text = font.render(f"Time to Next: {time_to_next}s", True, text_color)
         self.screen.blit(time_to_next_text, (10, 70))
+
+        score = font.render(f"Score: {self.score}", True, (min(255, self.score //255), min(255, 255//(self.score + 1)),255))
+        self.screen.blit(score, (10, 100))
 
         self.time_of_day = time_of_day
 
