@@ -855,7 +855,7 @@ class Game:
                 elif event.key == pygame.K_q:
                     self.place_mode = not self.place_mode
 
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.place_mode:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3 and self.place_mode:
                 if self.resource_manager.resources[1][1] >= 10:
                     direction_x = (math.cos(self.player.angle) * self.place_block_radius // 96) * 96
                     direction_y = (math.sin(self.player.angle) * self.place_block_radius // 96) * 96
