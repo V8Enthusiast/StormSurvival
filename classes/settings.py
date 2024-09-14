@@ -10,7 +10,7 @@ color_modes = ["Default", "Random", "Gray"]
 class Settings:
     def __init__(self, app):
         self.app = app
-        self.main_text_rect_center = (self.app.width // 2, 75 * self.app.scale)
+        self.main_text_rect_center = (self.app.width // 2, 55 * self.app.scale)
         self.font = "fonts/main_font.ttf"
         self.font_color = (255, 255, 255)
         settings = self.read_settings('settings.json')
@@ -27,7 +27,7 @@ class Settings:
         self.texts = [
             font.render("Resolution", True, self.font_color),
             font.render("Fullscreen", True, self.font_color),
-            font.render("Pay to open chest", True, self.font_color),
+            font.render("Pay for chest", True, self.font_color),
             # font.render("Default level", True, self.font_color),
             # font.render("Block colors", True, self.font_color),
             font.render("Music volume", True, self.font_color)
@@ -35,7 +35,7 @@ class Settings:
 
         self.current_resolution = settings['Resolution']
         self.current_fs = settings['Fullscreen']
-        # self.current_gamemode = settings['Gamemode']
+        self.current_pay = settings['Pay for chest']
         # self.current_default_level = settings['Default level']
         # self.current_colors = settings['Block colors']
         # self.current_fall_speed = settings['Max fall speed']
@@ -134,5 +134,6 @@ class Settings:
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 pass
             if not self.app.onLevel and event.type == pygame.KEYDOWN:
-                self.app.ui.textBox.handle_event(event)
+                pass
+                #self.app.ui.textBox.handle_event(event)
         self.app.mixer.change_volume(self.volume_slider.value)

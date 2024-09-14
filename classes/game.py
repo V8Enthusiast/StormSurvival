@@ -58,7 +58,7 @@ class Game:
         self.tile_width=96
 
         self.hotbar = hotbar.Hotbar(self, self.app.width//2 - ((50 + 10) * 5 -50)//2, self.app.height-75, 5)
-        self.hotbar.add_item(weapon.Weapon(self, self.player, images.gun, 12, 12, 5, 2, 20), 0)
+        self.hotbar.add_item(weapon.Glock17(self, self.player), 0)
 
         self.sound_mixer = mixer.Mixer()
         self.sound_mixer.change_volume(self.app.mixer.get_volume())
@@ -97,11 +97,6 @@ class Game:
 
         self.place_block_radius = 3 * 96
         self.place_mode = False
-
-        zombie = GameObject.Zombie(self, 50, 50, 100, 100, images.player,
-                                   True)
-        self.enemies.append(zombie)
-        self.objects.append(zombie)
 
         self.weapon_selection_ui = None
 
@@ -371,7 +366,7 @@ class Game:
         font = pygame.font.Font(self.font, 24)
         text_color = (255, 255, 255)
 
-        health_text = font.render(f"Health: {self.player.health}", True, text_color)
+        health_text = font.render(f"Health: {round(self.player.health)}", True, text_color)
         ui_surface.blit(health_text, (10, 10))
 
         hunger_text = font.render(f"Hunger: {self.player.hunger}", True, text_color)
@@ -404,10 +399,14 @@ class Game:
 
     def render(self):
         t1=time.time()
-        self.storm_counter+=1
-        if self.storm_counter>2000:
+        if time.time() > self.storm.clock + self.storm.wait_time and self.storm.is_moving is False:
             self.storm.is_moving=True
             self.storm2.is_moving=True
+            self.storm.clock = time.time()
+        if time.time() > self.storm.clock + self.storm.move_time and self.storm.is_moving:
+            self.storm.is_moving=False
+            self.storm2.is_moving=False
+            self.storm.clock = time.time()
         # if self.trees[0]==self.trees[1]:
         #     print('a')
 
@@ -859,7 +858,7 @@ class Game:
                 elif event.key == pygame.K_q:
                     self.place_mode = not self.place_mode
 
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.place_mode:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3 and self.place_mode:
                 if self.resource_manager.resources[1][1] >= 10:
                     direction_x = (math.cos(self.player.angle) * self.place_block_radius // 96) * 96
                     direction_y = (math.sin(self.player.angle) * self.place_block_radius // 96) * 96
@@ -878,5 +877,5 @@ class Game:
             if self.weapon_selection_ui:
                 selected_weapon = self.weapon_selection_ui.handle_event(event)
                 if selected_weapon:
-                    selected_weapon.ammo += 10
+                    selected_weapon.total_ammo += self.weapon_selection_ui.return_ammothing_ammo()
                     self.weapon_selection_ui = None

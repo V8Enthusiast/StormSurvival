@@ -42,7 +42,7 @@ class Zombie(GameObject):
         self.color = (255, 105, 55)
         self.weapon = weapon.M4A1(game, self)
 
-        self.gun_image = images.m4a1
+        self.gun_image = self.weapon.image
         self.speed = 4
         self.combat_range = 500
         self.distance_to_player = 10000000
@@ -93,6 +93,10 @@ class Zombie(GameObject):
         else:
             self.game.score += self.game.wave ** 2
             self.rect = None
+            if self in self.game.enemies:
+                self.game.enemies.remove(self)
+            if self in self.game.objects:
+                self.game.objects.remove(self)
 
 
 class Player(GameObject):
@@ -157,7 +161,7 @@ class Player(GameObject):
             #
             # self.render_health_bar()
         else:
-            self.game.app.ui = gameover.GameOver(self.game.app)
+            self.game.app.ui = gameover.GameOver(self.game.app, self.game.score)
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             click_pos = pygame.mouse.get_pos()
@@ -251,7 +255,7 @@ class Player(GameObject):
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_e:
                 self.pick_up_item()
-            elif event.key == pygame.K_q:
+            elif event.key == pygame.K_f:
                 self.drop_item()
             elif event.key == pygame.K_r:
                 selected_item = self.game.hotbar.items[self.game.hotbar.selected_slot]
@@ -306,6 +310,9 @@ class Storm(GameObject):
         self.second_image = pygame.image.load('Assets/burza (1).png')
         self.second_image = pygame.transform.scale(self.second_image, (self.w, self.h))
         self.is_moving = False
+        self.clock = time.time()
+        self.wait_time = 75
+        self.move_time = 90
     def distance(self):
         self.right=self.x+self.w
         return self.game.player.x-self.right
@@ -374,11 +381,19 @@ class Chest(GameObject):
 
         self.collision = True
         self.opened = not self.game.pay_for_chest
+        self.durability = 100
         self.generateRandomItems()
 
     def render(self):
         if self.opened:
             self.image = self.open_image
+        if self.durability <= 0:
+            self.collision = False
+            self.rect = None
+            if self in self.game.chests:
+                self.game.chests.remove(self)
+            if self in self.game.objects:
+                self.game.objects.remove(self)
         super().render()
 
     def generateRandomItems(self):
@@ -532,13 +547,28 @@ class Block(GameObject):
         super().__init__(game, x, y, w, h, image_path, visible)
 
         self.collision = True
+        self.full_durability = 200
         self.durability = 200
 
+
     def render(self):
-        super().render()
         if self.durability <= 0:
             self.collision = False
             self.rect = None
             self.game.objects.remove(self)
+        elif self.durability < .25 * self.full_durability:
+            self.image = images.wood_planks3
+            self.image = pygame.transform.scale(self.image, (self.w, self.h))
+        elif self.durability < .5 * self.full_durability:
+            self.image = images.wood_planks2
+            self.image = pygame.transform.scale(self.image, (self.w, self.h))
+        elif self.durability < .75 * self.full_durability:
+            self.image = images.wood_planks1
+            self.image = pygame.transform.scale(self.image, (self.w, self.h))
 
+        self.x -= self.game.dx
+        self.y -= self.game.dy
+        if self.x + self.w >= 0 and self.x <= self.game.app.width:
+            self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
+            self.screen.blit(self.image, self.rect)
 
