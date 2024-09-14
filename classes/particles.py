@@ -145,7 +145,7 @@ class ParticleSystem:
                     if type(object) == GameObject.Block and object.durability > 0:
                         if object.rect.colliderect(particle.x, particle.y, particle.size * 2, particle.size * 2):
                             self.particles.remove(particle)
-                            object.durability -= 1
+                            object.durability -= particle.damage
                             print(object.durability)
                             break
 

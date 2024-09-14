@@ -463,7 +463,7 @@ class Game:
                 # print(chest)
                 if self.resource_manager.resources[0][1]>=20:
                     if self.selected_chest.opened == False:
-                        self.helpText = "Pay 20 gems to be able to open"
+                        self.helpText = "Pay 20 gems to open"
                         self.selected_chest = chest
                     else:
                         self.helpText = "Press E to open"
@@ -473,7 +473,7 @@ class Game:
                     self.selected_chest = None
                     self.chest_ui = None
                 break
-            elif self.helpText in ["Press E to open", "Pay 20 gems to be able to open"] or (
+            elif self.helpText in ["Press E to open", "Pay 20 gems to open"] or (
                     self.chest_ui is not None and self.selected_chest.rect.colliderect(self.player.rect) is False):
                 self.helpText = ""
                 self.selected_chest = None
