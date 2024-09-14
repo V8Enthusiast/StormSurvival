@@ -100,7 +100,6 @@ class AmmoBox(Weapon):
     def shoot(self):
         weapons = [item for item in self.game.hotbar.items if isinstance(item, Weapon)]
         self.game.weapon_selection_ui = weapon_selection_ui.WeaponSelectionUI(self.game, weapons, self)
-        self.game.objects.remove(self)
     #
     # def reload(self):
     #     pass
