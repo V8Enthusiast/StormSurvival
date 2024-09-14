@@ -58,8 +58,6 @@ class Game:
         self.tile_width=96
 
         self.hotbar = hotbar.Hotbar(self, self.app.width//2 - ((50 + 10) * 5 -50)//2, self.app.height-75, 5)
-        self.hotbar.add_item(weapon.Weapon(self, self.player, images.gun, 12, 12, 5, 2, 20), 0)
-
         self.sound_mixer = mixer.Mixer()
         self.sound_mixer.change_volume(self.app.mixer.get_volume())
 
@@ -97,11 +95,6 @@ class Game:
 
         self.place_block_radius = 3 * 96
         self.place_mode = False
-
-        zombie = GameObject.Zombie(self, 50, 50, 100, 100, images.player,
-                                   True)
-        self.enemies.append(zombie)
-        self.objects.append(zombie)
 
         self.weapon_selection_ui = None
 

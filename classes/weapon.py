@@ -38,10 +38,10 @@ class Weapon:
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, self.damage, glowy=True)
 
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
-
-    def reload(self):
-        self.ammo = self.max_ammo
-        self.game.sound_mixer.play_sound('Assets/reload.mp3')
+    #
+    # def reload(self):
+    #     self.ammo = self.max_ammo
+    #     self.game.sound_mixer.play_sound('Assets/reload.mp3')
 
 
 class Glock17(Weapon):
@@ -101,9 +101,9 @@ class AmmoBox(Weapon):
         weapons = [item for item in self.game.hotbar.items if isinstance(item, Weapon)]
         self.game.weapon_selection_ui = weapon_selection_ui.WeaponSelectionUI(self.game, weapons, self)
         self.game.objects.remove(self)
-
-    def reload(self):
-        pass
+    #
+    # def reload(self):
+    #     pass
 
 class M4A1(Weapon):
     def __init__(self, game, player):
@@ -161,9 +161,9 @@ class AmmoCrate(Weapon):
     def shoot(self):
         weapons = [item for item in self.game.hotbar.items if isinstance(item, Weapon)]
         self.game.weapon_selection_ui = weapon_selection_ui.WeaponSelectionUI(self.game, weapons, self)
-
-    def reload(self):
-        pass
+    #
+    # def reload(self):
+    #     pass
 
 class MAC10(Weapon):
     def __init__(self, game, player):
