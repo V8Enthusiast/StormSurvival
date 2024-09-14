@@ -3,6 +3,7 @@ import pygame
 class WeaponSelectionUI:
     def __init__(self, game, weapons, ammothing):
         self.ammothing = ammothing
+        self.ammo = self.ammothing.ammo
         self.game = game
         self.weapons = weapons
         self.font = pygame.font.Font(None, 36)
@@ -50,3 +51,6 @@ class WeaponSelectionUI:
                     self.game.hotbar.remove_item_by_item(self.ammothing)
                     return weapon
         return None
+
+    def return_ammothing_ammo(self):
+        return self.ammo
