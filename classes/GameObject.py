@@ -381,11 +381,19 @@ class Chest(GameObject):
 
         self.collision = True
         self.opened = not self.game.pay_for_chest
+        self.durability = 100
         self.generateRandomItems()
 
     def render(self):
         if self.opened:
             self.image = self.open_image
+        if self.durability <= 0:
+            self.collision = False
+            self.rect = None
+            if self in self.game.chests:
+                self.game.chests.remove(self)
+            if self in self.game.objects:
+                self.game.objects.remove(self)
         super().render()
 
     def generateRandomItems(self):
