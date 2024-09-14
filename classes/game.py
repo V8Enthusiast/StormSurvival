@@ -471,18 +471,23 @@ class Game:
             if chest.rect.colliderect(self.player.rect) and self.chest_ui is None:
                 self.selected_chest = chest
                 # print(chest)
-                if self.resource_manager.resources[0][1]>=20:
-                    if self.selected_chest.opened == False:
-                        self.helpText = "Pay 20 gems to be able to open"
-                        self.selected_chest = chest
+                if settings_values.pay_for_chest == False:
+                    if self.resource_manager.resources[0][1]>=20:
+                        if self.selected_chest.opened == False:
+                            self.helpText = "Pay 20 gems to be able to open"
+                            self.selected_chest = chest
+                        else:
+                            self.helpText = "Press E to open"
+                            self.selected_chest = chest
                     else:
-                        self.helpText = "Press E to open"
-                        self.selected_chest = chest
+                        self.helpText = "Not enough gems"
+                        self.selected_chest = None
+                        self.chest_ui = None
+                    break
                 else:
-                    self.helpText = "Not enough gems"
-                    self.selected_chest = None
-                    self.chest_ui = None
-                break
+                    self.helpText = "Press E to open"
+                    self.selected_chest = chest
+
             elif self.helpText in ["Press E to open", "Pay 20 gems to be able to open", "Not enough gems"] or (
                     self.chest_ui is not None and self.selected_chest.rect.colliderect(self.player.rect) is False):
                 self.helpText = ""
