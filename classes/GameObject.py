@@ -107,8 +107,10 @@ class Player(GameObject):
         self.from_ui = None
         self.isShooting = False
         self.last_damage_time = 0
-        self.hunger = 100
+        self.hunger = 70
         self.drink = 100
+        self.delta_hunger = 3
+        self.delta_health = 0
 
     # def render_health_bar(self):
     #     health_bar_width = 100
@@ -124,6 +126,8 @@ class Player(GameObject):
         self.angle = math.atan2(mouse_y - (self.y + self.h//2), mouse_x - (self.x + self.w//2))
 
     def render(self):
+        if self.health > 100:
+            self.health = 100
         if self.health > 0:
             current_time = pygame.time.get_ticks()
             if current_time - self.last_damage_time >= 1000:

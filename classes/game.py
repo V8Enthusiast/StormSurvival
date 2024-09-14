@@ -75,7 +75,7 @@ class Game:
 
         self.is_raining = False
         self.next_weather_change = time.time() + random.uniform(30, 180)
-
+        self.last_hunger_update = time.time()
         self.last_fps_time = time.time()
         self.current_fps = 0
 
@@ -166,6 +166,7 @@ class Game:
                 (self.current_tile_x, self.current_tile_y-self.tile_size//6)].value
             self.resources[(self.current_tile_x, self.current_tile_y-self.tile_size//6)].value = 0
             print('ymu yum yum',self.resources[(self.current_tile_x, self.current_tile_y + self.tile_size // 6)].value )
+            self.player.hunger+=self.resources[(self.current_tile_x, self.current_tile_y + self.tile_size // 6)].value
             self.resources[(self.current_tile_x, self.current_tile_y + self.tile_size // 6)].value = 0
             # print('y')
         elif self.resources[(self.current_tile_x, self.current_tile_y)].resource == 'gems':
@@ -562,6 +563,18 @@ class Game:
         else:
             self.dx = 0
         # print('aa',2*self.dx)
+        current_time = time.time()
+        if current_time - self.last_hunger_update >= 10:
+            if self.player.hunger > 70:
+                self.player.delta_health = -(1 / (self.player.hunger)*100)
+            elif self.player.hunger < 70:
+                self.player.delta_health = (1 / (self.player.hunger) * 100)
+                self.player.image = images.damagedplayer
+            if self.player.hunger < 0:
+                self.player.hunger = 0
+            self.player.hunger -= self.player.delta_hunger
+            self.player.health -= self.player.delta_health
+            self.last_hunger_update = current_time
         self.move_x+=2*self.dx
         self.move_x=self.move_x%self.tile_size
         self.move_y += 2*self.dy
