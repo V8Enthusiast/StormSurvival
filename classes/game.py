@@ -89,8 +89,9 @@ class Game:
         self.enemy_spawns_left = 20 + self.wave * 5
         self.delay_between_spawns = self.day_night_cycle_duration / self.enemy_spawns_left
         self.enemies_per_spawn = 2
-        self.delay_between_spawns = self.enemies_per_spawn * self.day_night_cycle_duration / self.enemy_spawns_left
+        self.delay_between_spawns = self.enemies_per_spawn * self.day_night_cycle_duration / (self.enemy_spawns_left * 2)
         self.spawn_delay_clock = time.time_ns()
+        self.enemy_spawn_offset = 350
 
     def init_tiles(self):
         for y in range(-96, self.app.height+96, self.tile_size):
@@ -507,16 +508,22 @@ class Game:
             if self.enemy_spawns_left - self.enemies_per_spawn >= 0 and time.time_ns() > self.spawn_delay_clock + self.delay_between_spawns * 1_000_000_000:
                 for _ in range(self.enemies_per_spawn):
                     if random.randint(0, 100) < 50:
-                        x_offset = random.randint(-self.app.width//2 - 300, self.player.x - 300)
+                        x_offset = random.randint(-self.app.width//2 - self.enemy_spawn_offset, self.player.x - self.enemy_spawn_offset)
                     else:
-                        x_offset = random.randint(self.player.x + 300, self.app.width//2 + 300)
+                        x_offset = random.randint(self.player.x + self.enemy_spawn_offset, self.app.width//2 + self.enemy_spawn_offset)
 
                     if random.randint(0, 100) < 50:
-                        y_offset = random.randint(-self.app.height//2 - 300, self.player.y - 300)
+                        y_offset = random.randint(-self.app.height//2 - self.enemy_spawn_offset, self.player.y - self.enemy_spawn_offset)
                     else:
-                        y_offset = random.randint(self.player.y + 300, self.app.height//2 + 300)
+                        y_offset = random.randint(self.player.y + self.enemy_spawn_offset, self.app.height//2 + self.enemy_spawn_offset)
 
                     zombie = GameObject.Zombie(self, self.player.x + x_offset, self.player.y + y_offset, 100, 100, images.player, True)
+
+                    if random.randint(0, 100) > 75:
+                        zombie.health = 100
+                    if random.randint(0, 100) > 85:
+                        zombie.speed = 6
+
                     self.enemies.append(zombie)
                     self.objects.append(zombie)
                     self.enemy_spawns_left -= 1

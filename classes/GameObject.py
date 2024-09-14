@@ -38,15 +38,14 @@ class Zombie(GameObject):
 
         self.angle = 0
 
-        self.health = 100
-        self.size = 25
+        self.health = 50
         self.color = (255, 105, 55)
         self.weapon = weapon.M4A1(game, self)
 
         self.gun_image = images.m4a1
         self.speed = 4
 
-        self.shoot_interval = 1000
+        self.shoot_interval = 1500
         self.last_shot_time = pygame.time.get_ticks()
 
     def render_health_bar(self):
