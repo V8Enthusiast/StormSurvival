@@ -1,7 +1,7 @@
 import math
 
 import pygame
-
+from classes import GameObject
 
 class Particle:
     def __init__(self, x, y, vx, vy, speed, lifespan, size, red, green, blue, alpha, shape, damage, glowy = False, face_direction=False):
@@ -138,6 +138,12 @@ class ParticleSystem:
                     if zombie.rect != None:
                         if zombie.rect.colliderect(particle.x, particle.y, particle.size * 2, particle.size * 2):
                             zombie.health -= particle.damage
+                            self.particles.remove(particle)
+                            break
+
+                for object in game.objects:
+                    if type(object) == GameObject.Block:
+                        if object.rect.colliderect(particle.x, particle.y, particle.size * 2, particle.size * 2):
                             self.particles.remove(particle)
                             break
 
