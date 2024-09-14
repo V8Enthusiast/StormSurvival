@@ -394,10 +394,14 @@ class Game:
 
     def render(self):
         t1=time.time()
-        self.storm_counter+=1
-        if self.storm_counter>2000:
+        if time.time() > self.storm.clock + self.storm.wait_time and self.storm.is_moving is False:
             self.storm.is_moving=True
             self.storm2.is_moving=True
+            self.storm.clock = time.time()
+        if time.time() > self.storm.clock + self.storm.move_time and self.storm.is_moving:
+            self.storm.is_moving=False
+            self.storm2.is_moving=False
+            self.storm.clock = time.time()
         # if self.trees[0]==self.trees[1]:
         #     print('a')
 

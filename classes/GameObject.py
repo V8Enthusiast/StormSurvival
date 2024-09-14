@@ -93,6 +93,10 @@ class Zombie(GameObject):
         else:
             self.game.score += self.game.wave ** 2
             self.rect = None
+            if self in self.game.enemies:
+                self.game.enemies.remove(self)
+            if self in self.game.objects:
+                self.game.objects.remove(self)
 
 
 class Player(GameObject):
@@ -306,6 +310,9 @@ class Storm(GameObject):
         self.second_image = pygame.image.load('Assets/burza (1).png')
         self.second_image = pygame.transform.scale(self.second_image, (self.w, self.h))
         self.is_moving = False
+        self.clock = time.time()
+        self.wait_time = 75
+        self.move_time = 90
     def distance(self):
         self.right=self.x+self.w
         return self.game.player.x-self.right
