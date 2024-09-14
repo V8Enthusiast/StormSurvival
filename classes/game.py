@@ -363,7 +363,7 @@ class Game:
         font = pygame.font.Font(self.font, 24)
         text_color = (255, 255, 255)
 
-        health_text = font.render(f"Health: {self.player.health}", True, text_color)
+        health_text = font.render(f"Health: {round(self.player.health)}", True, text_color)
         ui_surface.blit(health_text, (10, 10))
 
         hunger_text = font.render(f"Hunger: {self.player.hunger}", True, text_color)
