@@ -219,22 +219,25 @@ class Game:
                 1] + self.tile_size // 3 + self.app.height // 2 // self.tile_size * self.tile_size) // 96 * 96
 
 
-        print(self.resources[(self.current_tile_x,self.current_tile_y-self.tile_size//6)].resource )
-        if self.resources[(self.current_tile_x,self.current_tile_y-self.tile_size//6)].resource == 'wood':
-            # print('x')
-            # print(self.resource_manager.resources[1][1],
-            #       self.resources[(self.current_tile_x, self.current_tile_y)].value)
-            self.resource_manager.resources[1][1] += self.resources[
-                (self.current_tile_x, self.current_tile_y-self.tile_size//6)].value
-            self.resources[(self.current_tile_x, self.current_tile_y-self.tile_size//6)].value = 0
-            print('ymu yum yum',self.resources[(self.current_tile_x, self.current_tile_y + self.tile_size // 6)].value )
-            self.player.hunger+=self.resources[(self.current_tile_x, self.current_tile_y + self.tile_size // 6)].value
-            self.resources[(self.current_tile_x, self.current_tile_y + self.tile_size // 6)].value = 0
-            # print('y')
-        elif self.resources[(self.current_tile_x, self.current_tile_y)].resource == 'gems':
-            self.resource_manager.resources[0][1] += self.resources[
-                (self.current_tile_x, self.current_tile_y)].value
-            self.resources[(self.current_tile_x, self.current_tile_y)].value = 0
+        try:
+            if self.resources[(self.current_tile_x, self.current_tile_y - self.tile_size // 6)].resource == 'wood':
+                # print('x')
+                # print(self.resource_manager.resources[1][1],
+                #       self.resources[(self.current_tile_x, self.current_tile_y)].value)
+                self.resource_manager.resources[1][1] += self.resources[
+                    (self.current_tile_x, self.current_tile_y - self.tile_size // 6)].value
+                self.resources[(self.current_tile_x, self.current_tile_y - self.tile_size // 6)].value = 0
+                print('ymu yum yum',
+                      self.resources[(self.current_tile_x, self.current_tile_y + self.tile_size // 6)].value)
+                self.player.hunger += self.resources[
+                    (self.current_tile_x, self.current_tile_y + self.tile_size // 6)].value
+                self.resources[(self.current_tile_x, self.current_tile_y + self.tile_size // 6)].value = 0
+                # print('y')
+        except:
+            if self.resources[(self.current_tile_x, self.current_tile_y)].resource == 'gems':
+                self.resource_manager.resources[0][1] += self.resources[
+                    (self.current_tile_x, self.current_tile_y)].value
+                self.resources[(self.current_tile_x, self.current_tile_y)].value = 0
 
 
 
