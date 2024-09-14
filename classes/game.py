@@ -798,7 +798,7 @@ class Game:
                     self.place_mode = not self.place_mode
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.place_mode:
-                if True or self.resource_manager.resources[1][1] >= 10:
+                if self.resource_manager.resources[1][1] >= 10:
                     direction_x = (math.cos(self.player.angle) * self.place_block_radius // 96) * 96
                     direction_y = (math.sin(self.player.angle) * self.place_block_radius // 96) * 96
 
@@ -807,6 +807,8 @@ class Game:
 
                     # self.add_tile(closest_tile_x, closest_tile_y, 'your_block_image_here', force=True)
                     self.objects.append(GameObject.Block(self, closest_tile_x, closest_tile_y, 96, 96, images.wood_planks, True))
+
+                    self.resource_manager.resources[1][1] -= 10
                     print(closest_tile_x, closest_tile_y)
 
                     # Deduct 10 wood from the player's resources
