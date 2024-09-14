@@ -115,8 +115,7 @@ class Game:
         self.is_raining = False
         self.next_weather_change = time.time() + random.uniform(30, 180)
         self.last_hunger_update = time.time()
-        self.last_fps_time = time.time()
-        self.current_fps = 0
+
 
         self.wave = 0
         self.enemy_spawns_left = 20 + self.wave * 5
@@ -134,6 +133,11 @@ class Game:
                                    True)
         self.enemies.append(zombie)
         self.objects.append(zombie)
+
+        self.weapon_selection_ui = None
+
+        self.last_fps_time = time.time()
+        self.current_fps = 0
 
 
     def init_tiles(self):
@@ -591,7 +595,8 @@ class Game:
 
         self.weaponparticlesystem.update(self)
         self.weaponparticlesystem.draw(self.screen)
-
+        if self.weapon_selection_ui:
+            self.weapon_selection_ui.render()
         self.update_day_night_cycle()
         self.overlay_surface.set_alpha(self.overlay_alpha)
         self.screen.blit(self.overlay_surface, (0, 0))
@@ -871,3 +876,9 @@ class Game:
 
                     # Deduct 10 wood from the player's resources
                     # self.resource_manager.resources['wood'] -= 10
+
+            if self.weapon_selection_ui:
+                selected_weapon = self.weapon_selection_ui.handle_event(event)
+                if selected_weapon:
+                    selected_weapon.ammo += 10
+                    self.weapon_selection_ui = None
