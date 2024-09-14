@@ -536,5 +536,6 @@ class Block(GameObject):
         if self.durability <= 0:
             self.collision = False
             self.rect = None
+            self.game.objects.remove(self)
 
 
