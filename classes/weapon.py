@@ -59,7 +59,7 @@ class Glock17(Weapon):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
                 speed = random.uniform(15, 17)
-                lifespan = random.randint(40, 100)
+                lifespan = random.randint(80, 160)
                 size = random.randint(2, 4)
                 red, green, blue = 255, 255, 0
                 alpha = 255
@@ -82,8 +82,8 @@ class PumpActionShotgun(Weapon):
             for _ in range(20):
                 vx = random.uniform(math.cos(self.player.angle - 0.4), math.cos(self.player.angle + 0.4))
                 vy = random.uniform(math.sin(self.player.angle - 0.4), math.sin(self.player.angle + 0.4))
-                speed = random.uniform(7, 10)
-                lifespan = random.randint(20, 50)
+                speed = random.uniform(8, 12)
+                lifespan = random.randint(40, 100)
                 size = random.randint(2, 4)
                 red, green, blue = 255, 255, 0
                 alpha = 255
@@ -118,7 +118,7 @@ class M4A1(Weapon):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
                 speed = random.uniform(16, 18)
-                lifespan = random.randint(40, 100)
+                lifespan = random.randint(80, 140)
                 size = random.randint(3, 5)
                 red, green, blue = 255, 255, 0
                 alpha = 255
@@ -177,7 +177,7 @@ class MAC10(Weapon):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
                 speed = random.uniform(12, 14)
-                lifespan = random.randint(40, 100)
+                lifespan = random.randint(60, 120)
                 size = random.randint(3, 5)
                 red, green, blue = 255, 255, 0
                 alpha = 255
@@ -201,7 +201,7 @@ class M1911(Weapon):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
                 speed = random.uniform(14, 16)
-                lifespan = random.randint(40, 100)
+                lifespan = random.randint(70, 130)
                 size = random.randint(2, 4)
                 red, green, blue = 255, 255, 0
                 alpha = 255
@@ -225,7 +225,7 @@ class ScarH(Weapon):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
                 speed = random.uniform(15, 18)
-                lifespan = random.randint(40, 100)
+                lifespan = random.randint(80, 200)
                 size = random.randint(2, 4)
                 red, green, blue = 255, 255, 0
                 alpha = 255
@@ -249,7 +249,7 @@ class DesertEagle(Weapon):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
                 speed = random.uniform(14, 16)
-                lifespan = random.randint(40, 100)
+                lifespan = random.randint(100, 160)
                 size = random.randint(2, 4)
                 red, green, blue = 255, 255, 0
                 alpha = 255
@@ -273,7 +273,7 @@ class Magnum44(Weapon):
                 vx = math.cos(self.player.angle)
                 vy = math.sin(self.player.angle)
                 speed = random.uniform(14, 16)
-                lifespan = random.randint(40, 100)
+                lifespan = random.randint(100, 160)
                 size = random.randint(2, 4)
                 red, green, blue = 255, 255, 0
                 alpha = 255
