@@ -770,7 +770,7 @@ class Game:
                     closest_tile_y = ((self.player.y + 100 + direction_y) // 96) * 96
 
                     # self.add_tile(closest_tile_x, closest_tile_y, 'your_block_image_here', force=True)
-                    self.objects.append(GameObject.Block(self, closest_tile_x, closest_tile_y, 96, 96, images.chest, True))
+                    self.objects.append(GameObject.Block(self, closest_tile_x, closest_tile_y, 96, 96, images.wood_planks, True))
                     print(closest_tile_x, closest_tile_y)
 
                     # Deduct 10 wood from the player's resources
