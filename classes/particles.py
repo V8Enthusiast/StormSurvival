@@ -142,9 +142,11 @@ class ParticleSystem:
                             break
 
                 for object in game.objects:
-                    if type(object) == GameObject.Block:
+                    if type(object) == GameObject.Block and object.durability > 0:
                         if object.rect.colliderect(particle.x, particle.y, particle.size * 2, particle.size * 2):
                             self.particles.remove(particle)
+                            object.durability -= 1
+                            print(object.durability)
                             break
 
     def draw(self, screen):

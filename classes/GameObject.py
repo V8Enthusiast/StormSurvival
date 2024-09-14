@@ -46,6 +46,9 @@ class Zombie(GameObject):
         self.speed = 4
         self.combat_range = 500
         self.distance_to_player = 10000000
+        self.break_damage = 50
+        self.break_cooldown = 2
+        self.break_clock = time.time()
 
 
         self.shoot_interval = 1500
@@ -526,7 +529,12 @@ class Block(GameObject):
         super().__init__(game, x, y, w, h, image_path, visible)
 
         self.collision = True
+        self.durability = 200
 
     def render(self):
         super().render()
+        if self.durability <= 0:
+            self.collision = False
+            self.rect = None
+
 

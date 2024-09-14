@@ -538,6 +538,12 @@ class Game:
                 if not canMoveLeft and move_x < 0:
                     move_x = 0
 
+                if time.time() > enemy.break_clock + enemy.break_cooldown and type(obj) == GameObject.Block:
+                    print(obj.durability)
+                    obj.durability -= enemy.break_damage
+                    enemy.break_clock = time.time()
+
+
             # Update the enemy's position
             enemy.x += move_x
             enemy.y += move_y
