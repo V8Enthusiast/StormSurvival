@@ -1,7 +1,7 @@
 import pygame
 
 class WeaponSelectionUI:
-    def __init__(self, game, weapons):
+    def __init__(self, game, weapons, ammothing):
         self.game = game
         self.weapons = weapons
         self.font = pygame.font.Font(None, 36)
@@ -9,6 +9,7 @@ class WeaponSelectionUI:
         self.margin_x = 100
         self.margin_y = 50
         self.start_x = (self.game.app.width - self.calculate_total_width()) // 2
+        self.ammothing = ammothing
 
     def calculate_total_width(self):
         return sum(weapon.image.get_width() for weapon in self.weapons) + self.margin_x * (len(self.weapons) - 1)
@@ -40,5 +41,6 @@ class WeaponSelectionUI:
                 image_rect = pygame.Rect(image_x, image_y, weapon_image.get_width(), weapon_image.get_height())
                 if image_rect.collidepoint(mouse_x, mouse_y):
                     self.selected_weapon = weapon
+                    self.game.hotbar.remove_item_by_item(self.ammothing)
                     return weapon
         return None
