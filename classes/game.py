@@ -73,6 +73,12 @@ class Game:
         self.move_x =0#self.app.width//2%self.tile_size
         self.move_y =0 #self.app.height//2%self.tile_size
 
+        self.day_night_cycle_duration = 120  # Duration of a full day-night cycle in seconds
+        self.cycle_start_time = time.time()
+        self.overlay_alpha = 0
+        self.overlay_surface = pygame.Surface((self.app.width, self.app.height))
+        self.overlay_surface.fill((0, 0, 0))
+
         self.is_raining = False
         self.next_weather_change = time.time() + random.uniform(30, 180)
         self.last_hunger_update = time.time()
@@ -247,6 +253,47 @@ class Game:
     def add_tile(self, x, y, tile_image, force=False):
         if force or (x, y) not in self.tiles.keys():
             self.tiles[(x, y)] = tile_image
+
+    def update_day_night_cycle(self):
+        current_time = time.time()
+        elapsed_time = (current_time - self.cycle_start_time) % self.day_night_cycle_duration
+        cycle_progress = elapsed_time / self.day_night_cycle_duration
+
+        if cycle_progress < 0.25:  #Dawn
+            self.overlay_alpha = int(255 * (0.25 - cycle_progress) / 0.25)//2
+        elif cycle_progress < 0.75:  #Day
+            self.overlay_alpha = 0
+        elif cycle_progress < 1.0:  #Tusk
+            self.overlay_alpha = int(255 * (cycle_progress - 0.75) / 0.25)//2
+        else:  #Night
+            self.overlay_alpha = 255//2
+
+    def render_day_info(self):
+        font = pygame.font.Font(self.font, 24)
+        text_color = (255, 255, 255)
+
+        current_time = time.time()
+        elapsed_time = (current_time - self.cycle_start_time) % self.day_night_cycle_duration
+        cycle_progress = elapsed_time / self.day_night_cycle_duration
+
+        if cycle_progress < 0.25:
+            time_of_day = "Dawn"
+            time_to_next = int((0.25 - cycle_progress) * self.day_night_cycle_duration)
+        elif cycle_progress < 0.75:
+            time_of_day = "Noon"
+            time_to_next = int((0.75 - cycle_progress) * self.day_night_cycle_duration)
+        elif cycle_progress < 1.0:
+            time_of_day = "Evening"
+            time_to_next = int((1.0 - cycle_progress) * self.day_night_cycle_duration)
+        else:
+            time_of_day = "Night"
+            time_to_next = int((1.25 - cycle_progress) * self.day_night_cycle_duration)
+
+        day_info_text = font.render(f"Time of Day: {time_of_day}", True, text_color)
+        self.screen.blit(day_info_text, (10, 40))
+
+        time_to_next_text = font.render(f"Time to Next: {time_to_next}s", True, text_color)
+        self.screen.blit(time_to_next_text, (10, 70))
 
     def render_player_info(self):
         ui_surface = pygame.Surface((self.app.width, 100), pygame.SRCALPHA)
@@ -442,7 +489,12 @@ class Game:
         self.weaponparticlesystem.update(self)
         self.weaponparticlesystem.draw(self.screen)
 
+        self.update_day_night_cycle()
+        self.overlay_surface.set_alpha(self.overlay_alpha)
+        self.screen.blit(self.overlay_surface, (0, 0))
+
         self.render_weather_info()
+        self.render_day_info()
 
         if self.chest_ui is not None:
             self.chest_ui.render()
