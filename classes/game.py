@@ -332,7 +332,7 @@ class Game:
         hunger_text = font.render(f"Hunger: {self.player.hunger}", True, text_color)
         ui_surface.blit(hunger_text, (10, 40))
 
-        drink_text = font.render(f"Drink: {self.player.drink}", True, text_color)
+        drink_text = font.render(f"Thirst: {self.player.thirst}", True, text_color)
         ui_surface.blit(drink_text, (10, 70))
 
         gem_icon = pygame.transform.scale(images.gem, (24, 24))

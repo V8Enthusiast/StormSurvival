@@ -112,7 +112,7 @@ class Player(GameObject):
         self.isShooting = False
         self.last_damage_time = 0
         self.hunger = 70
-        self.drink = 100
+        self.thirst = 100
         self.delta_hunger = 3
         self.delta_health = 0
 
