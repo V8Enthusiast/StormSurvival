@@ -94,6 +94,9 @@ class Game:
         self.enemy_spawn_offset = 350
         self.score = 0
 
+        self.place_block_radius = 3 * 96
+        self.place_mode = False
+
     def init_tiles(self):
         for y in range(-96, self.app.height+96, self.tile_size):
             for x in range(-96, self.app.width+96, self.tile_size):
@@ -591,6 +594,22 @@ class Game:
         t2 = time.time()
         # print(t2-t1)
 
+        if self.place_mode:
+            direction_x = (math.cos(self.player.angle) * self.place_block_radius // 96) * 96
+            direction_y = (math.sin(self.player.angle) * self.place_block_radius // 96) * 96
+
+            # Calculate the position of the tile 2 blocks away in the direction the player is facing
+            # closest_tile_x = round((self.player.relative_position[
+            #                             0] + self.app.width // 2 + direction_x * self.tile_size) / self.tile_size) * self.tile_size
+            # closest_tile_y = round((self.player.relative_position[
+            #                             1] + self.app.height // 2 + direction_y * self.tile_size) / self.tile_size) * self.tile_size
+
+            closest_tile_x = ((self.player.x + 100 + direction_x) // 96) * 96
+            closest_tile_y = ((self.player.y + 100 + direction_y) // 96) * 96
+
+            pygame.draw.rect(self.screen, (255, 255, 0), pygame.Rect(closest_tile_x, closest_tile_y, 96, 96))
+
+
     def generate_rain(self):
         if self.is_raining:
             for _ in range(3):
@@ -730,3 +749,21 @@ class Game:
                                 for i in range(len(self.selected_chest.Items)):
                                     self.chest_ui.add_item(self.selected_chest.Items[i], i)
                                 self.helpText = ""
+                elif event.key == pygame.K_q:
+                    self.place_mode = not self.place_mode
+
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if True or self.resource_manager.resources[1][1] >= 10:
+                    direction_x = (math.cos(self.player.angle) * self.place_block_radius // 96) * 96
+                    direction_y = (math.sin(self.player.angle) * self.place_block_radius // 96) * 96
+
+                    closest_tile_x = ((self.player.x + 100 + direction_x) // 96) * 96
+                    closest_tile_y = ((self.player.y + 100 + direction_y) // 96) * 96
+
+                    # self.add_tile(closest_tile_x, closest_tile_y, 'your_block_image_here', force=True)
+                    self.objects.append(
+                        GameObject.Block(self, closest_tile_x, closest_tile_y, 96, 96, images.chest, True))
+                    print(closest_tile_x, closest_tile_y)
+
+                    # Deduct 10 wood from the player's resources
+                    # self.resource_manager.resources['wood'] -= 10

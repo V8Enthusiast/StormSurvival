@@ -516,3 +516,13 @@ class Resource():
             self.value=self.max
         self.text = self.font.render(str(self.value), True, (0, 0, 0))
 
+
+class Block(GameObject):
+    def __init__(self, game, x, y, w, h, image_path, visible):
+        super().__init__(game, x, y, w, h, image_path, visible)
+
+        self.collision = True
+
+    def render(self):
+        super().render()
+
