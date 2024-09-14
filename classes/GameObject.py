@@ -257,10 +257,10 @@ class Player(GameObject):
                 self.pick_up_item()
             elif event.key == pygame.K_f:
                 self.drop_item()
-            # elif event.key == pygame.K_r:
-            #     selected_item = self.game.hotbar.items[self.game.hotbar.selected_slot]
-            #     if isinstance(selected_item, weapon.Weapon):
-            #         selected_item.reload()
+            elif event.key == pygame.K_r:
+                selected_item = self.game.hotbar.items[self.game.hotbar.selected_slot]
+                if isinstance(selected_item, weapon.Weapon):
+                    selected_item.reload()
             elif event.key == pygame.K_b:
                 selected_item = self.game.hotbar.items[self.game.hotbar.selected_slot]
                 if isinstance(selected_item, weapon.Weapon):

@@ -14,7 +14,7 @@ class Hotbar:
         self.margin = 10
         self.x = x
         self.y = y
-        self.font = pygame.font.Font(None, 36)
+        self.font = pygame.font.Font(None, 20)
         self.moved_item = None
         for i in range(num_slots):
             x = self.x + self.margin + i * (self.slot_width + self.margin)
@@ -39,7 +39,7 @@ class Hotbar:
                     else:
                         weapon_image_scaled = pygame.transform.scale(weapon_image, (self.slot_width - 10, self.slot_height - 10))
                         self.game.screen.blit(weapon_image_scaled, (x + 5, y + 5))
-                        ammo_text = self.font.render(str(self.items[i].ammo), True, (255, 255, 255))
+                        ammo_text = self.font.render(f"{str(self.items[i].ammo)}/{str(self.items[i].total_ammo)}", True, (255, 255, 255))
                         self.game.screen.blit(ammo_text, (x + 5, y + 5))
                 else:
                     item_text = self.font.render(self.items[i], True, (255, 255, 255))

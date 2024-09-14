@@ -5,11 +5,12 @@ import images
 from classes import particles, weapon_selection_ui
 
 class Weapon:
-    def __init__(self, game, player, image, ammo, max_ammo, fire_rate, firemode, damage):
+    def __init__(self, game, player, image, ammo, max_ammo, total_ammo, fire_rate, firemode, damage):
         self.player = player
         self.image = pygame.transform.scale(image,[60, 60])
         self.ammo = ammo
         self.max_ammo = max_ammo
+        self.total_ammo = total_ammo
         self.game = game
         self.fire_rate = fire_rate # cannot be 0
         self.firemode = firemode # 0 - Semi Auto, 1 - Full Auto, 2 - Burst
@@ -39,14 +40,16 @@ class Weapon:
 
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
     #
-    # def reload(self):
-    #     self.ammo = self.max_ammo
-    #     self.game.sound_mixer.play_sound('Assets/reload.mp3')
+    def reload(self):
+        while self.ammo < self.max_ammo and self.total_ammo > 0:
+            self.ammo += 1
+            self.total_ammo -= 1
+        self.game.sound_mixer.play_sound('Assets/reload.mp3')
 
 
 class Glock17(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.glock17, 17, 17, 3, 0, 10)
+        super().__init__(game, player, images.glock17, 17, 17, 50, 3, 0, 10)
 
     def shoot(self):
         if self.ammo > 0:
@@ -70,7 +73,7 @@ class Glock17(Weapon):
 
 class PumpActionShotgun(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.pump_action_shotgun, 5, 5, 2, 0, 2)
+        super().__init__(game, player, images.pump_action_shotgun, 5, 5, 20, 2, 0, 2)
 
     def shoot(self):
         if self.ammo > 0:
@@ -83,7 +86,7 @@ class PumpActionShotgun(Weapon):
                 vx = random.uniform(math.cos(self.player.angle - 0.4), math.cos(self.player.angle + 0.4))
                 vy = random.uniform(math.sin(self.player.angle - 0.4), math.sin(self.player.angle + 0.4))
                 speed = random.uniform(8, 12)
-                lifespan = random.randint(40, 100)
+                lifespan = random.randint(60, 100)
                 size = random.randint(2, 4)
                 red, green, blue = 255, 255, 0
                 alpha = 255
@@ -95,18 +98,18 @@ class PumpActionShotgun(Weapon):
 
 class AmmoBox(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.ammo_box, 10, 10, 1, 1, 0)
+        super().__init__(game, player, images.ammo_box, 10, 10, 0, 1, 1, 0)
 
     def shoot(self):
         weapons = [item for item in self.game.hotbar.items if isinstance(item, Weapon)]
         self.game.weapon_selection_ui = weapon_selection_ui.WeaponSelectionUI(self.game, weapons, self)
     #
-    # def reload(self):
-    #     pass
+    def reload(self):
+        pass
 
 class M4A1(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.m4a1, 30, 30, 6, 1, 20)
+        super().__init__(game, player, images.m4a1, 30, 30, 150, 6, 1, 20)
 
     def shoot(self):
         if self.ammo > 0:
@@ -130,7 +133,7 @@ class M4A1(Weapon):
 
 class BoltActionSniper(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.bolt_action_sniper, 5, 5, 1, 0, 100)
+        super().__init__(game, player, images.bolt_action_sniper, 5, 5, 20, 1, 0, 100)
 
     def shoot(self):
         if self.ammo > 0:
@@ -155,18 +158,18 @@ class BoltActionSniper(Weapon):
 
 class AmmoCrate(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.ammo_crate, 10, 10, 1, 1, 0)
+        super().__init__(game, player, images.ammo_crate, 10, 10, 0, 1, 1, 0)
 
     def shoot(self):
         weapons = [item for item in self.game.hotbar.items if isinstance(item, Weapon)]
         self.game.weapon_selection_ui = weapon_selection_ui.WeaponSelectionUI(self.game, weapons, self)
     #
-    # def reload(self):
-    #     pass
+    def reload(self):
+        pass
 
 class MAC10(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.mac10, 30, 30, 14, 1, 10)
+        super().__init__(game, player, images.mac10, 30, 30, 90, 14, 1, 10)
 
     def shoot(self):
         if self.ammo > 0:
@@ -190,7 +193,7 @@ class MAC10(Weapon):
 
 class M1911(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.m1911, 7, 7, 4, 0, 15)
+        super().__init__(game, player, images.m1911, 7, 7, 50, 4, 0, 15)
 
     def shoot(self):
         if self.ammo > 0:
@@ -214,7 +217,7 @@ class M1911(Weapon):
 
 class ScarH(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.scarh, 20, 20, 5, 1, 25)
+        super().__init__(game, player, images.scarh, 20, 20, 140, 5, 1, 25)
 
     def shoot(self):
         if self.ammo > 0:
@@ -238,7 +241,7 @@ class ScarH(Weapon):
 
 class DesertEagle(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.desert_eagle, 7, 7, 3, 0, 30)
+        super().__init__(game, player, images.desert_eagle, 7, 7, 60, 3, 0, 30)
 
     def shoot(self):
         if self.ammo > 0:
@@ -262,7 +265,7 @@ class DesertEagle(Weapon):
 
 class Magnum44(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.magnum44, 6, 6, 2, 0, 30)
+        super().__init__(game, player, images.magnum44, 6, 6, 50, 2, 0, 30)
 
     def shoot(self):
         if self.ammo > 0:

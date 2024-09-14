@@ -874,5 +874,5 @@ class Game:
             if self.weapon_selection_ui:
                 selected_weapon = self.weapon_selection_ui.handle_event(event)
                 if selected_weapon:
-                    selected_weapon.ammo += self.weapon_selection_ui.return_ammothing_ammo()
+                    selected_weapon.total_ammo += self.weapon_selection_ui.return_ammothing_ammo()
                     self.weapon_selection_ui = None
