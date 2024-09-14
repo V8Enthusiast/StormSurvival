@@ -1,4 +1,5 @@
 import random
+from classes import mainmenu
 
 import pygame
 import colorsys
@@ -55,6 +56,21 @@ class TextBox:
                     self.text += event.unicode
                 # Re-render the text.
                 self.txt_surface = FONT.render(self.text, True, BLACK)
+                exists = False
+                f = open("scores.save", "r")
+                for line in f:
+                    s = line.strip().split(";")
+                    if s[0].lower() == self.text.lower():
+                        exists = True
+                        self.app.ui.displayed_score = int(s[1])
+                if exists is False:
+                    self.app.ui.displayed_score = 0
+                f.close()
+                w = open("lastplayer.save", "w")
+                w.write(self.text)
+                w.close()
+
+
 
     def render(self):
         # Update the outline color

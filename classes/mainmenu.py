@@ -1,3 +1,4 @@
+import os
 import random
 import time
 
@@ -7,6 +8,7 @@ class MainMenu:
     def __init__(self, app):
         self.app = app
         self.main_text_rect_center = (self.app.width//2, 130 * self.app.scale)
+        self.score_text_rect_center = (self.app.width//2, 245)
         self.font = "fonts/main_font.ttf"
         self.font_color = (255, 255, 255)
         self.buttons = [
@@ -28,6 +30,32 @@ class MainMenu:
                                        self.font,
                                        'Player 1')
 
+        if not os.path.isfile("scores.save"):
+            t = open("scores.save", "x")
+            t.close()
+
+        if not os.path.isfile("lastplayer.save"):
+            t = open("lastplayer.save", "x")
+            t.close()
+
+        r = open("lastplayer.save", "r")
+        last_player = r.readline().strip()
+        r.close()
+
+        if self.app.last_player == '' and last_player != None:
+            self.app.last_player = last_player
+
+        exists = False
+        f = open("scores.save", "r")
+        for line in f:
+            s = line.strip().split(";")
+            if s[0].lower() == self.app.last_player.lower():
+                exists = True
+                self.displayed_score = int(s[1])
+                self.displayed_player = s[0]
+        if exists is False:
+            self.displayed_score = 0
+        f.close()
 
     def render(self):
         self.app.screen.fill((0, 0, 0))
@@ -40,7 +68,14 @@ class MainMenu:
         display_text = font.render("S T O R M  S U R V I V A L", True, self.font_color)
         display_text_rect = display_text.get_rect()
         display_text_rect.center = self.main_text_rect_center
+
+        font2 = pygame.font.Font(self.font, int(48 * self.app.scale))
+        score_text = font2.render(str(self.displayed_score), True, (0, 255, 0))
+        score_text_rect = score_text.get_rect()
+        score_text_rect.center = self.score_text_rect_center
+
         self.app.screen.blit(display_text, display_text_rect)
+        self.app.screen.blit(score_text, score_text_rect)
 
 
     def events(self):
