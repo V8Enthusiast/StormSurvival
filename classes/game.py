@@ -368,7 +368,7 @@ class Game:
         font = pygame.font.Font(self.font, 24)
         text_color = (255, 255, 255)
 
-        health_text = font.render(f"Health: {self.player.health}", True, text_color)
+        health_text = font.render(f"Health: {round(self.player.health)}", True, text_color)
         ui_surface.blit(health_text, (10, 10))
 
         hunger_text = font.render(f"Hunger: {self.player.hunger}", True, text_color)
@@ -875,5 +875,5 @@ class Game:
             if self.weapon_selection_ui:
                 selected_weapon = self.weapon_selection_ui.handle_event(event)
                 if selected_weapon:
-                    selected_weapon.ammo += 10
+                    selected_weapon.ammo += self.weapon_selection_ui.return_ammothing_ammo()
                     self.weapon_selection_ui = None

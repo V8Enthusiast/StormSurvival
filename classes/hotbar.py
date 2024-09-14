@@ -54,3 +54,9 @@ class Hotbar:
     def remove_item(self, slot):
         if 0 <= slot < self.num_slots:
             self.items[slot] = None
+
+    def remove_item_by_item(self, item):
+        for i in range(len(self.items)):
+            if self.items[i] == item:
+                self.items[i] = None
+                break

@@ -95,11 +95,12 @@ class PumpActionShotgun(Weapon):
 
 class AmmoBox(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.ammo_box, 0, 0, 1, 1, 0)
+        super().__init__(game, player, images.ammo_box, 10, 10, 1, 1, 0)
 
     def shoot(self):
         weapons = [item for item in self.game.hotbar.items if isinstance(item, Weapon)]
-        self.game.weapon_selection_ui = weapon_selection_ui.WeaponSelectionUI(self.game, weapons)
+        self.game.weapon_selection_ui = weapon_selection_ui.WeaponSelectionUI(self.game, weapons, self)
+        self.game.objects.remove(self)
 
     def reload(self):
         pass
@@ -155,11 +156,11 @@ class BoltActionSniper(Weapon):
 
 class AmmoCrate(Weapon):
     def __init__(self, game, player):
-        super().__init__(game, player, images.ammo_crate, 0, 0, 1, 1, 0)
+        super().__init__(game, player, images.ammo_crate, 10, 10, 1, 1, 0)
 
     def shoot(self):
         weapons = [item for item in self.game.hotbar.items if isinstance(item, Weapon)]
-        self.game.weapon_selection_ui = weapon_selection_ui.WeaponSelectionUI(self.game, weapons)
+        self.game.weapon_selection_ui = weapon_selection_ui.WeaponSelectionUI(self.game, weapons, self)
 
     def reload(self):
         pass

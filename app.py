@@ -63,6 +63,10 @@ class App:
         else:
             self.screen = pygame.display.set_mode((self.width, self.height), vsync=int(vsync))
 
+        pygame.display.set_caption("Storm Survival")
+        icon = pygame.image.load('Assets/Weapons/Colt45.png')
+        pygame.display.set_icon(icon)
+
     def fade(self, fade_in=True, duration=0.5):
         fade_surface = pygame.Surface((self.width, self.height))
         fade_surface.fill((0, 0, 0))
