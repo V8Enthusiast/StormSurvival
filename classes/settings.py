@@ -27,7 +27,7 @@ class Settings:
         self.texts = [
             font.render("Resolution", True, self.font_color),
             font.render("Fullscreen", True, self.font_color),
-            font.render("Pay to open chest", True, self.font_color),
+            font.render("Pay for chest", True, self.font_color),
             # font.render("Default level", True, self.font_color),
             # font.render("Block colors", True, self.font_color),
             font.render("Music volume", True, self.font_color)
@@ -35,7 +35,7 @@ class Settings:
 
         self.current_resolution = settings['Resolution']
         self.current_fs = settings['Fullscreen']
-        # self.current_gamemode = settings['Gamemode']
+        self.current_pay = settings['Pay for chest']
         # self.current_default_level = settings['Default level']
         # self.current_colors = settings['Block colors']
         # self.current_fall_speed = settings['Max fall speed']
