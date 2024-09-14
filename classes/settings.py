@@ -134,5 +134,6 @@ class Settings:
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 pass
             if not self.app.onLevel and event.type == pygame.KEYDOWN:
-                self.app.ui.textBox.handle_event(event)
+                pass
+                #self.app.ui.textBox.handle_event(event)
         self.app.mixer.change_volume(self.volume_slider.value)
