@@ -4,6 +4,7 @@ import time
 
 import pygame
 
+import settings_values
 from classes import GameObject, particles, hotbar, weapon
 
 from Assets import mixer
@@ -23,9 +24,11 @@ class Game:
         self.enemies = []
         self.selected_chest = None
         self.chest_ui = None
+        self.pay_for_chest = settings_values.pay_for_chest
         self.speed = 3
         self.dx = 0
         self.dy = 0
+
 
 
         self.player = GameObject.Player(self, self.app.width // 2 - 50, self.app.height // 2 - 50, 100, 100,

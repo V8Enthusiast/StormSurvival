@@ -363,7 +363,7 @@ class Chest(GameObject):
         self.open_image = pygame.transform.scale(self.opened_image, (self.w, self.h))
 
         self.collision = True
-        self.opened = False
+        self.opened = not self.game.pay_for_chest
         self.generateRandomItems()
 
     def render(self):

@@ -2,6 +2,7 @@ import random
 from classes import settings, mainmenu, game
 import pygame
 
+import settings_values
 import pygame
 import colorsys
 
@@ -85,12 +86,9 @@ class Button:
             else:
                 self.app.ui.current_fs = "False"
             self.text = self.app.ui.current_fs
-        elif self.function == 'mode':
-            if self.app.ui.current_gamemode < len(gamemodes) - 1:
-                self.app.ui.current_gamemode += 1
-            else:
-                self.app.ui.current_gamemode = 0
-            self.text = gamemodes[self.app.ui.current_gamemode]
+        elif self.function == 'pay_for_chest':
+            settings_values.pay_for_chest = not settings_values.pay_for_chest
+            self.text = str(settings_values.pay_for_chest)
         elif self.function == 'level':
             if self.app.ui.current_default_level < 15:
                 self.app.ui.current_default_level += 1

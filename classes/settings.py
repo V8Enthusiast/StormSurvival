@@ -17,7 +17,7 @@ class Settings:
         self.buttons = [
             buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 - 575 * self.app.scale / 2, False, self.font, f"{resolutions[settings['Resolution']]}", (0, 0, 0), self.font_color, 'resolution', self.app),
             buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 - 375 * self.app.scale / 2, False, self.font, f"{settings['Fullscreen']}", (0, 0, 0), self.font_color, 'fullscreen', self.app),
-            # buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 - 175 * self.app.scale / 2, False, self.font, f"{gamemodes[settings['Gamemode']]}", (0, 0, 0), self.font_color, 'mode', self.app),
+            buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 - 175 * self.app.scale / 2, False, self.font, f"{settings['Pay for chest']}", (0, 0, 0), self.font_color, 'pay_for_chest', self.app),
             # buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 + 25 * self.app.scale / 2, False, self.font, f"{settings['Default level']}", (0, 0, 0), self.font_color, 'level', self.app),
             # buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 + 225 * self.app.scale / 2, False, self.font, f"{color_modes[settings['Block colors']]}", (0, 0, 0), self.font_color, 'colors', self.app),
             buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 - 225 * self.app.scale, self.app.height / 2 + 625 * self.app.scale / 2, False, self.font, "Save", (0, 0, 0), self.font_color, 'save_settings', self.app),
@@ -27,7 +27,7 @@ class Settings:
         self.texts = [
             font.render("Resolution", True, self.font_color),
             font.render("Fullscreen", True, self.font_color),
-            # font.render("Gamemode", True, self.font_color),
+            font.render("Pay to open chest", True, self.font_color),
             # font.render("Default level", True, self.font_color),
             # font.render("Block colors", True, self.font_color),
             font.render("Music volume", True, self.font_color)
@@ -43,7 +43,7 @@ class Settings:
 
         self.volume_slider = slider.Slider(
             self.app.width / 2 + 100 * self.app.scale,
-            self.app.height / 2 - 175 * self.app.scale / 2,
+            self.app.height / 2 + 25 * self.app.scale / 2,
             200 * self.app.scale,
             20 * self.app.scale,
             0, 1, self.current_volume, self.app
@@ -72,7 +72,7 @@ class Settings:
         settings = {
             'Resolution': self.current_resolution,
             'Fullscreen': self.current_fs,
-            # 'Gamemode': self.current_gamemode,
+            'Pay for chest': settings_values.pay_for_chest,
             # 'Default level': self.current_default_level,
             # 'Block colors': self.current_colors,
             # 'Max fall speed': self.current_fall_speed,
@@ -91,7 +91,7 @@ class Settings:
             self.screen = pygame.display.set_mode((width, height), vsync=int(self.app.is_vsync_enabled))
         self.app.width = width
         self.app.height = height
-        # settings_values.mode = settings['Gamemode']
+        settings_values.pay_for_chest = settings['Pay for chest']
         # settings_values.default_level = settings['Default level']
         # settings_values.block_colors = settings['Block colors']
         # settings_values.max_fall_speed = settings['Max fall speed']
@@ -99,7 +99,7 @@ class Settings:
         self.buttons = [
             buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 - 575 * self.app.scale / 2, False, self.font, f"{resolutions[settings['Resolution']]}", (0, 0, 0), self.font_color, 'resolution', self.app),
             buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 - 375 * self.app.scale / 2, False, self.font, f"{settings['Fullscreen']}", (0, 0, 0), self.font_color, 'fullscreen', self.app),
-            # buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 - 175 * self.app.scale / 2, False, self.font, f"{gamemodes[settings['Gamemode']]}", (0, 0, 0), self.font_color, 'mode', self.app),
+            buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 - 175 * self.app.scale / 2, False, self.font, f"{settings['Pay for chest']}", (0, 0, 0), self.font_color, 'pay_for_chest', self.app),
             # buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 + 25 * self.app.scale / 2, False, self.font, f"{settings['Default level']}", (0, 0, 0), self.font_color, 'level', self.app),
             # buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 + 225 * self.app.scale / 2, False, self.font, f"{color_modes[settings['Block colors']]}", (0, 0, 0), self.font_color, 'colors', self.app),
             buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 - 225 * self.app.scale, self.app.height / 2 + 625 * self.app.scale / 2, False, self.font, "Save", (0, 0, 0), self.font_color, 'save_settings', self.app),
@@ -108,7 +108,7 @@ class Settings:
 
         self.volume_slider = slider.Slider(
             self.app.width / 2 + 100 * self.app.scale,
-            self.app.height / 2 - 175 * self.app.scale / 2,
+            self.app.height / 2 + 25 * self.app.scale / 2,
             200 * self.app.scale,
             20 * self.app.scale,
             0, 1, settings.get('Volume', 0.5), self.app
