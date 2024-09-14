@@ -483,7 +483,7 @@ class Game:
                     self.selected_chest = None
                     self.chest_ui = None
                 break
-            elif self.helpText in ["Press E to open", "Pay 20 gems to be able to open"] or (
+            elif self.helpText in ["Press E to open", "Pay 20 gems to be able to open", "Not enough gems"] or (
                     self.chest_ui is not None and self.selected_chest.rect.colliderect(self.player.rect) is False):
                 self.helpText = ""
                 self.selected_chest = None
