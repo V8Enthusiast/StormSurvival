@@ -36,11 +36,11 @@ class TextBox:
             # Change the current color of the input box.
             self.color = self.color2 if self.active else BLACK
             if self.active:
-                if self.text == 'Your nick':
+                if self.text == 'Player 1':
                     self.text = ''
             else:
                 if self.text == '':
-                    self.text = 'Your nick'
+                    self.text = 'Player 1'
                 else:
                     self.app.last_player = self.text
 
