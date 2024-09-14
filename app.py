@@ -32,6 +32,7 @@ class App:
         with open('settings.json', 'r') as file:
             data = json.load(file)
             settings = data['settings']
+        self.resolution_number=settings['Resolution']
 
         # settings_values.mode = settings['Gamemode']
         # settings_values.default_level = settings['Default level']
