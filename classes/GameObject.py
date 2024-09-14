@@ -532,13 +532,28 @@ class Block(GameObject):
         super().__init__(game, x, y, w, h, image_path, visible)
 
         self.collision = True
+        self.full_durability = 200
         self.durability = 200
 
+
     def render(self):
-        super().render()
         if self.durability <= 0:
             self.collision = False
             self.rect = None
             self.game.objects.remove(self)
+        elif self.durability < .25 * self.full_durability:
+            self.image = images.wood_planks3
+            self.image = pygame.transform.scale(self.image, (self.w, self.h))
+        elif self.durability < .5 * self.full_durability:
+            self.image = images.wood_planks2
+            self.image = pygame.transform.scale(self.image, (self.w, self.h))
+        elif self.durability < .75 * self.full_durability:
+            self.image = images.wood_planks1
+            self.image = pygame.transform.scale(self.image, (self.w, self.h))
 
+        self.x -= self.game.dx
+        self.y -= self.game.dy
+        if self.x + self.w >= 0 and self.x <= self.game.app.width:
+            self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
+            self.screen.blit(self.image, self.rect)
 
