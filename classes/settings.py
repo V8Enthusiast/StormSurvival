@@ -10,7 +10,7 @@ color_modes = ["Default", "Random", "Gray"]
 class Settings:
     def __init__(self, app):
         self.app = app
-        self.main_text_rect_center = (self.app.width // 2, 75 * self.app.scale)
+        self.main_text_rect_center = (self.app.width // 2, 55 * self.app.scale)
         self.font = "fonts/main_font.ttf"
         self.font_color = (255, 255, 255)
         settings = self.read_settings('settings.json')

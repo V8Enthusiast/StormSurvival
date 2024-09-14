@@ -155,10 +155,29 @@ class Game:
             # print(a)
 
         try:
-            self.current_tile_x = (2 * self.player.relative_position[0] + self.app.width//2//self.tile_size * self.tile_size) // 96 * 96
-            self.current_tile_y = (2 * self.player.relative_position[1] + self.app.height//2//self.tile_size*self.tile_size) // 96 * 96
+            if self.app.resolution_number==0:
+                self.current_tile_x = (2 * self.player.relative_position[
+                    0]  + self.app.width // 2 // self.tile_size * self.tile_size) // 96 * 96
+                self.current_tile_y = (2 * self.player.relative_position[
+                    1]  + self.app.height // 2 // self.tile_size * self.tile_size) // 96 * 96
+            elif self.app.resolution_number==1 :
+                self.current_tile_x = (2 * self.player.relative_position[
+                    0] + self.tile_size // 3 + self.app.width // 2 // self.tile_size * self.tile_size) // 96 * 96
+                self.current_tile_y = (2 * self.player.relative_position[
+                    1] + self.tile_size // 2 + self.app.height // 2 // self.tile_size * self.tile_size) // 96 * 96
             # print(self.tiles[(2*self.player.relative_position[0]+5*self.tile_size-self.move_x,2*self.player.relative_position[1]-self.move_y+4*self.tile_size)])
-            if self.tiles[(self.current_tile_x,self.current_tile_y)] !='grass':
+            elif self.app.resolution_number==2:
+                self.current_tile_x = (2 * self.player.relative_position[
+                    0]  + self.app.width // 2 // self.tile_size * self.tile_size) // 96 * 96
+                self.current_tile_y = (2 * self.player.relative_position[
+                    1] + self.tile_size // 2 + self.app.height // 2 // self.tile_size * self.tile_size) // 96 * 96
+            elif self.app.resolution_number==3:
+                self.current_tile_x = (2 * self.player.relative_position[
+                    0] + self.tile_size // 3 + self.app.width // 2 // self.tile_size * self.tile_size) // 96 * 96
+                self.current_tile_y = (2 * self.player.relative_position[
+                    1] + self.tile_size  //3 + self.app.height // 2 // self.tile_size * self.tile_size) // 96 * 96
+
+            if self.tiles[(self.current_tile_x,self.current_tile_y)] !='grass' and self.tiles[(self.current_tile_x,self.current_tile_y)] !='sand':
 
 
                 self.bar = GameObject.Bar(self, (self.app.width // 2) // 96 * 96 - 50, (self.app.height // 2 // 96 * 96) - 10,
@@ -177,10 +196,27 @@ class Game:
             pass
     def collect(self):
 
-        self.current_tile_x = (2 * self.player.relative_position[
-            0] + self.app.width // 2 // self.tile_size * self.tile_size) // 96 * 96
-        self.current_tile_y = (2 * self.player.relative_position[
-            1] + self.app.height // 2 // self.tile_size * self.tile_size) // 96 * 96
+        if self.app.resolution_number == 0:
+            self.current_tile_x = (2 * self.player.relative_position[
+                0] + self.app.width // 2 // self.tile_size * self.tile_size) // 96 * 96
+            self.current_tile_y = (2 * self.player.relative_position[
+                1] + self.app.height // 2 // self.tile_size * self.tile_size) // 96 * 96
+        elif self.app.resolution_number == 1:
+            self.current_tile_x = (2 * self.player.relative_position[
+                0] + self.tile_size // 3 + self.app.width // 2 // self.tile_size * self.tile_size) // 96 * 96
+            self.current_tile_y = (2 * self.player.relative_position[
+                1] + self.tile_size // 2 + self.app.height // 2 // self.tile_size * self.tile_size) // 96 * 96
+        # print(self.tiles[(2*self.player.relative_position[0]+5*self.tile_size-self.move_x,2*self.player.relative_position[1]-self.move_y+4*self.tile_size)])
+        elif self.app.resolution_number == 2:
+            self.current_tile_x = (2 * self.player.relative_position[
+                0] + self.app.width // 2 // self.tile_size * self.tile_size) // 96 * 96
+            self.current_tile_y = (2 * self.player.relative_position[
+                1] + self.tile_size // 2 + self.app.height // 2 // self.tile_size * self.tile_size) // 96 * 96
+        elif self.app.resolution_number == 3:
+            self.current_tile_x = (2 * self.player.relative_position[
+                0] + self.tile_size // 3 + self.app.width // 2 // self.tile_size * self.tile_size) // 96 * 96
+            self.current_tile_y = (2 * self.player.relative_position[
+                1] + self.tile_size // 3 + self.app.height // 2 // self.tile_size * self.tile_size) // 96 * 96
 
 
         print(self.resources[(self.current_tile_x,self.current_tile_y-self.tile_size//6)].resource )

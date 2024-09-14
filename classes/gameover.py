@@ -1,8 +1,10 @@
+import os
+
 import pygame
 from classes import mainmenu, buttons
 
 class GameOver:
-    def __init__(self, app):
+    def __init__(self, app, score):
         self.app = app
         self.font = pygame.font.Font("fonts/main_font.ttf", 64)
         self.text = self.font.render("Game Over", True, (255, 0, 0))
@@ -10,6 +12,24 @@ class GameOver:
         self.buttons = [
             buttons.Button(200, 50, self.app.width // 2 - 100, self.app.height // 2 + 100, False, "fonts/main_font.ttf", "Main Menu", (0, 0, 0), (255, 255, 255), "back_to_menu", self.app)
         ]
+        self.score = score
+
+        if not os.path.isfile("scores.save"):
+            t = open("scores.save", "x")
+            t.close()
+
+        f = open("scores.save", "r")
+        player_scores = {}
+        for line in f:
+            s = line.strip().split(";")
+            player_scores[s[0]] = int(s[1])
+        f.close()
+
+        w = open("scores.save", "w")
+        if self.app.last_player not in player_scores.keys() or score > player_scores[self.app.last_player]:
+            player_scores[self.app.last_player] = self.score
+            for key, value in player_scores.items():
+                w.write(key + ";" + str(value) + "\n")
 
     def render(self):
         self.app.screen.fill((0, 0, 0))

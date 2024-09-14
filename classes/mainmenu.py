@@ -6,7 +6,7 @@ from classes import buttons, inputBox
 class MainMenu:
     def __init__(self, app):
         self.app = app
-        self.main_text_rect_center = (self.app.width//2, 150 * self.app.scale)
+        self.main_text_rect_center = (self.app.width//2, 130 * self.app.scale)
         self.font = "fonts/main_font.ttf"
         self.font_color = (255, 255, 255)
         self.buttons = [
@@ -26,7 +26,7 @@ class MainMenu:
                                        75 * self.app.scale,
                                        app,
                                        self.font,
-                                       'Your nick')
+                                       'Player 1')
 
 
     def render(self):
@@ -37,7 +37,7 @@ class MainMenu:
             button.render()
         self.textBox.render()
         font = pygame.font.Font(self.font, int(72 * self.app.scale))
-        display_text = font.render("G A M E  J A M", True, self.font_color)
+        display_text = font.render("S T O R M  S U R V I V A L", True, self.font_color)
         display_text_rect = display_text.get_rect()
         display_text_rect.center = self.main_text_rect_center
         self.app.screen.blit(display_text, display_text_rect)
@@ -54,6 +54,8 @@ class MainMenu:
                     if button.rect.collidepoint(click_pos[0], click_pos[1]):
                         self.app.fade(fade_in=False)
                         button.click()
+
+                self.textBox.handle_event(event)
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 pass
             if not self.app.onLevel and event.type == pygame.KEYDOWN:
