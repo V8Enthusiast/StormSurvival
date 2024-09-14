@@ -39,10 +39,6 @@ class Game:
         #self.chests.append(chest)
         #self.objects.append(chest)
         #self.objects.append(GameObject.Chest(self, 600, 600, 100, 100, images.chest, True))
-        zombie = GameObject.Zombie(self, 50, 50, 100, 100, images.player, True)
-
-        self.enemies.append(zombie)
-        self.objects.append(zombie)
 
         self.tiles = {}
         self.tile_size = 96
@@ -78,6 +74,7 @@ class Game:
 
         self.day_night_cycle_duration = 120  # Duration of a full day-night cycle in seconds
         self.cycle_start_time = time.time()
+        self.time_of_day = None
         self.overlay_alpha = 0
         self.overlay_surface = pygame.Surface((self.app.width, self.app.height))
         self.overlay_surface.fill((0, 0, 0))
@@ -88,9 +85,12 @@ class Game:
         self.last_fps_time = time.time()
         self.current_fps = 0
 
-
-
-
+        self.wave = 0
+        self.enemy_spawns_left = 20 + self.wave * 5
+        self.delay_between_spawns = self.day_night_cycle_duration / self.enemy_spawns_left
+        self.enemies_per_spawn = 2
+        self.delay_between_spawns = self.enemies_per_spawn * self.day_night_cycle_duration / self.enemy_spawns_left
+        self.spawn_delay_clock = time.time_ns()
 
     def init_tiles(self):
         for y in range(-96, self.app.height+96, self.tile_size):
@@ -286,6 +286,8 @@ class Game:
             time_of_day = "Noon"
             time_to_next = int((0.75 - cycle_progress) * self.day_night_cycle_duration)
         elif cycle_progress < 1.0:
+            self.wave += 1
+            self.delay_between_spawns = self.enemies_per_spawn * self.day_night_cycle_duration / (self.enemy_spawns_left * 2)
             time_of_day = "Evening"
             time_to_next = int((1.0 - cycle_progress) * self.day_night_cycle_duration)
         else:
@@ -297,6 +299,8 @@ class Game:
 
         time_to_next_text = font.render(f"Time to Next: {time_to_next}s", True, text_color)
         self.screen.blit(time_to_next_text, (10, 70))
+
+        self.time_of_day = time_of_day
 
     def render_player_info(self):
         ui_surface = pygame.Surface((self.app.width, 100), pygame.SRCALPHA)
@@ -499,6 +503,26 @@ class Game:
         self.render_weather_info()
         self.render_day_info()
 
+        if self.time_of_day in ["Night", "Evening"]:
+            if self.enemy_spawns_left - self.enemies_per_spawn >= 0 and time.time_ns() > self.spawn_delay_clock + self.delay_between_spawns * 1_000_000_000:
+                for _ in range(self.enemies_per_spawn):
+                    if random.randint(0, 100) < 50:
+                        x_offset = random.randint(-self.app.width//2 - 300, self.player.x - 300)
+                    else:
+                        x_offset = random.randint(self.player.x + 300, self.app.width//2 + 300)
+
+                    if random.randint(0, 100) < 50:
+                        y_offset = random.randint(-self.app.height//2 - 300, self.player.y - 300)
+                    else:
+                        y_offset = random.randint(self.player.y + 300, self.app.height//2 + 300)
+
+                    zombie = GameObject.Zombie(self, self.player.x + x_offset, self.player.y + y_offset, 100, 100, images.player, True)
+                    self.enemies.append(zombie)
+                    self.objects.append(zombie)
+                    self.enemy_spawns_left -= 1
+                    self.spawn_delay_clock = time.time_ns()
+
+
         if self.chest_ui is not None:
             self.chest_ui.render()
 
@@ -529,8 +553,6 @@ class Game:
             firemode_display_rect = firemode_display.get_rect()
             firemode_display_rect.topright = (self.app.width - 30, self.app.height - 75+ firemode_display_rect.height//2)
             self.app.screen.blit(firemode_display, firemode_display_rect)
-
-
 
         current_time = time.time()
         if current_time >= self.next_weather_change:
