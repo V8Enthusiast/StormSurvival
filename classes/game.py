@@ -46,6 +46,7 @@ class Game:
 
         self.waters=['water']
         self.trees = ['tree1','tree2','tree3']
+        self.grasses=['grass','grass2','grass3']
         self.init_tiles()
 
         self.environmentparticlesystem = particles.ParticleSystem(self)
@@ -176,7 +177,7 @@ class Game:
                 self.current_tile_y = (2 * self.player.relative_position[
                     1] + self.tile_size  //3 + self.app.height // 2 // self.tile_size * self.tile_size) // 96 * 96
 
-            if self.tiles[(self.current_tile_x,self.current_tile_y)] !='grass' and self.tiles[(self.current_tile_x,self.current_tile_y)] !='sand':
+            if self.tiles[(self.current_tile_x,self.current_tile_y)] not in self.grasses and self.tiles[(self.current_tile_x,self.current_tile_y)] !='sand':
 
 
                 self.bar = GameObject.Bar(self, (self.app.width // 2) // 96 * 96 - 50, (self.app.height // 2 // 96 * 96) - 10,
@@ -252,7 +253,7 @@ class Game:
         tree_probability = 100
         mine_probability = 50
         chest_probability = 50
-        tile_image = 'grass'
+        tile_image = random.choice(self.grasses)
 
         for n in self.check_neighbours(x, y):
             # print(n)
@@ -484,6 +485,10 @@ class Game:
                         image=images.water
                     if tile_image=='grass':
                         image=images.grass
+                    if tile_image=='grass2':
+                        image=images.grass2
+                    if tile_image=='grass3':
+                        image=images.grass3
                     if tile_image=='mine':
                         image=images.mine
                     if tile_image=='mine_farm':
