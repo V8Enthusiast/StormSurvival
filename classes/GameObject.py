@@ -541,7 +541,7 @@ class Resource():
             self.tick=0
         if self.value>self.max:
             self.value=self.max
-        self.text = self.font.render(str(self.value), True, (0, 0, 0))
+        self.text = self.font.render(str(self.value), True, (255, 255, 255))
 
 
 class Block(GameObject):
