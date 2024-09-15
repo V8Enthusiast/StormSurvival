@@ -58,4 +58,4 @@ Drinking Water and Gathering Food Raises your Thirst and Hunger
 
 When Gathering Food while Hunger is full, Health will raise Proportionally
 
-!!! Health, Thirst and Health will not Rise above 100
+!!! Thirst and Hunger will not Rise above 100
