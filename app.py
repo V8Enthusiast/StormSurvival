@@ -58,9 +58,8 @@ class App:
         self.onLevel = False
 
         self.ui = mainmenu.MainMenu(self)
-
         # Window setup
-        if self.fullscreen:
+        if str(self.fullscreen) == "True":
             self.screen = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN, vsync=int(vsync))
         else:
             self.screen = pygame.display.set_mode((self.width, self.height), vsync=int(vsync))
