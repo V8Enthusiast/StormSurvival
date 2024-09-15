@@ -36,6 +36,7 @@ class Settings:
         self.current_resolution = settings['Resolution']
         self.current_fs = settings['Fullscreen']
         self.current_pay = settings['Pay for chest']
+        settings_values.pay_for_chest = self.current_pay
         # self.current_default_level = settings['Default level']
         # self.current_colors = settings['Block colors']
         # self.current_fall_speed = settings['Max fall speed']
@@ -72,7 +73,7 @@ class Settings:
         settings = {
             'Resolution': self.current_resolution,
             'Fullscreen': self.current_fs,
-            'Pay for chest': settings_values.pay_for_chest,
+            'Pay for chest': self.current_pay,
             # 'Default level': self.current_default_level,
             # 'Block colors': self.current_colors,
             # 'Max fall speed': self.current_fall_speed,

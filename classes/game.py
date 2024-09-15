@@ -1,3 +1,4 @@
+import json
 import math
 import random
 import time
@@ -5,8 +6,7 @@ import time
 import pygame
 
 import settings_values
-from classes import GameObject, particles, hotbar, weapon
-
+from classes import GameObject, particles, hotbar, weapon, settings
 from Assets import mixer
 import images
 
@@ -24,7 +24,10 @@ class Game:
         self.enemies = []
         self.selected_chest = None
         self.chest_ui = None
-        self.pay_for_chest = settings_values.pay_for_chest
+        settings = self.read_settings('settings.json')
+
+        self.pay_for_chest = settings["Pay for chest"]
+        print(self.pay_for_chest)
         self.speed = 3
         self.dx = 0
         self.dy = 0
@@ -33,7 +36,6 @@ class Game:
 
         self.player = GameObject.Player(self, self.app.width // 2 - 50, self.app.height // 2 - 50, 100, 100,
                                         images.player, True)
-        print(self.player.health)
         self.storm_counter=0
         self.storm = GameObject.Storm(self, -1000, 0, 500, self.app.height, images.storm,True)
         self.storm2=GameObject.Storm(self, -1000, -self.app.height, 500, self.app.height, images.storm,True)
@@ -60,7 +62,7 @@ class Game:
         self.tile_width=96
 
         self.hotbar = hotbar.Hotbar(self, self.app.width//2 - ((50 + 10) * 5 -50)//2, self.app.height-75, 5)
-        self.hotbar.add_item(weapon.Glock17(self, self.player), 0)
+        self.hotbar.add_item(weapon.Glock17(self, self.player, False), 0)
 
         self.sound_mixer = mixer.Mixer()
         self.sound_mixer.change_volume(self.app.mixer.get_volume())
@@ -75,7 +77,7 @@ class Game:
         self.move_x =0#self.app.width//2%self.tile_size
         self.move_y =0 #self.app.height//2%self.tile_size
 
-        self.day_night_cycle_duration = 120  # Duration of a full day-night cycle in seconds
+        self.day_night_cycle_duration = 180  # Duration of a full day-night cycle in seconds
         self.cycle_start_time = time.time()
         self.time_of_day = None
         self.overlay_alpha = 0
@@ -101,7 +103,14 @@ class Game:
         self.place_mode = False
 
         self.weapon_selection_ui = None
-        print(self.player.health)
+
+
+    def read_settings(self, file_path):
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+            settings = data['settings']
+            return settings
+
     def init_tiles(self):
         for y in range(-96, self.app.height+96, self.tile_size):
             for x in range(-96, self.app.width+96, self.tile_size):
@@ -409,8 +418,25 @@ class Game:
         weather_text = font.render(f"Weather: {weather_status} | Next change in: {time_remaining}s", True, text_color)
         self.screen.blit(weather_text, (10, 10))
 
+    def show_settings_menu(self):
+        settings_menu = settings.Settings(self.app)
+        settings_menu_active = True
+
+        while settings_menu_active:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.app.run = False
+                    pygame.quit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        settings_menu_active = False
+                settings_menu.events()
+
+            self.screen.fill((0, 0, 0))
+            settings_menu.render()
+            pygame.display.flip()
+
     def render(self):
-        # print(self.player.health,'cccc')
         t1=time.time()
         if time.time() > self.storm.clock + self.storm.wait_time and self.storm.is_moving is False:
             self.storm.is_moving=True
@@ -500,7 +526,7 @@ class Game:
                     self.screen.blit(image, (x - player_x2, y - player_y2))
                 except:
                     pass
-        # print(self.player.health,'ddddd')
+
         # Render other game objects
         for obj in self.objects:
             if not isinstance(obj, (GameObject.Tile, GameObject.Player, GameObject.Storm, GameObject.Resource_Manager)):
@@ -511,7 +537,6 @@ class Game:
             elif isinstance(obj, GameObject.Storm):
                 obj.move()
                 obj.render()
-        # print(self.player.health, 'eeeee')
         for obj in self.resources.values():
             obj.render()
             # if isinstance(obj, GameObject.Chest):
@@ -523,12 +548,11 @@ class Game:
             #         self.selected_chest = None
             #         self.chest_ui = None
 
-
         for chest in self.chests:
             if chest.rect.colliderect(self.player.rect) and self.chest_ui is None:
                 self.selected_chest = chest
                 # print(chest)
-                if settings_values.pay_for_chest == True:
+                if self.pay_for_chest == True:
                     if self.resource_manager.resources[0][1]>=50:
                         if self.selected_chest.opened == False:
                             self.helpText = "Pay 50 gems to be able to open"
@@ -763,8 +787,6 @@ class Game:
                                                             alpha, shape, damage, face_direction=True)
 
     def events(self):
-        # print(self.player.health, 'bbb')
-
         keys = pygame.key.get_pressed()
 
         collidesWithAnything = False
@@ -830,7 +852,6 @@ class Game:
             self.player.thirst -= self.player.delta_thirst
             self.player.health -= self.player.delta_health
             self.last_hunger_update = current_time
-
         self.move_x+=2*self.dx
         self.move_x=self.move_x%self.tile_size
         self.move_y += 2*self.dy
@@ -878,6 +899,8 @@ class Game:
                     self.hotbar.select_slot(3)
                 elif event.key == pygame.K_5:
                     self.hotbar.select_slot(4)
+                elif event.key == pygame.K_ESCAPE:
+                    self.show_settings_menu()
 
                 elif event.key == pygame.K_e:
                     if self.selected_chest is not None:
