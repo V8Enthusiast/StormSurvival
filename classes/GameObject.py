@@ -336,7 +336,7 @@ class Storm(GameObject):
         self.y-=2*self.game.dy
         if self.y+self.h<0:
             self.y=self.game.app.height
-        if self.y>self.game.app.height:
+        if self.y- 2*self.game.dy>self.game.app.height:
 
             self.y=0 -self.h
         num_images = 10
