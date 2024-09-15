@@ -421,7 +421,10 @@ class Game:
     def show_settings_menu(self):
         settings_menu = settings.Settings(self.app)
 
+        self.app.old_ui = self.app.ui
+
         self.app.ui = settings_menu
+
 
     def render(self):
         t1=time.time()

@@ -126,6 +126,11 @@ class Settings:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 self.app.run = False
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                if self.app.old_ui is not None:
+                    self.app.ui = self.app.old_ui
+
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 click_pos = pygame.mouse.get_pos()
                 for button in self.buttons:
