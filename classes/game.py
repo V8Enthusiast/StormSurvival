@@ -46,7 +46,7 @@ class Game:
 
         self.waters=['water']
         self.trees = ['tree1','tree2','tree3']
-        self.grasses=['grass','grass2','grass3']
+        self.grasses=['grass','grass3']
         self.init_tiles()
 
         self.environmentparticlesystem = particles.ParticleSystem(self)
@@ -93,7 +93,7 @@ class Game:
         self.enemies_per_spawn = 2
         self.delay_between_spawns = self.enemies_per_spawn * self.day_night_cycle_duration / (self.enemy_spawns_left * 2)
         self.spawn_delay_clock = time.time_ns()
-        self.enemy_spawn_offset = 350
+        self.enemy_spawn_offset = 450
         self.score = 0
 
         self.place_block_radius = 3 * 96
@@ -655,6 +655,12 @@ class Game:
                         zombie.health = 100
                     if random.randint(0, 100) > 85:
                         zombie.speed = 6
+
+                    if random.randint(0, 100) > 98:
+                        zombie.speed = 6
+                        zombie.health = 25
+                        zombie.break_damage = 100
+                        zombie.break_cooldown = 1
 
                     self.enemies.append(zombie)
                     self.objects.append(zombie)
