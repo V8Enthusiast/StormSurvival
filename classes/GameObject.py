@@ -354,8 +354,8 @@ class Storm(GameObject):
                     self.screen.blit(self.first_image, (offset_x, self.y))
                 else:
                     self.screen.blit(self.second_image, (offset_x, self.y))
-        #draw rect
-        pygame.draw.rect(self.screen,(255,255,255),self.rect,2)
+        # #draw rect
+        # pygame.draw.rect(self.screen,(255,255,255),self.rect,2)
 
         self.damage()
 
