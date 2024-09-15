@@ -130,13 +130,15 @@ class Game:
             pass
 
     def build_success(self):
-        self.player.hunger-=4
+
 
         if self.tiles[(self.current_tile_x,self.current_tile_y)] in self.trees:
+            self.player.hunger -= 4
             self.tiles[(self.current_tile_x, self.current_tile_y)]=self.tiles[(self.current_tile_x, self.current_tile_y)]+'_farm'
             GameObject.Resource(self,self.current_tile_x,self.current_tile_y-self.tile_size//6,'wood',images.wood,50,10)
             GameObject.Resource(self, self.current_tile_x, self.current_tile_y +self.tile_size//6, 'food', images.food, 120, 10)
         elif self.tiles[(self.current_tile_x,self.current_tile_y)] =='mine' and self.resource_manager.resources[1][1]>=100:
+            self.player.hunger -= 4
             self.tiles[(self.current_tile_x, self.current_tile_y)] = self.tiles[(
             self.current_tile_x, self.current_tile_y)] + '_farm'
             self.resource_manager.resources[1][1]-=100
@@ -231,7 +233,11 @@ class Game:
                 self.resources[(self.current_tile_x, self.current_tile_y + self.tile_size // 6)].value = 0
                 # print('y')
                 if self.player.hunger>100:
+                    self.player.health+=self.player.hunger-100
+                    if self.player.health>100:
+                        self.player.health=100
                     self.player.hunger=100
+
         except:
             if self.resources[(self.current_tile_x, self.current_tile_y)].resource == 'gems':
                 self.resource_manager.resources[0][1] += self.resources[
