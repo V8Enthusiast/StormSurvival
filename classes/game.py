@@ -33,6 +33,7 @@ class Game:
 
         self.player = GameObject.Player(self, self.app.width // 2 - 50, self.app.height // 2 - 50, 100, 100,
                                         images.player, True)
+        print(self.player.health)
         self.storm_counter=0
         self.storm = GameObject.Storm(self, -1000, 0, 500, self.app.height, images.storm,True)
         self.storm2=GameObject.Storm(self, -1000, -self.app.height, 500, self.app.height, images.storm,True)
@@ -100,7 +101,7 @@ class Game:
         self.place_mode = False
 
         self.weapon_selection_ui = None
-
+        print(self.player.health)
     def init_tiles(self):
         for y in range(-96, self.app.height+96, self.tile_size):
             for x in range(-96, self.app.width+96, self.tile_size):
@@ -235,8 +236,8 @@ class Game:
                 # print('y')
                 if self.player.hunger>100:
                     self.player.health+=self.player.hunger-100
-                    if self.player.health>100:
-                        self.player.health=100
+                    if self.player.health>self.player.max_health:
+                        self.player.health=self.player.max_health
                     self.player.hunger=100
 
         except:
@@ -409,6 +410,7 @@ class Game:
         self.screen.blit(weather_text, (10, 10))
 
     def render(self):
+        # print(self.player.health,'cccc')
         t1=time.time()
         if time.time() > self.storm.clock + self.storm.wait_time and self.storm.is_moving is False:
             self.storm.is_moving=True
@@ -498,7 +500,7 @@ class Game:
                     self.screen.blit(image, (x - player_x2, y - player_y2))
                 except:
                     pass
-
+        # print(self.player.health,'ddddd')
         # Render other game objects
         for obj in self.objects:
             if not isinstance(obj, (GameObject.Tile, GameObject.Player, GameObject.Storm, GameObject.Resource_Manager)):
@@ -509,6 +511,7 @@ class Game:
             elif isinstance(obj, GameObject.Storm):
                 obj.move()
                 obj.render()
+        # print(self.player.health, 'eeeee')
         for obj in self.resources.values():
             obj.render()
             # if isinstance(obj, GameObject.Chest):
@@ -519,6 +522,7 @@ class Game:
             #         self.helpText = ""
             #         self.selected_chest = None
             #         self.chest_ui = None
+
 
         for chest in self.chests:
             if chest.rect.colliderect(self.player.rect) and self.chest_ui is None:
@@ -759,6 +763,8 @@ class Game:
                                                             alpha, shape, damage, face_direction=True)
 
     def events(self):
+        # print(self.player.health, 'bbb')
+
         keys = pygame.key.get_pressed()
 
         collidesWithAnything = False
@@ -824,6 +830,7 @@ class Game:
             self.player.thirst -= self.player.delta_thirst
             self.player.health -= self.player.delta_health
             self.last_hunger_update = current_time
+
         self.move_x+=2*self.dx
         self.move_x=self.move_x%self.tile_size
         self.move_y += 2*self.dy

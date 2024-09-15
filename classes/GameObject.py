@@ -104,7 +104,9 @@ class Player(GameObject):
     def __init__(self, game, x, y, w, h, image_path, visible):
         super().__init__(game, x, y, w, h, image_path, visible)
         self.angle = 0
-        self.health = 100
+        self.max_health=200
+        self.health = self.max_health
+
         self.size = 25
         self.color = (255, 105, 55)
         self.relative_position = [0, 0]
@@ -139,8 +141,8 @@ class Player(GameObject):
         self.angle = math.atan2(mouse_y - (self.y + self.h//2), mouse_x - (self.x + self.w//2))
 
     def render(self):
-        if self.health > 100:
-            self.health = 100
+        if self.health > self.max_health:
+            self.health = self.max_health
         if self.health > 0:
             current_time = pygame.time.get_ticks()
             if current_time - self.last_damage_time >= 1000:
