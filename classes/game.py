@@ -46,6 +46,7 @@ class Game:
 
         self.waters=['water']
         self.trees = ['tree1','tree2','tree3']
+        self.grasses=['grass','grass3']
         self.init_tiles()
 
         self.environmentparticlesystem = particles.ParticleSystem(self)
@@ -130,13 +131,15 @@ class Game:
             pass
 
     def build_success(self):
-        self.player.hunger-=4
+
 
         if self.tiles[(self.current_tile_x,self.current_tile_y)] in self.trees:
+            self.player.hunger -= 4
             self.tiles[(self.current_tile_x, self.current_tile_y)]=self.tiles[(self.current_tile_x, self.current_tile_y)]+'_farm'
             GameObject.Resource(self,self.current_tile_x,self.current_tile_y-self.tile_size//6,'wood',images.wood,50,10)
             GameObject.Resource(self, self.current_tile_x, self.current_tile_y +self.tile_size//6, 'food', images.food, 120, 10)
         elif self.tiles[(self.current_tile_x,self.current_tile_y)] =='mine' and self.resource_manager.resources[1][1]>=100:
+            self.player.hunger -= 4
             self.tiles[(self.current_tile_x, self.current_tile_y)] = self.tiles[(
             self.current_tile_x, self.current_tile_y)] + '_farm'
             self.resource_manager.resources[1][1]-=100
@@ -174,7 +177,7 @@ class Game:
                 self.current_tile_y = (2 * self.player.relative_position[
                     1] + self.tile_size  //3 + self.app.height // 2 // self.tile_size * self.tile_size) // 96 * 96
 
-            if self.tiles[(self.current_tile_x,self.current_tile_y)] !='grass' and self.tiles[(self.current_tile_x,self.current_tile_y)] !='sand':
+            if self.tiles[(self.current_tile_x,self.current_tile_y)] not in self.grasses and self.tiles[(self.current_tile_x,self.current_tile_y)] !='sand':
 
 
                 self.bar = GameObject.Bar(self, (self.app.width // 2) // 96 * 96 - 50, (self.app.height // 2 // 96 * 96) - 10,
@@ -231,7 +234,11 @@ class Game:
                 self.resources[(self.current_tile_x, self.current_tile_y + self.tile_size // 6)].value = 0
                 # print('y')
                 if self.player.hunger>100:
+                    self.player.health+=self.player.hunger-100
+                    if self.player.health>100:
+                        self.player.health=100
                     self.player.hunger=100
+
         except:
             if self.resources[(self.current_tile_x, self.current_tile_y)].resource == 'gems':
                 self.resource_manager.resources[0][1] += self.resources[
@@ -246,7 +253,7 @@ class Game:
         tree_probability = 100
         mine_probability = 50
         chest_probability = 50
-        tile_image = 'grass'
+        tile_image = random.choice(self.grasses)
 
         for n in self.check_neighbours(x, y):
             # print(n)
@@ -478,6 +485,10 @@ class Game:
                         image=images.water
                     if tile_image=='grass':
                         image=images.grass
+                    if tile_image=='grass2':
+                        image=images.grass2
+                    if tile_image=='grass3':
+                        image=images.grass3
                     if tile_image=='mine':
                         image=images.mine
                     if tile_image=='mine_farm':
@@ -514,9 +525,9 @@ class Game:
                 self.selected_chest = chest
                 # print(chest)
                 if settings_values.pay_for_chest == True:
-                    if self.resource_manager.resources[0][1]>=20:
+                    if self.resource_manager.resources[0][1]>=50:
                         if self.selected_chest.opened == False:
-                            self.helpText = "Pay 20 gems to be able to open"
+                            self.helpText = "Pay 50 gems to be able to open"
                             self.selected_chest = chest
                         else:
                             self.helpText = "Press E to open"
@@ -531,7 +542,7 @@ class Game:
                     self.selected_chest = chest
                     break
 
-            elif self.helpText in ["Press E to open", "Pay 20 gems to be able to open", "Not enough gems"] or (
+            elif self.helpText in ["Press E to open", "Pay 50 gems to be able to open", "Not enough gems"] or (
                     self.chest_ui is not None and self.selected_chest.rect.colliderect(self.player.rect) is False):
                 self.helpText = ""
                 self.selected_chest = None
@@ -866,7 +877,7 @@ class Game:
                                     pass
                                 else:
                                     self.selected_chest.opened = True
-                                    self.resource_manager.resources[0][1] -= 20
+                                    self.resource_manager.resources[0][1] -= 50
                                     break
                                 self.chest_ui = hotbar.Hotbar(self, self.selected_chest.x - 100,
                                                               self.selected_chest.y - 100, 5)

@@ -302,7 +302,7 @@ class Storm(GameObject):
     def __init__(self, game,x,y,w,h,image,visible):
 
         super().__init__(game,x,y,w,h,image,visible)
-        self.speed=1
+        self.speed=2.7
         self.dmg=10
         self.last_damage_time = pygame.time.get_ticks()
         self.head_image=pygame.image.load('Assets/burza (2).png')
@@ -336,7 +336,7 @@ class Storm(GameObject):
         self.y-=2*self.game.dy
         if self.y+self.h<0:
             self.y=self.game.app.height
-        if self.y>self.game.app.height:
+        if self.y- 2*self.game.dy>self.game.app.height:
 
             self.y=0 -self.h
         num_images = 10
@@ -354,8 +354,8 @@ class Storm(GameObject):
                     self.screen.blit(self.first_image, (offset_x, self.y))
                 else:
                     self.screen.blit(self.second_image, (offset_x, self.y))
-        #draw rect
-        pygame.draw.rect(self.screen,(255,255,255),self.rect,2)
+        # #draw rect
+        # pygame.draw.rect(self.screen,(255,255,255),self.rect,2)
 
         self.damage()
 
