@@ -459,7 +459,7 @@ class Resource_Manager():
         offsety=40
         image_width=35
         offsetx=70
-        self.font = pygame.font.Font('freesansbold.ttf', 32)
+        self.font = pygame.font.Font('fonts/second.ttf', 32)
         for r in range(0, len(self.resources)):
 
             # text = font.render(self.resources[r], True, (0,0,0))
@@ -515,7 +515,7 @@ class Resource():
         offsety = 40
         image_width = 35
         offsetx = 70
-        self.font = pygame.font.Font('fonts/main_font.ttf', 36)
+        self.font = pygame.font.Font('fonts/second.ttf', 36)
         self.text = self.font.render(str(self.value), True, (255, 255, 255))
         self.textRect = self.text.get_rect()
         self.textRect.center = (self.x + offsetx, self.y + offsety  + offsety // 2)
