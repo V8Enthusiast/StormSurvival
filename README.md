@@ -1,7 +1,7 @@
 <h1>About</h1>
 Storm Survival is a realistic real-time apocalypse survival game. Gather resources, fight enemies and loot for weapons. Get stronger every day and with every wave of enemies. Explore the open world and enjoy the cutting edge pixel art graphics our graphic design team prepared for you. We hope you enjoy our game and have a pleasant experience.<br>
-
-<img src="Screenshot/1.png" width="959" height="539" />
+<hr>
+<img src="Screenshot/1.png" width="959" height="539"/>
 
 <h1>Controls:</h1>
 
