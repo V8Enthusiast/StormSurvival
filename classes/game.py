@@ -262,7 +262,7 @@ class Game:
     def choose_tile(self, x, y):
         tree_probability = 100
         mine_probability = 50
-        chest_probability = 50
+        chest_probability = 100
         tile_image = random.choice(self.grasses)
 
         for n in self.check_neighbours(x, y):
@@ -290,9 +290,12 @@ class Game:
 
         elif random.randint(1,mine_probability)==1:
             self.add_tile(x, y, 'mine')
+
+
         else:
             if random.randint(1, chest_probability) == 1:
-                chest = GameObject.Chest(self, y, x, 96, 96, images.chest_closed, True)
+                chest = GameObject.Chest(self, x - 2 * self.player.relative_position[0],
+                                         y - 2 * self.player.relative_position[1], 96, 96, images.chest_closed, True)
                 self.objects.append(chest)
                 self.chests.append(chest)
                 # print('aa')
@@ -877,7 +880,7 @@ class Game:
         # Update player position based on current dx and dy
         self.player.relative_position[0] += self.dx
         self.player.relative_position[1] += self.dy
-        # print(self.player.relative_position)
+        # print (self.player.relative_position)
 
         self.player.gameObjectPos[0] += self.dx
         self.player.gameObjectPos[1] += self.dy
