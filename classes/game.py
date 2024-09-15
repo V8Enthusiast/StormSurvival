@@ -1,3 +1,4 @@
+import json
 import math
 import random
 import time
@@ -24,7 +25,10 @@ class Game:
         self.enemies = []
         self.selected_chest = None
         self.chest_ui = None
-        self.pay_for_chest = settings_values.pay_for_chest
+        settings = self.read_settings('settings.json')
+
+        self.pay_for_chest = settings["Pay for chest"]
+        print(self.pay_for_chest)
         self.speed = 3
         self.dx = 0
         self.dy = 0
@@ -46,7 +50,7 @@ class Game:
 
         self.waters=['water']
         self.trees = ['tree1','tree2','tree3']
-        self.grasses=['grass','grass3']
+        self.grasses=['grass','grass2']
         self.init_tiles()
 
         self.environmentparticlesystem = particles.ParticleSystem(self)
@@ -100,6 +104,13 @@ class Game:
         self.place_mode = False
 
         self.weapon_selection_ui = None
+
+
+    def read_settings(self, file_path):
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+            settings = data['settings']
+            return settings
 
     def init_tiles(self):
         for y in range(-96, self.app.height+96, self.tile_size):
@@ -544,7 +555,7 @@ class Game:
             if chest.rect.colliderect(self.player.rect) and self.chest_ui is None:
                 self.selected_chest = chest
                 # print(chest)
-                if settings_values.pay_for_chest == True:
+                if self.pay_for_chest == True:
                     if self.resource_manager.resources[0][1]>=50:
                         if self.selected_chest.opened == False:
                             self.helpText = "Pay 50 gems to be able to open"
