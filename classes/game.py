@@ -245,8 +245,8 @@ class Game:
                 # print('y')
                 if self.player.hunger>100:
                     self.player.health+=self.player.hunger-100
-                    if self.player.health>100:
-                        self.player.health=100
+                    if self.player.health>self.player.max_health:
+                        self.player.health=self.player.max_health
                     self.player.hunger=100
 
         except:
