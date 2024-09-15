@@ -15,7 +15,7 @@ class Game:
         self.app = app
         self.objects = []
         self.main_text_rect_center = (self.app.width//2, 150 * self.app.scale)
-        self.font = "fonts/main_font.ttf"
+        self.font = "fonts/second.ttf"
         self.helpText = ""
         self.font_color = (255, 255, 255)
         self.screen = self.app.screen
