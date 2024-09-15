@@ -46,7 +46,7 @@ class Game:
 
         self.waters=['water']
         self.trees = ['tree1','tree2','tree3']
-        self.grasses=['grass','grass2','grass3']
+        self.grasses=['grass','grass3']
         self.init_tiles()
 
         self.environmentparticlesystem = particles.ParticleSystem(self)
