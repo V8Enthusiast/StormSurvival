@@ -130,6 +130,8 @@ class Game:
             pass
 
     def build_success(self):
+        self.player.hunger-=4
+
         if self.tiles[(self.current_tile_x,self.current_tile_y)] in self.trees:
             self.tiles[(self.current_tile_x, self.current_tile_y)]=self.tiles[(self.current_tile_x, self.current_tile_y)]+'_farm'
             GameObject.Resource(self,self.current_tile_x,self.current_tile_y-self.tile_size//6,'wood',images.wood,50,10)
@@ -222,12 +224,14 @@ class Game:
                 self.resource_manager.resources[1][1] += self.resources[
                     (self.current_tile_x, self.current_tile_y - self.tile_size // 6)].value
                 self.resources[(self.current_tile_x, self.current_tile_y - self.tile_size // 6)].value = 0
-                print('ymu yum yum',
-                      self.resources[(self.current_tile_x, self.current_tile_y + self.tile_size // 6)].value)
+                # print('ymu yum yum',
+                #       self.resources[(self.current_tile_x, self.current_tile_y + self.tile_size // 6)].value)
                 self.player.hunger += self.resources[
                     (self.current_tile_x, self.current_tile_y + self.tile_size // 6)].value
                 self.resources[(self.current_tile_x, self.current_tile_y + self.tile_size // 6)].value = 0
                 # print('y')
+                if self.player.hunger>100:
+                    self.player.hunger=100
         except:
             if self.resources[(self.current_tile_x, self.current_tile_y)].resource == 'gems':
                 self.resource_manager.resources[0][1] += self.resources[
@@ -274,7 +278,7 @@ class Game:
                 chest = GameObject.Chest(self, y, x, 96, 96, images.chest_closed, True)
                 self.objects.append(chest)
                 self.chests.append(chest)
-                print('aa')
+                # print('aa')
 
             self.add_tile(x, y, tile_image)
 
@@ -593,7 +597,7 @@ class Game:
                     move_x = 0
 
                 if time.time() > enemy.break_clock + enemy.break_cooldown and type(obj) == GameObject.Block:
-                    print(obj.durability)
+                    # print(obj.durability)
                     obj.durability -= enemy.break_damage
                     enemy.break_clock = time.time()
 
@@ -878,7 +882,7 @@ class Game:
                     self.objects.append(GameObject.Block(self, closest_tile_x, closest_tile_y, 96, 96, images.wood_planks, True))
 
                     self.resource_manager.resources[1][1] -= 10
-                    print(closest_tile_x, closest_tile_y)
+                    # print(closest_tile_x, closest_tile_y)
 
                     # Deduct 10 wood from the player's resources
                     # self.resource_manager.resources['wood'] -= 10

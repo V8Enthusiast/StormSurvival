@@ -173,7 +173,7 @@ class Player(GameObject):
                     slot_num = 0
                     for slot_rect in self.game.chest_ui.slot_rects:
                         if slot_rect.collidepoint(click_pos):
-                            print("slot ", slot_num, " selected")
+                            # print("slot ", slot_num, " selected")
                             selected_ui = True
                             break
                         slot_num += 1
@@ -181,7 +181,7 @@ class Player(GameObject):
                         slot_num = 0
                         for slot_rect in self.game.hotbar.slot_rects:
                             if slot_rect.collidepoint(click_pos):
-                                print("slot ", slot_num, " selected")
+                                # print("slot ", slot_num, " selected")
                                 selected_ui = True
                                 break
                             slot_num += 1
@@ -199,7 +199,7 @@ class Player(GameObject):
                     slot_selected = False
                     for slot_rect in self.game.hotbar.slot_rects:
                         if slot_rect.collidepoint(click_pos):
-                            print("slot ", slot_num, " selected")
+                            # print("slot ", slot_num, " selected")
                             slot_selected = True
                             break
                         slot_num += 1
@@ -208,7 +208,7 @@ class Player(GameObject):
                         slot_num = 0
                         for slot_rect in self.game.chest_ui.slot_rects:
                             if slot_rect.collidepoint(click_pos):
-                                print("slot ", slot_num, " selected")
+                                # print("slot ", slot_num, " selected")
                                 slot_selected = True
                                 break
                             slot_num += 1
@@ -220,7 +220,7 @@ class Player(GameObject):
                     if slot_selected:
                         if self.to_ui.items[slot_num] is None:
                             self.to_ui.add_item(self.from_ui.items[self.from_ui.moved_item], slot_num)
-                            print(self.from_ui.items[self.from_ui.moved_item])
+                            # print(self.from_ui.items[self.from_ui.moved_item])
                             if self.from_ui == self.game.chest_ui:
                                 self.game.selected_chest.Items[self.from_ui.moved_item] = None
                             if self.to_ui == self.game.chest_ui:
@@ -238,7 +238,7 @@ class Player(GameObject):
                             self.from_ui.add_item(self.to_ui.items[slot_num], self.from_ui.moved_item)
                             self.from_ui.moved_item = None
                             self.to_ui.add_item(temp_item, slot_num)
-                            print(self.to_ui.items[slot_num])
+                            # print(self.to_ui.items[slot_num])
                             self.isMovingItem = False
 
             else:
@@ -271,7 +271,8 @@ class Player(GameObject):
                     elif selected_item.firemode == 2:
                         selected_item.firemode = 1
                     else:
-                        print("Weapon does not support extra fire modes")
+                        # print("Weapon does not support extra fire modes")
+                        pass
 
     def drop_item(self):
         selected_item = self.game.hotbar.items[self.game.hotbar.selected_slot]
@@ -521,7 +522,7 @@ class Resource():
         self.textRect.center = (self.x + offsetx, self.y + offsety  + offsety // 2)
         self.rect = pygame.Rect(self.x, self.y + offsety, offsety, offsety)
         self.image = pygame.transform.scale(self.image, (image_width, image_width))
-        print(x,y)
+        # print(x,y)
         self.offset_modx=+8
         self.offset_mody = -10
     def render(self):
