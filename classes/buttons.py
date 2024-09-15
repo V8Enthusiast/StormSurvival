@@ -89,6 +89,7 @@ class Button:
         elif self.function == 'pay_for_chest':
             settings_values.pay_for_chest = not settings_values.pay_for_chest
             self.text = str(settings_values.pay_for_chest)
+            self.app.ui.current_pay = settings_values.pay_for_chest
         elif self.function == 'level':
             if self.app.ui.current_default_level < 15:
                 self.app.ui.current_default_level += 1
