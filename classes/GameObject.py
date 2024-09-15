@@ -40,7 +40,7 @@ class Zombie(GameObject):
 
         self.health = 50
         self.color = (255, 105, 55)
-        self.weapon = weapon.M4A1(game, self)
+        self.weapon = weapon.M4A1(game, self, True)
 
         self.gun_image = self.weapon.image
         self.speed = 4
