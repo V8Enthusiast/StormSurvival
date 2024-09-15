@@ -10,6 +10,40 @@ from classes import GameObject, particles, hotbar, weapon, settings
 from Assets import mixer
 import images
 
+weapon_classes = {
+    "Glock 17": weapon.Glock17,
+    "Pump Action Shotgun": weapon.PumpActionShotgun,
+    "Ammo Box": weapon.AmmoBox,
+    "M4A1": weapon.M4A1,
+    "Bolt Action Sniper": weapon.BoltActionSniper,
+    "Ammo Crate": weapon.AmmoCrate,
+    "MAC-10": weapon.MAC10,
+    "M1911 .45": weapon.M1911,
+    "Scar-H": weapon.ScarH,
+    "Desert Eagle": weapon.DesertEagle,
+    ".44 Magnum": weapon.Magnum44
+}
+
+gun_images = {
+    "Glock 17": images.glock17,
+    "Pump Action Shotgun": images.pump_action_shotgun,
+    "Ammo Box": images.ammo_box,
+    "M4A1": images.m4a1,
+    "Bolt Action Sniper": images.bolt_action_sniper,
+    "Ammo Crate": images.ammo_crate,
+    "MAC-10": images.mac10,
+    "M1911 .45": images.m1911,
+    "Scar-H": images.scarh,
+    "Desert Eagle": images.desert_eagle,
+    ".44 Magnum": images.magnum44
+}
+
+CommonDrops = ["Glock 17", "Pump Action Shotgun"]
+UncommonDrops = ["M4A1", "Bolt Action Sniper"]
+EpicDrops = ["MAC-10", "M1911 .45"]
+LegendaryDrops = ["Scar-H", "Desert Eagle", ".44 Magnum"]
+
+
 class Game:
     def __init__(self, app):
         self.app = app
@@ -365,6 +399,7 @@ class Game:
         elif cycle_progress < 1.0:
             if self.time_of_day != "Evening":
                 self.wave += 1
+                self.enemy_spawns_left = 20 + self.wave * 5
                 self.delay_between_spawns = self.enemies_per_spawn * self.day_night_cycle_duration / (self.enemy_spawns_left * 2)
             time_of_day = "Evening"
             time_to_next = int((1.0 - cycle_progress) * self.day_night_cycle_duration)
@@ -423,21 +458,11 @@ class Game:
 
     def show_settings_menu(self):
         settings_menu = settings.Settings(self.app)
-        settings_menu_active = True
 
-        while settings_menu_active:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.app.run = False
-                    pygame.quit()
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        settings_menu_active = False
-                settings_menu.events()
+        self.app.old_ui = self.app.ui
 
-            self.screen.fill((0, 0, 0))
-            settings_menu.render()
-            pygame.display.flip()
+        self.app.ui = settings_menu
+
 
     def render(self):
         t1=time.time()
@@ -556,9 +581,9 @@ class Game:
                 self.selected_chest = chest
                 # print(chest)
                 if self.pay_for_chest == True:
-                    if self.resource_manager.resources[0][1]>=50:
+                    if self.resource_manager.resources[0][1]>=25:
                         if self.selected_chest.opened == False:
-                            self.helpText = "Pay 50 gems to be able to open"
+                            self.helpText = "Pay 25 gems to be able to open"
                             self.selected_chest = chest
                         else:
                             self.helpText = "Press E to open"
@@ -577,7 +602,7 @@ class Game:
                     self.selected_chest = chest
                     break
 
-            elif self.helpText in ["Press E to open", "Pay 50 gems to be able to open", "Not enough gems"] or (
+            elif self.helpText in ["Press E to open", "Pay 25 gems to be able to open", "Not enough gems"] or (
                     self.chest_ui is not None and self.selected_chest.rect.colliderect(self.player.rect) is False):
                 self.helpText = ""
                 self.selected_chest = None
@@ -688,6 +713,8 @@ class Game:
 
                     if random.randint(0, 100) > 75:
                         zombie.health = 100
+                        if random.randint(0, 100) == 4:
+                            zombie.health = 200
                     if random.randint(0, 100) > 85:
                         zombie.speed = 6
 
@@ -696,6 +723,19 @@ class Game:
                         zombie.health = 25
                         zombie.break_damage = 100
                         zombie.break_cooldown = 1
+
+                    rarity = random.randint(0, 100)
+                    if rarity > 90:
+                        weapon_name = random.choice(LegendaryDrops)
+                    elif rarity > 75:
+                        weapon_name = random.choice(EpicDrops)
+                    elif rarity > 35:
+                        weapon_name = random.choice(UncommonDrops)
+                    else:
+                        weapon_name = random.choice(CommonDrops)
+
+                    zombie.weapon = weapon_classes[weapon_name](self, zombie, True)
+                    zombie.gun_image = zombie.weapon.image
 
                     self.enemies.append(zombie)
                     self.objects.append(zombie)
@@ -880,7 +920,7 @@ class Game:
         # Update player position based on current dx and dy
         self.player.relative_position[0] += self.dx
         self.player.relative_position[1] += self.dy
-        # print (self.player.relative_position)
+        # print(self.player.relative_position)
 
         self.player.gameObjectPos[0] += self.dx
         self.player.gameObjectPos[1] += self.dy
@@ -914,10 +954,11 @@ class Game:
                                     pass
                                 else:
                                     self.selected_chest.opened = True
-                                    self.resource_manager.resources[0][1] -= 50
+                                    self.resource_manager.resources[0][1] -= 25
                                     break
                                 self.chest_ui = hotbar.Hotbar(self, self.selected_chest.x - 100,
                                                               self.selected_chest.y - 100, 5)
+                                self.chest_ui.selected_slot = -1
                                 for i in range(len(self.selected_chest.Items)):
                                     self.chest_ui.add_item(self.selected_chest.Items[i], i)
                                 self.helpText = ""

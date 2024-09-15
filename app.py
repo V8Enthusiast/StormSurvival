@@ -24,7 +24,7 @@ class App:
 
         self.width = width
         self.height = height
-
+        self.old_ui = None
         self.clock = pygame.time.Clock()
         self.mixer = Mixer()
         self.mixer.load_music('sounds/perfect-beauty-not-copyrighted.mp3')
@@ -34,6 +34,7 @@ class App:
             data = json.load(file)
             settings = data['settings']
         self.resolution_number=settings['Resolution']
+        self.fullscreen = settings['Fullscreen']
 
         # settings_values.mode = settings['Gamemode']
         # settings_values.default_level = settings['Default level']
@@ -48,7 +49,7 @@ class App:
         self.fps = 60
         self.width = int(resolutions[settings['Resolution']].split('x')[0])
         self.height = int(resolutions[settings['Resolution']].split('x')[1])
-        self.is_FS_enabled = fullscreen
+        self.is_FS_enabled = self.fullscreen
         self.is_vsync_enabled = vsync
         self.scale = 1
         self.screen = pygame.display.set_mode((width, height))
@@ -59,7 +60,7 @@ class App:
         self.ui = mainmenu.MainMenu(self)
 
         # Window setup
-        if fullscreen:
+        if self.fullscreen:
             self.screen = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN, vsync=int(vsync))
         else:
             self.screen = pygame.display.set_mode((self.width, self.height), vsync=int(vsync))
