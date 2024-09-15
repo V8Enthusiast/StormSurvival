@@ -420,21 +420,8 @@ class Game:
 
     def show_settings_menu(self):
         settings_menu = settings.Settings(self.app)
-        settings_menu_active = True
 
-        while settings_menu_active:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.app.run = False
-                    pygame.quit()
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        settings_menu_active = False
-                settings_menu.events()
-
-            self.screen.fill((0, 0, 0))
-            settings_menu.render()
-            pygame.display.flip()
+        self.app.ui = settings_menu
 
     def render(self):
         t1=time.time()
