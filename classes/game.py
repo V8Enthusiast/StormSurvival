@@ -140,7 +140,7 @@ class Game:
             self.resource_manager.resources[1][1]-=100
             GameObject.Resource(self, self.current_tile_x, self.current_tile_y, 'gems', images.gem, 50, 10)
         elif self.tiles[(self.current_tile_x,self.current_tile_y)] =='water' :
-            self.player.thirst+=1
+            self.player.thirst+=5
             if self.player.thirst>100:
                 self.player.thirst=100
 
@@ -786,9 +786,17 @@ class Game:
             elif self.player.hunger < 70:
                 self.player.delta_health = (1 / (self.player.hunger) * 100)
                 self.player.image = images.damagedplayer
+            if self.player.thirst > 70:
+                self.player.delta_health += -(1 / (self.player.thirst) * 100)
+            elif self.player.thirst < 70:
+                self.player.delta_health += (1 / (self.player.thirst) * 100)
+                self.player.image = images.damagedplayer
             if self.player.hunger < 0:
                 self.player.hunger = 0
+            if self.player.thirst < 0:
+                self.player.thirst = 0
             self.player.hunger -= self.player.delta_hunger
+            self.player.thirst -= self.player.delta_thirst
             self.player.health -= self.player.delta_health
             self.last_hunger_update = current_time
         self.move_x+=2*self.dx

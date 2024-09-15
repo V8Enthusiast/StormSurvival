@@ -119,8 +119,9 @@ class Player(GameObject):
         self.isShooting = False
         self.last_damage_time = 0
         self.hunger = 70
-        self.thirst = 100
-        self.delta_hunger = 3
+        self.thirst = 70
+        self.delta_hunger = 2
+        self.delta_thirst = 3
         self.delta_health = 0
 
     # def render_health_bar(self):
