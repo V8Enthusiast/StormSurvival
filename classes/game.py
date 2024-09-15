@@ -77,7 +77,7 @@ class Game:
         self.move_x =0#self.app.width//2%self.tile_size
         self.move_y =0 #self.app.height//2%self.tile_size
 
-        self.day_night_cycle_duration = 120  # Duration of a full day-night cycle in seconds
+        self.day_night_cycle_duration = 180  # Duration of a full day-night cycle in seconds
         self.cycle_start_time = time.time()
         self.time_of_day = None
         self.overlay_alpha = 0
