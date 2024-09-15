@@ -533,9 +533,13 @@ class Game:
                             self.helpText = "Press E to open"
                             self.selected_chest = chest
                     else:
-                        self.helpText = "Not enough gems"
-                        self.selected_chest = None
-                        self.chest_ui = None
+                        if self.selected_chest.opened == False:
+                            self.helpText = "Not enough gems"
+                            self.selected_chest = None
+                            self.chest_ui = None
+                        else:
+                            self.helpText = "Press E to open"
+                            self.selected_chest = chest
                     break
                 else:
                     self.helpText = "Press E to open"
