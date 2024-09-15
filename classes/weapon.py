@@ -5,7 +5,7 @@ import images
 from classes import particles, weapon_selection_ui
 
 class Weapon:
-    def __init__(self, game, player, image, ammo, max_ammo, total_ammo, fire_rate, firemode, damage):
+    def __init__(self, game, player, image, ammo, max_ammo, total_ammo, fire_rate, firemode, damage, zombie):
         self.player = player
         self.image = pygame.transform.scale(image,[60, 60])
         self.ammo = ammo
@@ -15,6 +15,7 @@ class Weapon:
         self.fire_rate = fire_rate # cannot be 0
         self.firemode = firemode # 0 - Semi Auto, 1 - Full Auto, 2 - Burst
         self.damage = damage
+        self.zombie = zombie
 
     def get_firemode_text(self):
         firemodes = ["Semi Auto", "Full Auto", "Burst"]
@@ -48,8 +49,8 @@ class Weapon:
 
 
 class Glock17(Weapon):
-    def __init__(self, game, player):
-        super().__init__(game, player, images.glock17, 17, 17, 50, 3, 0, 10)
+    def __init__(self, game, player, zombie):
+        super().__init__(game, player, images.glock17, 17, 17, 50, 3, 0, 10, zombie)
 
     def shoot(self):
         if self.ammo > 0:
@@ -72,8 +73,8 @@ class Glock17(Weapon):
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
 
 class PumpActionShotgun(Weapon):
-    def __init__(self, game, player):
-        super().__init__(game, player, images.pump_action_shotgun, 5, 5, 20, 2, 0, 2)
+    def __init__(self, game, player, zombie):
+        super().__init__(game, player, images.pump_action_shotgun, 5, 5, 20, 2, 0, 2, zombie)
 
     def shoot(self):
         if self.ammo > 0:
@@ -97,8 +98,8 @@ class PumpActionShotgun(Weapon):
 
 
 class AmmoBox(Weapon):
-    def __init__(self, game, player):
-        super().__init__(game, player, images.ammo_box, 0, 10, random.randint(30, 50), 1, 1, 0)
+    def __init__(self, game, player, zombie):
+        super().__init__(game, player, images.ammo_box, 0, 10, random.randint(30, 50), 1, 1, 0, zombie)
 
     def shoot(self):
         weapons = [item for item in self.game.hotbar.items if isinstance(item, Weapon)]
@@ -108,8 +109,8 @@ class AmmoBox(Weapon):
         pass
 
 class M4A1(Weapon):
-    def __init__(self, game, player):
-        super().__init__(game, player, images.m4a1, 30, 30, 150, 6, 1, 20)
+    def __init__(self, game, player, zombie):
+        super().__init__(game, player, images.m4a1, 30, 30, 150, 6, 1, 20, zombie)
 
     def shoot(self):
         if self.ammo > 0:
@@ -132,8 +133,8 @@ class M4A1(Weapon):
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
 
 class BoltActionSniper(Weapon):
-    def __init__(self, game, player):
-        super().__init__(game, player, images.bolt_action_sniper, 5, 5, 20, 1, 0, 100)
+    def __init__(self, game, player, zombie):
+        super().__init__(game, player, images.bolt_action_sniper, 5, 5, 20, 1, 0, 100, zombie)
 
     def shoot(self):
         if self.ammo > 0:
@@ -157,8 +158,8 @@ class BoltActionSniper(Weapon):
 
 
 class AmmoCrate(Weapon):
-    def __init__(self, game, player):
-        super().__init__(game, player, images.ammo_crate, 0, 10, random.randint(60, 99), 1, 1, 0)
+    def __init__(self, game, player, zombie):
+        super().__init__(game, player, images.ammo_crate, 0, 10, random.randint(60, 99), 1, 1, 0, zombie)
 
     def shoot(self):
         weapons = [item for item in self.game.hotbar.items if isinstance(item, Weapon)]
@@ -168,8 +169,8 @@ class AmmoCrate(Weapon):
         pass
 
 class MAC10(Weapon):
-    def __init__(self, game, player):
-        super().__init__(game, player, images.mac10, 30, 30, 90, 14, 1, 10)
+    def __init__(self, game, player, zombie):
+        super().__init__(game, player, images.mac10, 30, 30, 90, 14, 1, 10, zombie)
 
     def shoot(self):
         if self.ammo > 0:
@@ -192,8 +193,8 @@ class MAC10(Weapon):
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
 
 class M1911(Weapon):
-    def __init__(self, game, player):
-        super().__init__(game, player, images.m1911, 7, 7, 50, 4, 0, 15)
+    def __init__(self, game, player, zombie):
+        super().__init__(game, player, images.m1911, 7, 7, 50, 4, 0, 15, zombie)
 
     def shoot(self):
         if self.ammo > 0:
@@ -216,8 +217,8 @@ class M1911(Weapon):
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
 
 class ScarH(Weapon):
-    def __init__(self, game, player):
-        super().__init__(game, player, images.scarh, 20, 20, 140, 5, 1, 25)
+    def __init__(self, game, player, zombie):
+        super().__init__(game, player, images.scarh, 20, 20, 140, 5, 1, 25, zombie)
 
     def shoot(self):
         if self.ammo > 0:
@@ -240,8 +241,8 @@ class ScarH(Weapon):
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
 
 class DesertEagle(Weapon):
-    def __init__(self, game, player):
-        super().__init__(game, player, images.desert_eagle, 7, 7, 60, 3, 0, 30)
+    def __init__(self, game, player, zombie):
+        super().__init__(game, player, images.desert_eagle, 7, 7, 60, 3, 0, 30, zombie)
 
     def shoot(self):
         if self.ammo > 0:
@@ -264,8 +265,8 @@ class DesertEagle(Weapon):
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
 
 class Magnum44(Weapon):
-    def __init__(self, game, player):
-        super().__init__(game, player, images.magnum44, 6, 6, 50, 2, 0, 30)
+    def __init__(self, game, player, zombie):
+        super().__init__(game, player, images.magnum44, 6, 6, 50, 2, 0, 30, zombie)
 
     def shoot(self):
         if self.ammo > 0:

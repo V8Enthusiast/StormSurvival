@@ -59,7 +59,7 @@ class Game:
         self.tile_width=96
 
         self.hotbar = hotbar.Hotbar(self, self.app.width//2 - ((50 + 10) * 5 -50)//2, self.app.height-75, 5)
-        self.hotbar.add_item(weapon.Glock17(self, self.player), 0)
+        self.hotbar.add_item(weapon.Glock17(self, self.player, False), 0)
 
         self.sound_mixer = mixer.Mixer()
         self.sound_mixer.change_volume(self.app.mixer.get_volume())
@@ -407,6 +407,26 @@ class Game:
         weather_status = "Raining" if self.is_raining else "Not Raining"
         weather_text = font.render(f"Weather: {weather_status} | Next change in: {time_remaining}s", True, text_color)
         self.screen.blit(weather_text, (10, 10))
+
+    def show_settings_menu(self):
+        settings_menu = True
+        while settings_menu:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.app.run = False
+                    pygame.quit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        settings_menu = False
+
+            self.screen.fill((0, 0, 0))
+
+            font = pygame.font.Font(self.font, 36)
+            text_color = (255, 255, 255)
+            settings_text = font.render("Settings Menu", True, text_color)
+            self.screen.blit(settings_text, (self.app.width // 2 - settings_text.get_width() // 2, self.app.height // 2 - settings_text.get_height() // 2))
+
+            pygame.display.flip()
 
     def render(self):
         t1=time.time()
@@ -871,6 +891,8 @@ class Game:
                     self.hotbar.select_slot(3)
                 elif event.key == pygame.K_5:
                     self.hotbar.select_slot(4)
+                elif event.key == pygame.K_ESCAPE:
+                    self.show_settings_menu()
 
                 elif event.key == pygame.K_e:
                     if self.selected_chest is not None:
