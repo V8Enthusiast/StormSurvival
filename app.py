@@ -24,7 +24,7 @@ class App:
 
         self.width = width
         self.height = height
-
+        self.old_ui = None
         self.clock = pygame.time.Clock()
         self.mixer = Mixer()
         self.mixer.load_music('sounds/perfect-beauty-not-copyrighted.mp3')

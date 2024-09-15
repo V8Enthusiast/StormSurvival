@@ -21,7 +21,7 @@ class Settings:
             # buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 + 25 * self.app.scale / 2, False, self.font, f"{settings['Default level']}", (0, 0, 0), self.font_color, 'level', self.app),
             # buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 + 225 * self.app.scale / 2, False, self.font, f"{color_modes[settings['Block colors']]}", (0, 0, 0), self.font_color, 'colors', self.app),
             buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 - 225 * self.app.scale, self.app.height / 2 + 625 * self.app.scale / 2, False, self.font, "Save", (0, 0, 0), self.font_color, 'save_settings', self.app),
-            buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 25 * self.app.scale, self.app.height / 2 + 625 * self.app.scale / 2, False, self.font, "Exit", (0, 0, 0), self.font_color, 'back_to_menu', self.app)
+            buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 25 * self.app.scale, self.app.height / 2 + 625 * self.app.scale / 2, False, self.font, "Exit To Main Menu", (0, 0, 0), self.font_color, 'back_to_menu', self.app)
         ]
         font = pygame.font.Font(self.font, int(48 * self.app.scale))
         self.texts = [
@@ -104,7 +104,7 @@ class Settings:
             # buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 + 25 * self.app.scale / 2, False, self.font, f"{settings['Default level']}", (0, 0, 0), self.font_color, 'level', self.app),
             # buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 100 * self.app.scale, self.app.height / 2 + 225 * self.app.scale / 2, False, self.font, f"{color_modes[settings['Block colors']]}", (0, 0, 0), self.font_color, 'colors', self.app),
             buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 - 225 * self.app.scale, self.app.height / 2 + 625 * self.app.scale / 2, False, self.font, "Save", (0, 0, 0), self.font_color, 'save_settings', self.app),
-            buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 25 * self.app.scale, self.app.height / 2 + 625 * self.app.scale / 2, False, self.font, "Exit", (0, 0, 0), self.font_color, 'back_to_menu', self.app)
+            buttons.Button(200 * self.app.scale, 75 * self.app.scale, self.app.width / 2 + 25 * self.app.scale, self.app.height / 2 + 625 * self.app.scale / 2, False, self.font, "Exit To Main Menu", (0, 0, 0), self.font_color, 'back_to_menu', self.app)
         ]
 
         self.volume_slider = slider.Slider(
@@ -126,6 +126,11 @@ class Settings:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 self.app.run = False
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                if self.app.old_ui is not None:
+                    self.app.ui = self.app.old_ui
+
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 click_pos = pygame.mouse.get_pos()
                 for button in self.buttons:

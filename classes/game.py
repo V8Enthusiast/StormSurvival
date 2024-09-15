@@ -6,8 +6,7 @@ import time
 import pygame
 
 import settings_values
-from classes import GameObject, particles, hotbar, weapon
-
+from classes import GameObject, particles, hotbar, weapon, settings
 from Assets import mixer
 import images
 
@@ -112,7 +111,7 @@ class Game:
         self.move_x =0#self.app.width//2%self.tile_size
         self.move_y =0 #self.app.height//2%self.tile_size
 
-        self.day_night_cycle_duration = 120  # Duration of a full day-night cycle in seconds
+        self.day_night_cycle_duration = 180  # Duration of a full day-night cycle in seconds
         self.cycle_start_time = time.time()
         self.time_of_day = None
         self.overlay_alpha = 0
@@ -280,8 +279,8 @@ class Game:
                 # print('y')
                 if self.player.hunger>100:
                     self.player.health+=self.player.hunger-100
-                    if self.player.health>100:
-                        self.player.health=100
+                    if self.player.health>self.player.max_health:
+                        self.player.health=self.player.max_health
                     self.player.hunger=100
 
         except:
@@ -456,24 +455,12 @@ class Game:
         self.screen.blit(weather_text, (10, 10))
 
     def show_settings_menu(self):
-        settings_menu = True
-        while settings_menu:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.app.run = False
-                    pygame.quit()
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        settings_menu = False
+        settings_menu = settings.Settings(self.app)
 
-            self.screen.fill((0, 0, 0))
+        self.app.old_ui = self.app.ui
 
-            font = pygame.font.Font(self.font, 36)
-            text_color = (255, 255, 255)
-            settings_text = font.render("Settings Menu", True, text_color)
-            self.screen.blit(settings_text, (self.app.width // 2 - settings_text.get_width() // 2, self.app.height // 2 - settings_text.get_height() // 2))
+        self.app.ui = settings_menu
 
-            pygame.display.flip()
 
     def render(self):
         t1=time.time()
@@ -592,9 +579,9 @@ class Game:
                 self.selected_chest = chest
                 # print(chest)
                 if self.pay_for_chest == True:
-                    if self.resource_manager.resources[0][1]>=50:
+                    if self.resource_manager.resources[0][1]>=25:
                         if self.selected_chest.opened == False:
-                            self.helpText = "Pay 50 gems to be able to open"
+                            self.helpText = "Pay 25 gems to be able to open"
                             self.selected_chest = chest
                         else:
                             self.helpText = "Press E to open"
@@ -613,7 +600,7 @@ class Game:
                     self.selected_chest = chest
                     break
 
-            elif self.helpText in ["Press E to open", "Pay 50 gems to be able to open", "Not enough gems"] or (
+            elif self.helpText in ["Press E to open", "Pay 25 gems to be able to open", "Not enough gems"] or (
                     self.chest_ui is not None and self.selected_chest.rect.colliderect(self.player.rect) is False):
                 self.helpText = ""
                 self.selected_chest = None
@@ -965,7 +952,7 @@ class Game:
                                     pass
                                 else:
                                     self.selected_chest.opened = True
-                                    self.resource_manager.resources[0][1] -= 50
+                                    self.resource_manager.resources[0][1] -= 25
                                     break
                                 self.chest_ui = hotbar.Hotbar(self, self.selected_chest.x - 100,
                                                               self.selected_chest.y - 100, 5)
