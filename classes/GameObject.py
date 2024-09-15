@@ -302,7 +302,7 @@ class Storm(GameObject):
     def __init__(self, game,x,y,w,h,image,visible):
 
         super().__init__(game,x,y,w,h,image,visible)
-        self.speed=2
+        self.speed=2.7
         self.dmg=10
         self.last_damage_time = pygame.time.get_ticks()
         self.head_image=pygame.image.load('Assets/burza (2).png')
