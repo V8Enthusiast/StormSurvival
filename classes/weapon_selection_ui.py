@@ -3,7 +3,7 @@ import pygame
 class WeaponSelectionUI:
     def __init__(self, game, weapons, ammothing):
         self.ammothing = ammothing
-        self.ammo = self.ammothing.ammo
+        self.ammo = self.ammothing.total_ammo
         self.game = game
         self.weapons = weapons
         self.font = pygame.font.Font(None, 36)
