@@ -19,7 +19,8 @@ class App:
             rpc.connect()
             rpc.update(state="In Game", start=time.time())
         except:
-            print("Couldn't connect to Discord RPC")
+            # print("Couldn't connect to Discord RPC")
+            pass
 
         self.width = width
         self.height = height
