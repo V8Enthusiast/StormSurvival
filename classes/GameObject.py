@@ -365,6 +365,7 @@ class Storm(GameObject):
             self.last_damage_time = current_time
             self.game.player.last_damage_time = current_time
             self.game.player.image = pygame.transform.scale(images.damagedplayer, (self.game.player.w, self.game.player.h))
+            self.game.sound_mixer.play_sound('Assets/hit.mp3')
 
 
 class Chest(GameObject):

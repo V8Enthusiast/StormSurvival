@@ -131,6 +131,7 @@ class ParticleSystem:
                 if game.player.rect.colliderect(particle.x, particle.y, particle.size * 2, particle.size * 2):
                     game.player.health -= particle.damage
                     self.particles.remove(particle)
+                    self.game.sound_mixer.play_sound('Assets/hit.mp3')
                     continue
 
                 # Check collision with zombies
@@ -139,6 +140,7 @@ class ParticleSystem:
                         if zombie.rect.colliderect(particle.x, particle.y, particle.size * 2, particle.size * 2):
                             zombie.health -= particle.damage
                             self.particles.remove(particle)
+                            self.game.sound_mixer.play_sound('Assets/hit.mp3')
                             break
 
                 for object in game.objects:
