@@ -44,7 +44,7 @@ class Zombie(GameObject):
 
         self.gun_image = self.weapon.image
         self.speed = 4
-        self.combat_range = 500
+        self.combat_range = 300
         self.distance_to_player = 10000000
         self.break_damage = 50
         self.break_cooldown = 2
