@@ -306,7 +306,7 @@ class Storm(GameObject):
         self.dmg=10
         self.last_damage_time = pygame.time.get_ticks()
         self.head_image=pygame.image.load('Assets/burza (2).png')
-        self.head_image = pygame.transform.scale(self.head_image, (self.w, self.h))
+        self.head_image = pygame.transform.scale(self.head_image, (self.w // 2, self.h))
         self.first_image=pygame.image.load('Assets/burza (1).png')
         self.first_image = pygame.transform.scale(self.first_image, (self.w, self.h))
 
@@ -341,7 +341,7 @@ class Storm(GameObject):
             self.y=0 -self.h
         num_images = 10
 
-        total_width = (num_images+1) * self.w
+        total_width = (num_images * self.w) + (self.w // 2)
         self.rect = pygame.Rect(self.x - (num_images)*self.w, self.y, total_width, self.h)
 
         for i in range(num_images):
