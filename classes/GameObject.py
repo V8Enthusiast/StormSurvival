@@ -415,7 +415,7 @@ class Chest(GameObject):
             ".44 Magnum": weapon.Magnum44
         }
 
-        for i in range(random.randint(1, 5)):
+        for i in range(random.randint(1, 3)):
             rarity = random.randint(0, 100)
             if rarity > 90:
                 weapon_name = random.choice(self.LegendaryDrops)
