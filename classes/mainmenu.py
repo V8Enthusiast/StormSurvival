@@ -8,7 +8,7 @@ class MainMenu:
     def __init__(self, app):
         self.app = app
         self.main_text_rect_center = (self.app.width//2, 130 * self.app.scale)
-        self.score_text_rect_center = (self.app.width//2, 245)
+        self.score_text_rect_center = (self.app.width//2, 220)
         self.font = "fonts/second.ttf"
         self.font_color = (255, 255, 255)
         self.buttons = [

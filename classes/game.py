@@ -520,9 +520,9 @@ class Game:
                 self.selected_chest = chest
                 # print(chest)
                 if settings_values.pay_for_chest == True:
-                    if self.resource_manager.resources[0][1]>=20:
+                    if self.resource_manager.resources[0][1]>=50:
                         if self.selected_chest.opened == False:
-                            self.helpText = "Pay 20 gems to be able to open"
+                            self.helpText = "Pay 50 gems to be able to open"
                             self.selected_chest = chest
                         else:
                             self.helpText = "Press E to open"
@@ -537,7 +537,7 @@ class Game:
                     self.selected_chest = chest
                     break
 
-            elif self.helpText in ["Press E to open", "Pay 20 gems to be able to open", "Not enough gems"] or (
+            elif self.helpText in ["Press E to open", "Pay 50 gems to be able to open", "Not enough gems"] or (
                     self.chest_ui is not None and self.selected_chest.rect.colliderect(self.player.rect) is False):
                 self.helpText = ""
                 self.selected_chest = None
@@ -866,7 +866,7 @@ class Game:
                                     pass
                                 else:
                                     self.selected_chest.opened = True
-                                    self.resource_manager.resources[0][1] -= 20
+                                    self.resource_manager.resources[0][1] -= 50
                                     break
                                 self.chest_ui = hotbar.Hotbar(self, self.selected_chest.x - 100,
                                                               self.selected_chest.y - 100, 5)
