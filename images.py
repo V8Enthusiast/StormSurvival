@@ -35,3 +35,5 @@ wood_planks=pygame.image.load("Assets/WoodPlanks.png")
 wood_planks1=pygame.image.load("Assets/WoodPlanks1.png")
 wood_planks2=pygame.image.load("Assets/WoodPlanks2.png")
 wood_planks3=pygame.image.load("Assets/WoodPlanks3.png")
+
+zombiee = pygame.image.load("Assets/zombie.png")

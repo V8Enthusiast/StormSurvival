@@ -50,6 +50,7 @@ class Zombie(GameObject):
         self.break_cooldown = 2
         self.break_clock = time.time()
 
+        self.image = images.zombiee
 
         self.shoot_interval = 1500
         self.last_shot_time = pygame.time.get_ticks()
