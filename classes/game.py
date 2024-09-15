@@ -6,8 +6,7 @@ import time
 import pygame
 
 import settings_values
-from classes import GameObject, particles, hotbar, weapon
-
+from classes import GameObject, particles, hotbar, weapon, settings
 from Assets import mixer
 import images
 
@@ -420,23 +419,21 @@ class Game:
         self.screen.blit(weather_text, (10, 10))
 
     def show_settings_menu(self):
-        settings_menu = True
-        while settings_menu:
+        settings_menu = settings.Settings(self.app)
+        settings_menu_active = True
+
+        while settings_menu_active:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.app.run = False
                     pygame.quit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        settings_menu = False
+                        settings_menu_active = False
+                settings_menu.events()
 
             self.screen.fill((0, 0, 0))
-
-            font = pygame.font.Font(self.font, 36)
-            text_color = (255, 255, 255)
-            settings_text = font.render("Settings Menu", True, text_color)
-            self.screen.blit(settings_text, (self.app.width // 2 - settings_text.get_width() // 2, self.app.height // 2 - settings_text.get_height() // 2))
-
+            settings_menu.render()
             pygame.display.flip()
 
     def render(self):
