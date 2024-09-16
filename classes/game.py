@@ -21,7 +21,8 @@ weapon_classes = {
     "M1911 .45": weapon.M1911,
     "Scar-H": weapon.ScarH,
     "Desert Eagle": weapon.DesertEagle,
-    ".44 Magnum": weapon.Magnum44
+    ".44 Magnum": weapon.Magnum44,
+    "Flamethrower": weapon.FlameThrower
 }
 
 gun_images = {
@@ -35,13 +36,14 @@ gun_images = {
     "M1911 .45": images.m1911,
     "Scar-H": images.scarh,
     "Desert Eagle": images.desert_eagle,
-    ".44 Magnum": images.magnum44
+    ".44 Magnum": images.magnum44,
+    "Flamethrower": images.flamethrower
 }
 
 CommonDrops = ["Glock 17", "Pump Action Shotgun"]
 UncommonDrops = ["M4A1", "Bolt Action Sniper"]
 EpicDrops = ["MAC-10", "M1911 .45"]
-LegendaryDrops = ["Scar-H", "Desert Eagle", ".44 Magnum"]
+LegendaryDrops = ["Scar-H", "Desert Eagle", ".44 Magnum", "Flamethrower"]
 
 
 class Game:
@@ -96,7 +98,7 @@ class Game:
         self.tile_width=96
 
         self.hotbar = hotbar.Hotbar(self, self.app.width//2 - ((50 + 10) * 5 -50)//2, self.app.height-75, 5)
-        self.hotbar.add_item(weapon.Glock17(self, self.player, False), 0)
+        self.hotbar.add_item(weapon.FlameThrower(self, self.player, False), 0)
 
         self.sound_mixer = mixer.Mixer()
         self.sound_mixer.change_volume(self.app.mixer.get_volume())

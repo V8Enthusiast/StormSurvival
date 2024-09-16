@@ -380,7 +380,7 @@ class Chest(GameObject):
         self.CommonDrops = ["Glock 17", "Pump Action Shotgun", "Ammo Box"]
         self.UncommonDrops = ["M4A1", "Bolt Action Sniper", "Ammo Crate"]
         self.EpicDrops = ["MAC-10", "M1911 .45"]
-        self.LegendaryDrops = ["Scar-H", "Desert Eagle", ".44 Magnum"]
+        self.LegendaryDrops = ["Scar-H", "Desert Eagle", ".44 Magnum", "Flamethrower"]
 
         self.opened_image = images.chest_open
         self.open_image = pygame.transform.scale(self.opened_image, (self.w, self.h))
@@ -414,7 +414,8 @@ class Chest(GameObject):
             "M1911 .45": weapon.M1911,
             "Scar-H": weapon.ScarH,
             "Desert Eagle": weapon.DesertEagle,
-            ".44 Magnum": weapon.Magnum44
+            ".44 Magnum": weapon.Magnum44,
+            "Flamethrower": weapon.FlameThrower
         }
 
         for i in range(random.randint(1, 3)):

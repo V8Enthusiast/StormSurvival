@@ -25,6 +25,8 @@ m1911 = pygame.image.load("Assets/Weapons/Colt45.png")
 scarh = pygame.image.load("Assets/Weapons/ScarH.png")
 desert_eagle = pygame.image.load("Assets/Weapons/Deagle.png")
 magnum44 = pygame.image.load("Assets/Weapons/.44Magnum.png")
+flamethrower = pygame.image.load("Assets/Weapons/flame.png")
+
 gem=pygame.image.load("Assets/Krysztalek.png")
 wood=pygame.image.load("Assets/wood.png")
 

@@ -287,3 +287,28 @@ class Magnum44(Weapon):
                 self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red,
                                                                    green, blue, alpha, shape, self.damage, glowy=True)
             self.game.sound_mixer.play_sound('Assets/shoot.mp3')
+
+class FlameThrower(Weapon):
+    def __init__(self, game, player, zombie):
+        super().__init__(game, player, images.flamethrower, 100, 100, 500, 1, 1, 0.5, zombie)
+        self.fire_rate = 30
+
+    def shoot(self):
+        if self.ammo > 0:
+            self.ammo -= 1
+            gun_length = self.image.get_width() // 2
+            tip_x = self.player.x + self.player.w // 2 + gun_length * math.cos(self.player.angle) * 3.00
+            tip_y = self.player.y + self.player.h // 2 + gun_length * math.sin(self.player.angle) * 3.00
+
+            for _ in range(30):
+                vx = math.cos(self.player.angle) + random.uniform(-0.2, 0.2)
+                vy = math.sin(self.player.angle) + random.uniform(-0.2, 0.2)
+                speed = random.uniform(4, 7)
+                lifespan = random.randint(20, 60)
+                size = random.randint(1, 6)
+                red, green, blue = 255, 255, 0
+                alpha = 255
+                shape = 'circle'
+                self.player.game.weaponparticlesystem.add_particle(tip_x, tip_y, vx, vy, speed, lifespan, size, red,
+                                                                   green, blue, alpha, shape, self.damage, glowy=True)
+            self.game.sound_mixer.play_sound('Assets/shoot.mp3')
